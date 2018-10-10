@@ -250,7 +250,6 @@ public class PopUp extends AppCompatActivity {
                                     mProgressBar.setProgress(0);
                                 }
                             }, 2000);
-
                             Toast.makeText(PopUp.this, "Upload successful", Toast.LENGTH_LONG).show();
                             Upload upload = new Upload(mEditText.getText().toString().toLowerCase(),
                                     taskSnapshot.getDownloadUrl().toString(),
