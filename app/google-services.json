@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "504840954745",
+    "firebase_url": "https://bhplanine.firebaseio.com",
+    "project_id": "bhplanine",
+    "storage_bucket": "bhplanine.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504840954745:android:24d999f6e00c6563",
+        "android_client_info": {
+          "package_name": "com.example.user.graduationproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504840954745-2vap4ubdpsfrildlh62lh73e32tt1p80.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.graduationproject",
+            "certificate_hash": "ac9b8463abfc59ea538c96481dd04cd0fd9aac23"
+          }
+        },
+        {
+          "client_id": "504840954745-q90si6cc9n09cb5ke29cvunc3g4epvo3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF7iOkOlDOgYLgArm8euUVy9FLK4BSpiU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504840954745-hm8ucu3hauo697rhbbi5bh5873t0js56.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
