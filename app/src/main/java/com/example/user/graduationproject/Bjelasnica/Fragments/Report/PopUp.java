@@ -1,6 +1,7 @@
 package com.example.user.graduationproject.Bjelasnica.Fragments.Report;
 
 import android.app.AlertDialog;
+import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Database.Database;
+import com.example.user.graduationproject.Bjelasnica.Database.UserReport;
+import com.example.user.graduationproject.Bjelasnica.Database.UserReportDatabase;
 import com.example.user.graduationproject.Bjelasnica.Main;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
@@ -68,6 +71,7 @@ public class PopUp extends AppCompatActivity {
     private Database db;
     private  FirebaseUser user;
     private Upload uploads;
+    public static UserReportDatabase userReportDatabase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +127,10 @@ public class PopUp extends AppCompatActivity {
         ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsFromSpinner2);
         dropdown2.setAdapter(adapter1);
 
+
+        /*UserReportDatabase db = Room.databaseBuilder(getApplicationContext(),
+                UserReportDatabase.class, "report_table").build();*/
+        userReportDatabase = Room.databaseBuilder(getApplicationContext(), UserReportDatabase.class, "report_table").allowMainThreadQueries().build();
     }
 
     @Override
@@ -216,8 +224,21 @@ public class PopUp extends AppCompatActivity {
         return false;
     }
 
+    private void addDatainDb(String username, String commentBox, String image, String surface, String snow, String date){
+        UserReport userReport = new UserReport();
+        userReport.setUsername(username);
+        userReport.setCommentBox(commentBox);
+        userReport.setImage(image);
+        userReport.setSnow(snow);
+        userReport.setSurface(surface);
+        userReport.setDate(date);
+
+        PopUp.userReportDatabase.myDao().insertAll(userReport);
+        Toast.makeText(this, "Data is inserted into database!", Toast.LENGTH_SHORT).show();
+    }
+
     private void finalCheck(){
-        getDatabaseReference().addValueEventListener(new ValueEventListener() {
+        getDatabaseReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(checkDuplicateData(mEditText.getText().toString().toLowerCase(), dataSnapshot)){
@@ -227,7 +248,6 @@ public class PopUp extends AppCompatActivity {
                     uploadFile();
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -258,6 +278,11 @@ public class PopUp extends AppCompatActivity {
                                     dropdown2.getSelectedItem().toString(),
                                     date, getUserEmail()
                             );
+                            addDatainDb(getUsername(), mEditText.getText().toString(),
+                                    taskSnapshot.getDownloadUrl().toString(),
+                                    dropdown1.getSelectedItem().toString(),
+                                    dropdown2.getSelectedItem().toString(),
+                                    date);
                             String uploadId = mDatabaseRef.push().getKey();
                             mDatabaseRef.child(uploadId).setValue(upload);
                             finish();

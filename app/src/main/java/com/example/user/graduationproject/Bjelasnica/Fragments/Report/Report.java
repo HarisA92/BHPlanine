@@ -21,10 +21,14 @@ import com.example.user.graduationproject.Bjelasnica.Database.Database;
 import com.example.user.graduationproject.Bjelasnica.Database.ReportTable;
 import com.example.user.graduationproject.Bjelasnica.Adapters.DatabaseAdapter;
 import com.example.user.graduationproject.Bjelasnica.Adapters.ImageReportAdapter;
+import com.example.user.graduationproject.Bjelasnica.Database.UserReport;
+import com.example.user.graduationproject.Bjelasnica.Database.UserReportDatabase;
+import com.example.user.graduationproject.Bjelasnica.Main;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
 import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
+import com.firebase.client.core.Repo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,20 +42,17 @@ import java.util.List;
 public class Report extends Fragment{
 
 
-    private SQLiteDatabase sqLiteDatabase;
     private RecyclerView mRecyclerView;
     private RecyclerView recyclerView;
+    private List<UserReport> users = new ArrayList<>();
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report3, container, false);
         onReportClick(v);
         final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
-        Database database = new Database(getContext());
-        sqLiteDatabase = database.getWritableDatabase();
 
         InternetConnection connection = new InternetConnection();
-
         if(connection.getInternetConnection() == true){
             final List<Upload> mUploads = new ArrayList<>();
             final ImageReportAdapter mAdapter = new ImageReportAdapter(getContext(), mUploads);
@@ -64,12 +65,13 @@ public class Report extends Fragment{
         else{
             Toast.makeText(getActivity(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
             mProgressCircle.setVisibility(View.INVISIBLE);
-            final DatabaseAdapter databaseAdapter = new DatabaseAdapter(getContext(), getAllData());
+            final DatabaseAdapter databaseAdapter = new DatabaseAdapter(getContext(), users);
             recyclerView = v.findViewById(R.id.table_recycler_view);
             recyclerView.setLayoutManager(setUpLayoutManager());
             recyclerView.setAdapter(databaseAdapter);
             databaseAdapter.notifyDataSetChanged();
         }
+
         return v;
     }
 
@@ -104,48 +106,6 @@ public class Report extends Fragment{
         };
     }
 
-    public void addDatainDatabase(String name, String commentBox, String image, String snow, String surface){
-        Context context = getContext();
-        Database db = new Database(context);
-
-        if(!db.CheckIsInDBorNot(name, commentBox, image, snow, surface)){
-            boolean isInserted = db.insertDatainDB(name, commentBox,
-                    image,
-                    snow,
-                    surface);
-            if(isInserted == true)
-                Toast.makeText(getActivity(), "Data Inserted", Toast.LENGTH_SHORT).show();
-            else
-                Toast.makeText(getActivity(), "Data not Inserted", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(getActivity(), "Duplicate data", Toast.LENGTH_SHORT).show();
-
-        }
-
-    }
-
-    public Bitmap StringToBitMap(String encodedString){
-        try {
-            byte [] encodeByte=Base64.decode(encodedString, Base64.DEFAULT);
-            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        } catch(Exception e) {
-            e.getMessage();
-            return null;
-        }
-    }
-
-    public static byte[] getBytes(Bitmap bitmap) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
-        return stream.toByteArray();
-    }
-
-    public static Bitmap getImage(byte[] image) {
-        return BitmapFactory.decodeByteArray(image, 0, image.length);
-    }
-
     private DatabaseReference getDatabaseReference() {
         return FirebaseDatabase
                 .getInstance()
@@ -169,9 +129,27 @@ public class Report extends Fragment{
         return mLayoutManager;
     }
 
-    public Cursor getAllData(){
-        Cursor cursor = sqLiteDatabase.rawQuery(" SELECT * FROM " + ReportTable.UserTable.TABLE_NAME, null);
-        return cursor;
+    //ovo sam ostavio za svaki slucaj ako mi zatreba
+
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte=Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+    public static byte[] getBytes(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+        return stream.toByteArray();
+    }
+
+    public static Bitmap getImage(byte[] image) {
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
 }

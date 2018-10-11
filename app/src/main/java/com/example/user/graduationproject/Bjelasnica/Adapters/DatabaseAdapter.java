@@ -13,19 +13,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.user.graduationproject.Bjelasnica.Database.ReportTable;
+import com.example.user.graduationproject.Bjelasnica.Database.UserReport;
 import com.example.user.graduationproject.Bjelasnica.ZoomImageReport;
 import com.example.user.graduationproject.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class DatabaseAdapter extends RecyclerView.Adapter<DatabaseAdapter.TableViewHolder>{
     private Context context;
-    private Cursor cursor;
+    private List<UserReport> userReport;
     public static final String IMAGE_ADAPTER = "imageAdapter";
 
 
-    public DatabaseAdapter(Context mContext, Cursor mCursor){
+    public DatabaseAdapter(Context mContext, List<UserReport> mUserReport){
         context = mContext;
-        cursor = mCursor;
+        userReport = mUserReport;
     }
     @NonNull
     @Override
@@ -36,21 +39,10 @@ public class DatabaseAdapter extends RecyclerView.Adapter<DatabaseAdapter.TableV
 
     @Override
     public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
-        if(!cursor.moveToPosition(position)){
-            return;
-        }
 
-        String name = cursor.getString(cursor.getColumnIndex(ReportTable.UserTable.USERNAME));
-        String commentBox = cursor.getString(cursor.getColumnIndex(ReportTable.UserTable.COMMENTBOX));
-        final String image = cursor.getString(cursor.getColumnIndex(ReportTable.UserTable.IMAGE));
-        String snow = cursor.getString(cursor.getColumnIndex(ReportTable.UserTable.SNOW));
-        String surface = cursor.getString(cursor.getColumnIndex(ReportTable.UserTable.SURFACE));
-        String date = cursor.getString(cursor.getColumnIndex(ReportTable.UserTable.COLUMN_TIMESTAMP));
-
-        Uri uri = Uri.parse(image);
-        holder.username.setText(name);
-        holder.commentbox.setText(commentBox);
-        Picasso.with(context).load(uri).fit().centerCrop().into(holder.imageView);
+        holder.username.setText(userReport.get(position).getUsername());
+        holder.commentbox.setText(userReport.get(position).getCommentBox());
+        /*Picasso.with(context).load(uri).fit().centerCrop().into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,15 +50,15 @@ public class DatabaseAdapter extends RecyclerView.Adapter<DatabaseAdapter.TableV
                 intent.putExtra(IMAGE_ADAPTER, image);
                 context.startActivity(intent);
             }
-        });
-        holder.snow.setText(snow);
-        holder.surface.setText(surface);
-        //holder.date.setText(date);
+        });*/
+        holder.snow.setText(userReport.get(position).getSnow());
+        holder.surface.setText(userReport.get(position).getSurface());
+        holder.date.setText(userReport.get(position).getDate());
     }
 
     @Override
     public int getItemCount() {
-        return cursor.getCount();
+        return userReport.size();
     }
 
     public class TableViewHolder extends RecyclerView.ViewHolder{
