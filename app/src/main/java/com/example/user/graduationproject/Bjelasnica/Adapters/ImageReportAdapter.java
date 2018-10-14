@@ -21,7 +21,6 @@ public class ImageReportAdapter extends RecyclerView.Adapter<ImageReportAdapter.
     public static final String IMAGE_ADAPTER = "imageAdapter";
     private final Context mContext;
     private final List<Upload> mUploads;
-    private String username;
 
     public ImageReportAdapter(final Context context, final List<Upload> uploads) {
         mContext = context;

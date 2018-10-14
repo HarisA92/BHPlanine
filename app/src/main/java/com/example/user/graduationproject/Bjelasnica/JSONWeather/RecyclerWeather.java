@@ -114,7 +114,7 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
             super(itemView);
             description = (TextView) itemView.findViewById(R.id.description);
             temperature = (TextView) itemView.findViewById(R.id.temperature);
-            time = (TextView) itemView.findViewById(R.id.time_TextView);
+            time = (TextView) itemView.findViewById(R.id.dateAndTime);
             weather_icon = (TextView) itemView.findViewById(R.id.weather_icon_text);
         }
     }

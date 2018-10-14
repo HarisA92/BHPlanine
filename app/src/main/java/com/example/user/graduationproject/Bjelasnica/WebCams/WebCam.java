@@ -10,11 +10,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.MediaController;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.example.user.graduationproject.Bjelasnica.Adapters.ImageReportAdapter;
+import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
+import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
+import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
+import com.example.user.graduationproject.Bjelasnica.Utils.WebCamLinks;
 import com.example.user.graduationproject.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class WebCam extends AppCompatActivity {
+    private InternetConnection internetConnection = new InternetConnection();
     ProgressDialog pDialog;
     VideoView videoview;
     String videoURL = "http_for_security_reason_I_have_to_delete_part_of_this_link!Jahorina%2FJahorina_Hotel_Lavina.stream_720p%2Fplaylist.m3u8";
@@ -26,12 +41,30 @@ public class WebCam extends AppCompatActivity {
         onCreate();
         fullScreen();
         videoview = (VideoView) findViewById(R.id.video);
+        if(internetConnection != null){
+
+            cam();
+           DatabaseReference reference = (DatabaseReference) getDatabaseReference().addValueEventListener(valueEventListener());
+
+        }
+        else{
+            Toast.makeText(this, "Please connect to the internet!", Toast.LENGTH_SHORT).show();
+        }
+
+        Toast.makeText(this, "RECI NESTO", Toast.LENGTH_SHORT).show();
+        int a = 0;
+
+
+
+    }
+
+    private void cam(){
+
         Uri uri = Uri.parse(videoURL);
         pDialog = new ProgressDialog(this);
         pDialog.setTitle("Jahorina, Hotel Lavina");
         pDialog.setMessage("Please wait...");
         pDialog.show();
-
         try {
             MediaController mediacontroller = new MediaController(this);
             mediacontroller.setAnchorView(videoview);
@@ -54,7 +87,35 @@ public class WebCam extends AppCompatActivity {
                 videoview.start();
             }
         });
+    }
+    private ValueEventListener valueEventListener() {
+        return new ValueEventListener() {
 
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                    //WebCamLinks webCamLinks = postSnapshot.getValue(WebCamLinks.class);
+                    WebCamLinks webCamLinks = postSnapshot.getValue(WebCamLinks.class);
+                    String webcam = webCamLinks.getJahorinaLavina();
+                    Toast.makeText(WebCam.this, "ovo je: " + webcam, Toast.LENGTH_SHORT).show();
+
+                    int a = 0;
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+    }
+
+    private DatabaseReference getDatabaseReference() {
+        return FirebaseDatabase
+                .getInstance()
+                .getReference(SkiResortHolder.getSkiResort().getLiveStream().getValue());
     }
 
     public void onCreate(){

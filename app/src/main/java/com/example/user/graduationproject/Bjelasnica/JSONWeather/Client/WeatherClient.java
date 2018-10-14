@@ -1,13 +1,10 @@
-package com.example.user.graduationproject.Bjelasnica.JSONWeather.client;
+package com.example.user.graduationproject.Bjelasnica.JSONWeather.Client;
 
 import com.example.user.graduationproject.Bjelasnica.JSONWeather.Model.WeatherResult;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Query;
 
 public class WeatherClient {
     private static final String BASE_URL = "http://api.openweathermap.org";

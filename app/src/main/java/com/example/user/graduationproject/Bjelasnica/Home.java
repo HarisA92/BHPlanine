@@ -17,22 +17,18 @@ import android.widget.Toast;
 import com.example.user.graduationproject.Bjelasnica.Utils.Mountain;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResort;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
+import com.example.user.graduationproject.Bjelasnica.Utils.LiveStream;
 import com.example.user.graduationproject.R;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String SARAJEVO = "Sarajevo";
     private static final String JAHORINA = "Jahorina";
+    private static final String JAHORINAWEBCAMS = "Bjelasnica";
+    private static final String BJELASNICAWEBCAMS = "Jahorina";
     private static String BJELASNICA_TEXT = "Bjelašnica je planina u centralnom dijelu Bosne i Hercegovine, pripada dinarskom planinskom sistemu. Susjedne planine su joj Igman sa sjeverne strane, koji se praktično naslanja na Bjelašnicu, te Treskavica i Visočica. Bjelašnica je prekrivena snijegom od novembra do maja, a nekada i u ljetnim mjesecima, i otud dolazi objašnjenje za njeno ime.";
     private static String JAHORINA_TEXT = "Jahorina je planina u Bosni i Hercegovini koja pripada Dinarskom planinskom sustavu. Najviši vrh je Ogorjelica sa 1.916 m nadmorske visine. Ljeti je prekrivena gustom zelenom travom, a zimi i do 3 m visokim snijegom. Izvanredna konfiguracija terena, obilje vrlo kvalitetnog snijega, pogodna klima, 20 kilometara staza za alpske discipline kao i blage padine (Rajska dolina) uvrstile su ovu planinu među najljepše i najpoznatije ski-centre.";
     private ActionBarDrawerToggle mToggle;
@@ -50,7 +46,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, Main.class);
-                SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO));
+                SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, LiveStream.BJELASNICA_WEB_CAMS));
                 startActivity(i);
             }
         });
@@ -59,7 +55,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, Main.class);
-                SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA));
+                SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA, LiveStream.JAHORINA_WEB_CAMS));
                 startActivity(i);
             }
         });

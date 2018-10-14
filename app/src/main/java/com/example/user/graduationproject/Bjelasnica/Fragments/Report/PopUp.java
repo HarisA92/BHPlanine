@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,9 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.graduationproject.Bjelasnica.Database.Database;
-import com.example.user.graduationproject.Bjelasnica.Database.UserReport;
-import com.example.user.graduationproject.Bjelasnica.Database.UserReportDatabase;
+import com.bumptech.glide.Glide;
 import com.example.user.graduationproject.Bjelasnica.Main;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
@@ -46,6 +45,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -68,17 +68,15 @@ public class PopUp extends AppCompatActivity {
     private StorageTask mUploadTask;
     private Button mButtonChooseImage;
     private Button mButtonUpload;
-    private Database db;
     private  FirebaseUser user;
-    private Upload uploads;
-    public static UserReportDatabase userReportDatabase;
+    //private Upload uploads;
+    //public static UserReportDatabase userReportDatabase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup);
         onCreate();
-        db = new Database(this);
         mButtonChooseImage = findViewById(R.id.AddPhoto);
         mButtonUpload = findViewById(R.id.Submit);
         mUsername = findViewById(R.id.username);
@@ -128,9 +126,7 @@ public class PopUp extends AppCompatActivity {
         dropdown2.setAdapter(adapter1);
 
 
-        /*UserReportDatabase db = Room.databaseBuilder(getApplicationContext(),
-                UserReportDatabase.class, "report_table").build();*/
-        userReportDatabase = Room.databaseBuilder(getApplicationContext(), UserReportDatabase.class, "report_table").allowMainThreadQueries().build();
+
     }
 
     @Override
@@ -179,7 +175,7 @@ public class PopUp extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
-            Picasso.with(this).load(mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).into(mImageView);
+                Picasso.with(this).load(mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).into(mImageView);
         }
     }
 
@@ -224,19 +220,6 @@ public class PopUp extends AppCompatActivity {
         return false;
     }
 
-    private void addDatainDb(String username, String commentBox, String image, String surface, String snow, String date){
-        UserReport userReport = new UserReport();
-        userReport.setUsername(username);
-        userReport.setCommentBox(commentBox);
-        userReport.setImage(image);
-        userReport.setSnow(snow);
-        userReport.setSurface(surface);
-        userReport.setDate(date);
-
-        PopUp.userReportDatabase.myDao().insertAll(userReport);
-        Toast.makeText(this, "Data is inserted into database!", Toast.LENGTH_SHORT).show();
-    }
-
     private void finalCheck(){
         getDatabaseReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -278,11 +261,11 @@ public class PopUp extends AppCompatActivity {
                                     dropdown2.getSelectedItem().toString(),
                                     date, getUserEmail()
                             );
-                            addDatainDb(getUsername(), mEditText.getText().toString(),
+                            /*addDatainDb(getUsername(), mEditText.getText().toString(),
                                     taskSnapshot.getDownloadUrl().toString(),
                                     dropdown1.getSelectedItem().toString(),
                                     dropdown2.getSelectedItem().toString(),
-                                    date);
+                                    date);*/
                             String uploadId = mDatabaseRef.push().getKey();
                             mDatabaseRef.child(uploadId).setValue(upload);
                             finish();
