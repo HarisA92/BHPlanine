@@ -59,7 +59,6 @@ public class WebCam extends AppCompatActivity {
     }
 
     private void cam(){
-
         Uri uri = Uri.parse(videoURL);
         pDialog = new ProgressDialog(this);
         pDialog.setTitle("Jahorina, Hotel Lavina");
