@@ -50,7 +50,6 @@ public class Weather extends Fragment {
     private List<WeatherDay> days;
     private List<WeatherDay> day;
     private Typeface weatherFont;
-
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
 
