@@ -2,17 +2,14 @@ package com.example.user.graduationproject.Bjelasnica.Firebase;
 
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseHolder {
 
-    public DatabaseReference getDatabaseReferenceForWebcam() {
-        return com.google.firebase.database.FirebaseDatabase
-                .getInstance()
-                .getReference(SkiResortHolder.getSkiResort().getLiveStream().getValue());
-    }
+
 
     public DatabaseReference getDatabaseReferenceForReport() {
-        return com.google.firebase.database.FirebaseDatabase
+        return FirebaseDatabase
                 .getInstance()
                 .getReference(SkiResortHolder.getSkiResort().getMountain().getValue());
     }

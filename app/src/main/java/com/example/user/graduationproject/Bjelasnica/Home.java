@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.user.graduationproject.Bjelasnica.Utils.Mountain;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResort;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.LiveStream;
 import com.example.user.graduationproject.R;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
@@ -29,6 +28,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private static final String JAHORINA = "Jahorina";
     private static String BJELASNICA_TEXT = "Bjelašnica je planina u centralnom dijelu Bosne i Hercegovine, pripada dinarskom planinskom sistemu. Susjedne planine su joj Igman sa sjeverne strane, koji se praktično naslanja na Bjelašnicu, te Treskavica i Visočica. Bjelašnica je prekrivena snijegom od novembra do maja, a nekada i u ljetnim mjesecima, i otud dolazi objašnjenje za njeno ime.";
     private static String JAHORINA_TEXT = "Jahorina je planina u Bosni i Hercegovini koja pripada Dinarskom planinskom sustavu. Najviši vrh je Ogorjelica sa 1.916 m nadmorske visine. Ljeti je prekrivena gustom zelenom travom, a zimi i do 3 m visokim snijegom. Izvanredna konfiguracija terena, obilje vrlo kvalitetnog snijega, pogodna klima, 20 kilometara staza za alpske discipline kao i blage padine (Rajska dolina) uvrstile su ovu planinu među najljepše i najpoznatije ski-centre.";
+    private static String BJELASNICA_WEB_CAMS = "Bjelasnica_livestream";
+    private static String JAHORINA_WEB_CAMS = "Jahorina_livestream";
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout mDrawerLayout;
     private WelcomeScreen welcomeScreen;
@@ -44,7 +45,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, Main.class);
-                SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, LiveStream.BJELASNICA_WEB_CAMS));
+                SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, BJELASNICA_WEB_CAMS));
                 startActivity(i);
             }
         });
@@ -53,7 +54,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, Main.class);
-                SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA, LiveStream.JAHORINA_WEB_CAMS));
+                SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA, JAHORINA_WEB_CAMS));
                 startActivity(i);
             }
         });

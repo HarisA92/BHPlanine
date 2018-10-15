@@ -45,7 +45,6 @@ public class WebCam extends AppCompatActivity {
         videoview = (VideoView) findViewById(R.id.video);
         if(internetConnection != null){
             cam();
-            firebaseHolder.getDatabaseReferenceForWebcam();
         }
         else{
             Toast.makeText(this, "Please connect to the internet!", Toast.LENGTH_SHORT).show();
@@ -84,29 +83,7 @@ public class WebCam extends AppCompatActivity {
             }
         });
     }
-    private ValueEventListener valueEventListener() {
-        return new ValueEventListener() {
 
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                    //WebCamLinks webCamLinks = postSnapshot.getValue(WebCamLinks.class);
-                    WebCamLinks webCamLinks = postSnapshot.getValue(WebCamLinks.class);
-                    String webcam = webCamLinks.getJahorinaLavina();
-                    Toast.makeText(WebCam.this, "ovo je: " + webcam, Toast.LENGTH_SHORT).show();
-
-                    int a = 0;
-
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-    }
 
 
 

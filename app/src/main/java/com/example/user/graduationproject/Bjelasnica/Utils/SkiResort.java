@@ -4,7 +4,7 @@ public class SkiResort {
 
     private final Mountain mountain;
     private final String city;
-    private final LiveStream liveStream;
+    private final String liveStream;
 
     public Mountain getMountain() {
         return mountain;
@@ -14,11 +14,11 @@ public class SkiResort {
         return city;
     }
 
-    public LiveStream getLiveStream(){
+    public String getLiveStream(){
         return liveStream;
     }
 
-    public SkiResort(Mountain mountain, String city, LiveStream liveStream) {
+    public SkiResort(Mountain mountain, String city, String liveStream) {
         this.mountain = mountain;
         this.city = city;
         this.liveStream = liveStream;

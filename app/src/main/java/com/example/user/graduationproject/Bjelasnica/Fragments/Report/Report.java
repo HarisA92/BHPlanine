@@ -103,8 +103,11 @@ public class Report extends Fragment{
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     final Upload upload = postSnapshot.getValue(Upload.class);
                     mUploads.add(upload);
+                    try{
+                        saveUserReportPreferences(mUploads);
+                    }catch (Exception e){
 
-                    saveUserReportPreferences(mUploads);
+                    }
 
                 }
                 mAdapter.notifyDataSetChanged();

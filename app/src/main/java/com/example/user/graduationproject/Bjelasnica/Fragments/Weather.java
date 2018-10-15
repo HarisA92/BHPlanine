@@ -46,7 +46,6 @@ public class Weather extends Fragment {
     private RecyclerWeather recyclerWeather;
     private InternetConnection connection = new InternetConnection();
     private UserViewModel userViewModel;
-    private final DatabaseAdapter databaseAdapter = new DatabaseAdapter();
     private List<WeatherDay> days;
     private List<WeatherDay> day;
     private Typeface weatherFont;
@@ -79,7 +78,6 @@ public class Weather extends Fragment {
                             buildRecyclerView(v);
                             saveUserReportPreferences(day);
                         }
-
                         @Override
                         public void onFailure(final Call<WeatherResult> call, final Throwable t) {}
                     });
@@ -125,13 +123,4 @@ public class Weather extends Fragment {
         return String.format(LOCATION_AND_COUNTRY_CODE, SkiResortHolder.getSkiResort().getCity());
     }
 
-    private void userViewModel(){
-        userViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
-        userViewModel.getAllUserReports().observe(getActivity(), new Observer<List<WeatherTable>>() {
-            @Override
-            public void onChanged(@Nullable List<WeatherTable> weatherTables) {
-                databaseAdapter.setUserReport(weatherTables);
-            }
-        });
-    }
 }
