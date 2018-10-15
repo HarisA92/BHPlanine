@@ -27,8 +27,6 @@ import com.google.firebase.auth.FirebaseUser;
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String SARAJEVO = "Sarajevo";
     private static final String JAHORINA = "Jahorina";
-    private static final String JAHORINAWEBCAMS = "Bjelasnica";
-    private static final String BJELASNICAWEBCAMS = "Jahorina";
     private static String BJELASNICA_TEXT = "Bjelašnica je planina u centralnom dijelu Bosne i Hercegovine, pripada dinarskom planinskom sistemu. Susjedne planine su joj Igman sa sjeverne strane, koji se praktično naslanja na Bjelašnicu, te Treskavica i Visočica. Bjelašnica je prekrivena snijegom od novembra do maja, a nekada i u ljetnim mjesecima, i otud dolazi objašnjenje za njeno ime.";
     private static String JAHORINA_TEXT = "Jahorina je planina u Bosni i Hercegovini koja pripada Dinarskom planinskom sustavu. Najviši vrh je Ogorjelica sa 1.916 m nadmorske visine. Ljeti je prekrivena gustom zelenom travom, a zimi i do 3 m visokim snijegom. Izvanredna konfiguracija terena, obilje vrlo kvalitetnog snijega, pogodna klima, 20 kilometara staza za alpske discipline kao i blage padine (Rajska dolina) uvrstile su ovu planinu među najljepše i najpoznatije ski-centre.";
     private ActionBarDrawerToggle mToggle;

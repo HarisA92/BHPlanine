@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
-import com.example.user.graduationproject.Bjelasnica.Adapters.DatabaseAdapter;
 import com.example.user.graduationproject.Bjelasnica.Adapters.ImageReportAdapter;
+import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
 import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
@@ -34,13 +32,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Report extends Fragment{
-
+    private FirebaseHolder firebaseHolder = new FirebaseHolder();
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private ImageReportAdapter mAdapter;
@@ -54,7 +51,7 @@ public class Report extends Fragment{
         final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
         if(connection.getInternetConnection() == true){
             buildRecyclerView(v);
-            getDatabaseReference().addValueEventListener(valueEventListener(mAdapter, mProgressCircle, mUploads));
+            firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueEventListener(mAdapter, mProgressCircle, mUploads));
         }
         else{
             Toast.makeText(getActivity(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
@@ -120,11 +117,7 @@ public class Report extends Fragment{
         };
     }
 
-    private DatabaseReference getDatabaseReference() {
-        return FirebaseDatabase
-                .getInstance()
-                .getReference(SkiResortHolder.getSkiResort().getMountain().getValue());
-    }
+
 
     private void onReportClick(View v) {
         v.findViewById(R.id.reportBtn).setOnClickListener(new View.OnClickListener() {

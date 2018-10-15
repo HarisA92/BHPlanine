@@ -15,6 +15,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.ImageReportAdapter;
+import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class WebCam extends AppCompatActivity {
+    private FirebaseHolder firebaseHolder = new FirebaseHolder();
     private InternetConnection internetConnection = new InternetConnection();
     ProgressDialog pDialog;
     VideoView videoview;
@@ -42,19 +44,14 @@ public class WebCam extends AppCompatActivity {
         fullScreen();
         videoview = (VideoView) findViewById(R.id.video);
         if(internetConnection != null){
-
             cam();
-           DatabaseReference reference = (DatabaseReference) getDatabaseReference().addValueEventListener(valueEventListener());
-
+            firebaseHolder.getDatabaseReferenceForWebcam();
         }
         else{
             Toast.makeText(this, "Please connect to the internet!", Toast.LENGTH_SHORT).show();
         }
-
         Toast.makeText(this, "RECI NESTO", Toast.LENGTH_SHORT).show();
         int a = 0;
-
-
 
     }
 
@@ -111,11 +108,7 @@ public class WebCam extends AppCompatActivity {
         };
     }
 
-    private DatabaseReference getDatabaseReference() {
-        return FirebaseDatabase
-                .getInstance()
-                .getReference(SkiResortHolder.getSkiResort().getLiveStream().getValue());
-    }
+
 
     public void onCreate(){
         ActionBar actionBar = getSupportActionBar();
