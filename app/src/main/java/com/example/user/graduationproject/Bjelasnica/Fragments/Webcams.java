@@ -62,9 +62,6 @@ public class Webcams extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 webLinks.clear();
                 WebCamLinks webCamLinks = dataSnapshot.getValue(WebCamLinks.class);
-                //Toast.makeText(getActivity(), "ovo je: " + webCamLinks.getBjelasnica_han(), Toast.LENGTH_SHORT).show();
-                int a = 0;
-
             }
 
             @Override
