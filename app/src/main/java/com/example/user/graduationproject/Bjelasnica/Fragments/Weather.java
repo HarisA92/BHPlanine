@@ -76,7 +76,7 @@ public class Weather extends Fragment {
                             day.add(cetvrtiDan);
                             day.add(petiDan);
                             buildRecyclerView(v);
-                            saveUserReportPreferences(day);
+                           // saveUserReportPreferences(day);
                         }
                         @Override
                         public void onFailure(final Call<WeatherResult> call, final Throwable t) {}
@@ -84,8 +84,11 @@ public class Weather extends Fragment {
         }
         else{
             Toast.makeText(getActivity(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
-            loadUserReportPreferences();
-            buildRecyclerView(v);
+            try{
+                loadUserReportPreferences();
+                buildRecyclerView(v);
+            }catch(Exception e){ }
+
         }
 
         return v;

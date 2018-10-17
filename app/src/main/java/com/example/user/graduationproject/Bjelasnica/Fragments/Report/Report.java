@@ -55,8 +55,11 @@ public class Report extends Fragment{
         }
         else{
             Toast.makeText(getActivity(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
-            loadUserReportPreferences();
-            buildRecyclerView(v);
+            try{
+                loadUserReportPreferences();
+                buildRecyclerView(v);
+            }catch (java.lang.NullPointerException exception){
+            }
             mProgressCircle.setVisibility(View.INVISIBLE);
         }
         return v;
@@ -69,7 +72,6 @@ public class Report extends Fragment{
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
-
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 

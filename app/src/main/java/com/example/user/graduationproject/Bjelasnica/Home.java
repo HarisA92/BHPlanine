@@ -30,6 +30,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private static String JAHORINA_TEXT = "Jahorina je planina u Bosni i Hercegovini koja pripada Dinarskom planinskom sustavu. Najviši vrh je Ogorjelica sa 1.916 m nadmorske visine. Ljeti je prekrivena gustom zelenom travom, a zimi i do 3 m visokim snijegom. Izvanredna konfiguracija terena, obilje vrlo kvalitetnog snijega, pogodna klima, 20 kilometara staza za alpske discipline kao i blage padine (Rajska dolina) uvrstile su ovu planinu među najljepše i najpoznatije ski-centre.";
     private static String BJELASNICA_WEB_CAMS = "Bjelasnica_livestream";
     private static String JAHORINA_WEB_CAMS = "Jahorina_livestream";
+    private static String BJELASNICA_CJENOVNIK = "Bjelasnica_cjenovnik";
+    private static String JAHORINA_CJENOVNIK = "Jahorina_cjenovnik";
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout mDrawerLayout;
     private WelcomeScreen welcomeScreen;
@@ -45,7 +47,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, Main.class);
-                SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, BJELASNICA_WEB_CAMS));
+                SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, BJELASNICA_WEB_CAMS, BJELASNICA_CJENOVNIK));
                 startActivity(i);
             }
         });
@@ -54,7 +56,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Home.this, Main.class);
-                SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA, JAHORINA_WEB_CAMS));
+                SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA, JAHORINA_WEB_CAMS, JAHORINA_CJENOVNIK));
                 startActivity(i);
             }
         });

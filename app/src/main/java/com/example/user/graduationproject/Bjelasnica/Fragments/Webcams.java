@@ -62,7 +62,7 @@ public class Webcams extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 webLinks.clear();
                 WebCamLinks webCamLinks = dataSnapshot.getValue(WebCamLinks.class);
-                
+
             }
 
             @Override

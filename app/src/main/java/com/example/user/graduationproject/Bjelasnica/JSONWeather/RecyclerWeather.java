@@ -101,7 +101,10 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
 
     @Override
     public int getItemCount() {
-        return weatherDays.size();
+        try{
+            return weatherDays.size();
+        }catch (java.lang.NullPointerException exception){ }
+        return 0;
     }
 
     public class WeatherViewHolder extends RecyclerView.ViewHolder {

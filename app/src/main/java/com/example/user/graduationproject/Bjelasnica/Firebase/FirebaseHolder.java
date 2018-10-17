@@ -6,7 +6,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseHolder {
 
-
+    public DatabaseReference getDatabaseReferenceForTicketPrice(){
+        return FirebaseDatabase.getInstance().getReference(SkiResortHolder.getSkiResort().getTicketPriceList());
+    }
 
     public DatabaseReference getDatabaseReferenceForReport() {
         return FirebaseDatabase
