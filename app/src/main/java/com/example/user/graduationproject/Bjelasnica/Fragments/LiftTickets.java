@@ -22,6 +22,7 @@ import com.example.user.graduationproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,40 +40,31 @@ public class LiftTickets extends Fragment {
     private FirebaseHolder firebaseHolder = new FirebaseHolder();
     private DatabaseReference firebaseDatabase;
     private ArrayAdapter arrayAdapter;
-    private ArrayList<String> list = new ArrayList<>();
-    private ListView listView;
+    private ArrayAdapter arrayAdapter1;
+    private ArrayList<String> dayList = new ArrayList<>();
+    private ArrayList<String> priceList = new ArrayList<>();
+    private ListView listDays;
+    private ListView listPrice;
     private SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lift_tickets, container, false);
-        listView = v.findViewById(R.id.list_viewTicket);
-
+        listDays = v.findViewById(R.id.list_viewTicket);
+        listPrice = v.findViewById(R.id.list_viewTicket1);
         if(internetConnection.getInternetConnection() == true){
             buildArrayAdapter();
-            firebaseHolder.getDatabaseReferenceForTicketPrice().addChildEventListener(new com.google.firebase.database.ChildEventListener() {
+            buildArrayAdapter1();
+            firebaseHolder.getDatabaseReferenceForTicketPrice().addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    String value = dataSnapshot.getValue(String.class);
-                    list.add(value);
-                    arrayAdapter.notifyDataSetChanged();
-                    //saveUserReportPreferences(list);
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
+                        String days = postSnapshot.child("Bjelasnica_days").getValue(String.class);
+                        dayList.add(days);
+                    }
+                    //arrayAdapter.notifyDataSetChanged();
+                    int a = 0;
                 }
 
                 @Override
@@ -101,8 +93,12 @@ public class LiftTickets extends Fragment {
         Set<String> set = sharedPreferences.getStringSet("key", null);
     }
 
+    private void buildArrayAdapter1(){
+        arrayAdapter1 = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, priceList);
+        listPrice.setAdapter(arrayAdapter1);
+    }
     private void buildArrayAdapter(){
-        arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, list);
-        listView.setAdapter(arrayAdapter);
+        arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, dayList);
+        listDays.setAdapter(arrayAdapter);
     }
 }
