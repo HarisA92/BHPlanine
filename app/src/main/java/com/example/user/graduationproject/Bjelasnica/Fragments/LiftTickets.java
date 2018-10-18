@@ -19,6 +19,7 @@ import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
 import com.example.user.graduationproject.R;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,9 +43,7 @@ public class LiftTickets extends Fragment {
     private ArrayAdapter arrayAdapter;
     private ArrayAdapter arrayAdapter1;
     private ArrayList<String> dayList = new ArrayList<>();
-    private ArrayList<String> priceList = new ArrayList<>();
     private ListView listDays;
-    private ListView listPrice;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -52,19 +51,31 @@ public class LiftTickets extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lift_tickets, container, false);
         listDays = v.findViewById(R.id.list_viewTicket);
-        listPrice = v.findViewById(R.id.list_viewTicket1);
+
         if(internetConnection.getInternetConnection() == true){
             buildArrayAdapter();
-            buildArrayAdapter1();
-            firebaseHolder.getDatabaseReferenceForTicketPrice().addValueEventListener(new ValueEventListener() {
+
+            firebaseHolder.getDatabaseReferenceForTicketPrice().addChildEventListener(new ChildEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
-                        String days = postSnapshot.child("Bjelasnica_days").getValue(String.class);
-                        dayList.add(days);
-                    }
-                    //arrayAdapter.notifyDataSetChanged();
-                    int a = 0;
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    String value = dataSnapshot.getValue(String.class);
+                    dayList.add(value);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
                 }
 
                 @Override
@@ -93,10 +104,6 @@ public class LiftTickets extends Fragment {
         Set<String> set = sharedPreferences.getStringSet("key", null);
     }
 
-    private void buildArrayAdapter1(){
-        arrayAdapter1 = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, priceList);
-        listPrice.setAdapter(arrayAdapter1);
-    }
     private void buildArrayAdapter(){
         arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, dayList);
         listDays.setAdapter(arrayAdapter);
