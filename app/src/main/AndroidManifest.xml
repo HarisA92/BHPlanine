@@ -28,11 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Bjelasnica.Home" />
-        <activity android:name=".Bjelasnica.Main" />
+        <activity android:name=".Bjelasnica.Home"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Bjelasnica.Main"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Bjelasnica.Fragments.Report.PopUp" />
-        <activity android:name=".Bjelasnica.PopUpWindows.NewSurface" android:theme="@style/AppTheme.PopUp" />
-        <activity android:name=".Bjelasnica.PopUpWindows.NewSnow" android:theme="@style/AppTheme.PopUp" />
         <activity android:name=".Bjelasnica.ViewPager.ImagePopUp" />
         <activity android:name=".Bjelasnica.ZoomImageReport" />
         <activity android:name=".Bjelasnica.WebCams.WebCam" android:screenOrientation="landscape" />

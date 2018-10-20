@@ -261,11 +261,6 @@ public class PopUp extends AppCompatActivity {
                                     dropdown2.getSelectedItem().toString(),
                                     date, getUserEmail()
                             );
-                            /*addDatainDb(getUsername(), mEditText.getText().toString(),
-                                    taskSnapshot.getDownloadUrl().toString(),
-                                    dropdown1.getSelectedItem().toString(),
-                                    dropdown2.getSelectedItem().toString(),
-                                    date);*/
                             String uploadId = mDatabaseRef.push().getKey();
                             mDatabaseRef.child(uploadId).setValue(upload);
                             finish();

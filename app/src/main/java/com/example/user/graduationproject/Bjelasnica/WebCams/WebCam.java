@@ -32,10 +32,9 @@ import java.util.List;
 public class WebCam extends AppCompatActivity {
     private FirebaseHolder firebaseHolder = new FirebaseHolder();
     private InternetConnection internetConnection = new InternetConnection();
-    ProgressDialog pDialog;
-    VideoView videoview;
-    String videoURL = "http_for_security_reason_I_have_to_delete_part_of_this_link!Jahorina%2FJahorina_Hotel_Lavina.stream_720p%2Fplaylist.m3u8";
-
+    private ProgressDialog pDialog;
+    private VideoView videoview;
+    private String bundle_url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,19 +42,12 @@ public class WebCam extends AppCompatActivity {
         onCreate();
         fullScreen();
         videoview = (VideoView) findViewById(R.id.video);
-        if(internetConnection != null){
-            cam();
-        }
-        else{
-            Toast.makeText(this, "Please connect to the internet!", Toast.LENGTH_SHORT).show();
-        }
-        Toast.makeText(this, "RECI NESTO", Toast.LENGTH_SHORT).show();
-        int a = 0;
-
+        Bundle extras = getIntent().getExtras();
+        bundle_url = extras.getString("URL_LINK");
+        cam(bundle_url);
     }
 
-    private void cam(){
-        Uri uri = Uri.parse(videoURL);
+    private void cam(String URL){
         pDialog = new ProgressDialog(this);
         pDialog.setTitle("Jahorina, Hotel Lavina");
         pDialog.setMessage("Please wait...");
@@ -64,7 +56,7 @@ public class WebCam extends AppCompatActivity {
             MediaController mediacontroller = new MediaController(this);
             mediacontroller.setAnchorView(videoview);
 
-            Uri video = Uri.parse(videoURL);
+            Uri video = Uri.parse(URL);
             videoview.setMediaController(mediacontroller);
             videoview.setVideoURI(video);
 
@@ -83,9 +75,6 @@ public class WebCam extends AppCompatActivity {
             }
         });
     }
-
-
-
 
     public void onCreate(){
         ActionBar actionBar = getSupportActionBar();

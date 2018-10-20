@@ -1,7 +1,9 @@
 package com.example.user.graduationproject.Bjelasnica.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
@@ -26,12 +29,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.zxing.common.StringUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 import static com.google.firebase.database.FirebaseDatabase.getInstance;
 
@@ -51,6 +56,14 @@ public class LiftTickets extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lift_tickets, container, false);
         listDays = v.findViewById(R.id.list_viewTicket);
+        TextView napomena = v.findViewById(R.id.napomena_lift_ticket);
+        napomena.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://www.oc-jahorina.com/en/"));
+                startActivity(viewIntent);
+            }
+        });
 
         if(internetConnection.getInternetConnection() == true){
             buildArrayAdapter();
@@ -90,6 +103,7 @@ public class LiftTickets extends Fragment {
         }
         return v;
     }
+
 
     private void saveUserReportPreferences(ArrayList<String> arrayList){
         sharedPreferences = getActivity().getSharedPreferences("ticket", Context.MODE_PRIVATE);

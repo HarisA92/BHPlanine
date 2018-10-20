@@ -3,6 +3,7 @@ package com.example.user.graduationproject.Bjelasnica.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,19 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.user.graduationproject.Bjelasnica.ViewPager.ImagePopUp;
 import com.example.user.graduationproject.Bjelasnica.Utils.GalleryImageHolder;
 import com.example.user.graduationproject.R;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
     private static final String POSITION = "position";
 
-    private final List<GalleryImageHolder> list;
+    private final ArrayList<String> list;
     private final Context context;
 
-    public GalleryAdapter(final List<GalleryImageHolder> list, final Context context) {
+    public GalleryAdapter(final ArrayList<String> list, final Context context) {
         this.list = list;
         this.context = context;
     }
@@ -36,17 +40,19 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        final int adapterPosition = holder.getAdapterPosition();
-        holder.imageView.setImageResource(list.get(adapterPosition).getImageId());
+        //holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        Picasso.with(context).load(list.get(position)).centerCrop().resize(1280, 720).into(holder.imageView);
+        /*final int adapterPosition = holder.getAdapterPosition();
+        holder.imageView.setImageResource(list.get(adapterPosition).getImageId());*/
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), ImagePopUp.class);
-                intent.putExtra(POSITION, adapterPosition);
+                intent.putExtra(POSITION, list.get(position));
                 v.getContext().startActivity(intent);
             }
         });
+
     }
 
     @Override

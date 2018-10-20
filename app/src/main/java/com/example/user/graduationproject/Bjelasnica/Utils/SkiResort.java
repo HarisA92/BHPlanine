@@ -6,6 +6,11 @@ public class SkiResort {
     private final String city;
     private final String liveStream;
     private final String ticketPrice;
+    private final String gallery;
+
+    public String getGallery() {
+        return gallery;
+    }
 
     public Mountain getMountain() {
         return mountain;
@@ -23,10 +28,11 @@ public class SkiResort {
         return ticketPrice;
     }
 
-    public SkiResort(Mountain mountain, String city, String liveStream, String ticketPrice) {
+    public SkiResort(Mountain mountain, String city, String liveStream, String ticketPrice, String gallery) {
         this.mountain = mountain;
         this.city = city;
         this.liveStream = liveStream;
         this.ticketPrice = ticketPrice;
+        this.gallery = gallery;
     }
 }

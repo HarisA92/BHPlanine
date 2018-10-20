@@ -1,17 +1,19 @@
 package com.example.user.graduationproject.Bjelasnica.Utils;
 
 public class GalleryImageHolder {
-    private final int imageId;
+    private String imageId;
 
-    public static GalleryImageHolder of(final int imageId) {
-        return new GalleryImageHolder(imageId);
-    }
-
-    private GalleryImageHolder(int imageId) {
+    public GalleryImageHolder(String imageId) {
         this.imageId = imageId;
     }
 
-    public int getImageId() {
+    public String getImageId() {
         return imageId;
     }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
+
+
 }
