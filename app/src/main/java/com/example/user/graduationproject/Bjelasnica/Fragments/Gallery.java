@@ -89,7 +89,6 @@ public class Gallery extends Fragment {
         else{
             Toast.makeText(getActivity(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
         }
-        int a = 0;
         return v;
     }
 

@@ -75,8 +75,10 @@ public class Weather extends Fragment {
                             day.add(treciDan);
                             day.add(cetvrtiDan);
                             day.add(petiDan);
-                            buildRecyclerView(v);
-                            saveUserReportPreferences(day);
+                            try{
+                                buildRecyclerView(v);
+                                saveUserReportPreferences(day);
+                            }catch(Exception e){ }
                         }
                         @Override
                         public void onFailure(final Call<WeatherResult> call, final Throwable t) {}
