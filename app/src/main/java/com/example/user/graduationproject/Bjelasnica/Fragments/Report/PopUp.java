@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +45,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -60,7 +62,6 @@ public class PopUp extends AppCompatActivity {
     private TextView mUsername;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
-    private Spinner dropdown1, dropdown2;
     private Integer CAMERA_REQUEST = 1, SELECT_FILE = 0;
     private Uri mImageUri;
     private StorageReference mStorageRef;
@@ -69,34 +70,27 @@ public class PopUp extends AppCompatActivity {
     private Button mButtonChooseImage;
     private Button mButtonUpload;
     private  FirebaseUser user;
-    //private Upload uploads;
-    //public static UserReportDatabase userReportDatabase;
+    private MaterialBetterSpinner snowSpinner, surfaceSpinner;
+    private String spinnerSnow, spinnerSurface;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.popup);
+        setContentView(R.layout.pop_up_report);
         onCreate();
         mButtonChooseImage = findViewById(R.id.AddPhoto);
         mButtonUpload = findViewById(R.id.Submit);
         mUsername = findViewById(R.id.username);
-        mUsername.setText(getUsername());
         mEditText = findViewById(R.id.CommentBox);
         mImageView = findViewById(R.id.imageView);
         mProgressBar = findViewById(R.id.progress_bar);
-        dropdown1 = findViewById(R.id.spinner1);
-        dropdown2 = findViewById(R.id.spinner2);
+        mUsername.setText(getUsername());
+
         final String mountainName = SkiResortHolder.getSkiResort().getMountain().getValue();
 
         mStorageRef = FirebaseStorage.getInstance().getReference(mountainName);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mountainName);
 
-        TextInputLayout inputLayout = findViewById(R.id.inputLayout);
-        inputLayout.setError("First name is required");
-        inputLayout.setError(null); // hide error
-        TextInputLayout inputLayout1 = findViewById(R.id.inputLayout1);
-        inputLayout1.setError("Comment is required");
-        inputLayout1.setError(null);
         mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,22 +105,34 @@ public class PopUp extends AppCompatActivity {
                     Toast.makeText(PopUp.this, "Upload in progress", Toast.LENGTH_SHORT).show();
                 } else {
                     finalCheck();
-                    //uploadFile();
-                    //addDataInDB();
                 }
             }
         });
 
-        String[] itemsFromSpinner1 = new String[]{" - ", "5cm", "10cm", "15cm", "20cm", "30cm", "40cm"};
-        String[] itemsFromSpinner2 = new String[]{" - ", "Machine Groomed", "Powder", "Wet", "Icy", "Hard Packed", "Variable"};
+        String[] itemsForSnowSpinner = new String[]{" - ", "5cm", "10cm", "15cm", "20cm", "30cm", "40cm"};
+        String[] itemsForSurfaceSpinner = new String[]{" - ", "Machine Groomed", "Powder", "Wet", "Icy", "Hard Packed", "Variable"};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsFromSpinner1);
-        dropdown1.setAdapter(adapter);
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsFromSpinner2);
-        dropdown2.setAdapter(adapter1);
+        snowSpinner = (MaterialBetterSpinner) findViewById(R.id.android_material_design_spinner);
+        surfaceSpinner = (MaterialBetterSpinner) findViewById(R.id.android_material_design_spinner1);
 
+        ArrayAdapter<String> adapterSnow = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsForSnowSpinner);
+        snowSpinner.setAdapter(adapterSnow);
+        ArrayAdapter<String> adapterSurface = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsForSurfaceSpinner);
+        surfaceSpinner.setAdapter(adapterSurface);
 
+        snowSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                spinnerSnow = adapterView.getItemAtPosition(i).toString();
+            }
+        });
 
+        surfaceSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                spinnerSurface = adapterView.getItemAtPosition(i).toString();
+            }
+        });
     }
 
     @Override
@@ -257,8 +263,8 @@ public class PopUp extends AppCompatActivity {
                             Upload upload = new Upload(mEditText.getText().toString().toLowerCase(),
                                     taskSnapshot.getDownloadUrl().toString(),
                                     getUsername(),
-                                    dropdown1.getSelectedItem().toString(),
-                                    dropdown2.getSelectedItem().toString(),
+                                    spinnerSnow,
+                                    spinnerSurface,
                                     date, getUserEmail()
                             );
                             String uploadId = mDatabaseRef.push().getKey();

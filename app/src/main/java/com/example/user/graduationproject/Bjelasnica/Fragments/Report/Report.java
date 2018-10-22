@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.ImageReportAdapter;
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
+import com.example.user.graduationproject.Bjelasnica.Utils.TinyDB;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
 import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
@@ -41,13 +42,15 @@ public class Report extends Fragment{
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private ImageReportAdapter mAdapter;
-    private List<Upload> mUploads = new ArrayList<>();
+    private ArrayList<Upload> mUploads = new ArrayList<>();
     private InternetConnection connection = new InternetConnection();
+
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report3, container, false);
         onReportClick(v);
+
         final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
         if(connection.getInternetConnection() == true){
             buildRecyclerView(v);
@@ -74,17 +77,15 @@ public class Report extends Fragment{
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
-    private void saveUserReportPreferences(List<Upload> uploads){
+    private void saveUserReportPreferences(ArrayList<Upload> uploads){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("share preference", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(uploads);
         editor.putString("task list", json);
         editor.apply();
-        int a = 0;
     }
 
     private void loadUserReportPreferences(){
@@ -97,7 +98,7 @@ public class Report extends Fragment{
 
     private ValueEventListener valueEventListener(final ImageReportAdapter mAdapter,
                                                   final ProgressBar mProgressCircle,
-                                                  final List<Upload> mUploads) {
+                                                  final ArrayList<Upload> mUploads) {
         return new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -107,10 +108,7 @@ public class Report extends Fragment{
                     mUploads.add(upload);
                     try{
                         saveUserReportPreferences(mUploads);
-                    }catch (Exception e){
-
-                    }
-
+                    }catch (Exception e){}
                 }
                 mAdapter.notifyDataSetChanged();
                 mProgressCircle.setVisibility(View.INVISIBLE);
@@ -121,11 +119,8 @@ public class Report extends Fragment{
             }
         };
     }
-
-
-
     private void onReportClick(View v) {
-        v.findViewById(R.id.reportBtn).setOnClickListener(new View.OnClickListener() {
+        v.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(getActivity(), PopUp.class);
@@ -134,22 +129,6 @@ public class Report extends Fragment{
         });
     }
 
-    public static String encodeTobase64(Bitmap image) {
-        Bitmap immage = image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immage.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        //Log.d("Image Log:", imageEncoded);
-        return imageEncoded;
-    }
-
-    public static Bitmap decodeBase64(String input) {
-        byte[] decodedByte = Base64.decode(input, 0);
-        return BitmapFactory
-                .decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
 
 }
 

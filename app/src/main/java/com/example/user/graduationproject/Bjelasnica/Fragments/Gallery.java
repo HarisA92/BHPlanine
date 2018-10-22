@@ -1,7 +1,11 @@
 package com.example.user.graduationproject.Bjelasnica.Fragments;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,6 +22,7 @@ import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.GalleryImageHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
+import com.example.user.graduationproject.Bjelasnica.Utils.TinyDB;
 import com.example.user.graduationproject.Bjelasnica.ViewPager.ImagePopUp;
 import com.example.user.graduationproject.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -31,7 +36,11 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,14 +55,13 @@ public class Gallery extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private GalleryAdapter galleryAdapter;
     private ImagePopUp imagePopUp = new ImagePopUp();
-    private List<GalleryImageHolder> listImages;
     private ArrayList<String> imagesArrayList = new ArrayList<>();
-    private Uri urid;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v  = inflater.inflate(R.layout.fragment_gallery, container, false);
+
         if(internetConnection.getInternetConnection() == true){
             buildRecyclerView(v);
             firebaseHolder.getDatabaseReferenceForGallery().addChildEventListener(new ChildEventListener() {
@@ -62,7 +70,6 @@ public class Gallery extends Fragment {
                     String url = dataSnapshot.getValue(String.class);
                     imagesArrayList.add(url);
                     galleryAdapter.notifyDataSetChanged();
-                    int a = 0;
                 }
 
                 @Override
@@ -82,7 +89,7 @@ public class Gallery extends Fragment {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-                    Toast.makeText(getActivity(), "eror je: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+
                 }
             });
         }
@@ -92,18 +99,17 @@ public class Gallery extends Fragment {
         return v;
     }
 
-
     private void buildRecyclerView(View v){
         recyclerView = v.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
 
-        //listImages = imagePopUp.getData(SkiResortHolder.getSkiResort().getMountain());
-
         galleryAdapter = new GalleryAdapter(imagesArrayList, getContext());
         recyclerView.setAdapter(galleryAdapter);
     }
-
-
 }
+
+
+
+

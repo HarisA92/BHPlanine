@@ -67,5 +67,9 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.6.2'
 
+    //spinner
+    implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

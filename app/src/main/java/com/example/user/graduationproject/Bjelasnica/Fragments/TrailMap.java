@@ -33,8 +33,7 @@ public class TrailMap extends Fragment {
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_trail_map, container, false);
-        /*ImageView imageView = v.findViewById(R.id.trailmap);
-        imageView.setImageResource(R.drawable.bjelasnica9);*/
+
         if(internetConnection.getInternetConnection() == true){
             buildRecyclerView(v);
             firebaseHolder.getDatabaseReferenceForTrailMap().addChildEventListener(childEventListener());

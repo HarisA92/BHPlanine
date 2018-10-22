@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.user.graduationproject.Bjelasnica.Utils.GalleryImageHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.Mountain;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +22,8 @@ public class ImagePopUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_pop_up);
         onCreate();
-        ArrayList<GalleryImageHolder> galleryImageHolderArrayList = new ArrayList<>();
+
+        /*ArrayList<GalleryImageHolder> galleryImageHolderArrayList = new ArrayList<>();
         ViewPager viewPager = findViewById(R.id.viewPager);
         Bundle extras = getIntent().getExtras();
         String image = extras.getString("position");
@@ -29,7 +32,7 @@ public class ImagePopUp extends AppCompatActivity {
 
         viewPager.setAdapter(new ImageViewer(this, galleryImageHolderArrayList));
         //viewPager.setCurrentItem(image);
-        int a = 0;
+        int a = 0;*/
     }
 
     public void onCreate() {

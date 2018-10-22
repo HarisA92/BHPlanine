@@ -38,7 +38,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private static String JAHORINA_TRAIL_MAP = "Jahorina_trail_map";
     private ActionBarDrawerToggle mToggle;
     private DrawerLayout mDrawerLayout;
-    private WelcomeScreen welcomeScreen;
     private NavigationView navigationView;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;

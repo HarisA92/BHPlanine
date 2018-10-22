@@ -15,14 +15,15 @@ import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
 import com.example.user.graduationproject.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ImageReportAdapter extends RecyclerView.Adapter<ImageReportAdapter.ImageViewHolder> {
     public static final String IMAGE_ADAPTER = "imageAdapter";
     private final Context mContext;
-    private final List<Upload> mUploads;
+    private final ArrayList<Upload> mUploads;
 
-    public ImageReportAdapter(final Context context, final List<Upload> uploads) {
+    public ImageReportAdapter(final Context context, final ArrayList<Upload> uploads) {
         mContext = context;
         mUploads = uploads;
     }
@@ -30,7 +31,7 @@ public class ImageReportAdapter extends RecyclerView.Adapter<ImageReportAdapter.
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.image_item, parent, false);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.user_report, parent, false);
         return new ImageViewHolder(v);
     }
 
