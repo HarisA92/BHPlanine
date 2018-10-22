@@ -69,7 +69,7 @@ public class PopUp extends AppCompatActivity {
     private StorageTask mUploadTask;
     private Button mButtonChooseImage;
     private Button mButtonUpload;
-    private  FirebaseUser user;
+    private FirebaseUser user;
     private MaterialBetterSpinner snowSpinner, surfaceSpinner;
     private String spinnerSnow, spinnerSurface;
 
@@ -85,6 +85,8 @@ public class PopUp extends AppCompatActivity {
         mImageView = findViewById(R.id.imageView);
         mProgressBar = findViewById(R.id.progress_bar);
         mUsername.setText(getUsername());
+
+        mImageView.setVisibility(View.GONE);
 
         final String mountainName = SkiResortHolder.getSkiResort().getMountain().getValue();
 
@@ -112,8 +114,8 @@ public class PopUp extends AppCompatActivity {
         String[] itemsForSnowSpinner = new String[]{" - ", "5cm", "10cm", "15cm", "20cm", "30cm", "40cm"};
         String[] itemsForSurfaceSpinner = new String[]{" - ", "Machine Groomed", "Powder", "Wet", "Icy", "Hard Packed", "Variable"};
 
-        snowSpinner = (MaterialBetterSpinner) findViewById(R.id.android_material_design_spinner);
-        surfaceSpinner = (MaterialBetterSpinner) findViewById(R.id.android_material_design_spinner1);
+        snowSpinner = findViewById(R.id.android_material_design_spinner);
+        surfaceSpinner = findViewById(R.id.android_material_design_spinner1);
 
         ArrayAdapter<String> adapterSnow = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsForSnowSpinner);
         snowSpinner.setAdapter(adapterSnow);
@@ -138,16 +140,12 @@ public class PopUp extends AppCompatActivity {
     @Override
      protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("usernameIsSaved", mUsername.getText().toString());
         outState.putString("editTextIsSaved", mEditText.getText().toString());
-
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        String stateSavedUsername = savedInstanceState.getString("usernameIsSaved");
-        mUsername.setText(stateSavedUsername);
         String stateSavedEditText = savedInstanceState.getString("editTextIsSaved");
         mEditText.setText(stateSavedEditText);
     }
@@ -181,7 +179,9 @@ public class PopUp extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
-                Picasso.with(this).load(mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).into(mImageView);
+            mButtonChooseImage.setVisibility(View.GONE);
+            mImageView.setVisibility(View.VISIBLE);
+            Picasso.with(this).load(mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).into(mImageView);
         }
     }
 

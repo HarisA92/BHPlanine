@@ -6,164 +6,177 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textSnow"
-        android:layout_width="104dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity=""
-        android:text="New Snow:  "
-        android:textColor="@color/colorPrimary"
-        android:textSize="17dp"
-        app:layout_constraintBottom_toTopOf="@+id/textSurface"
-        app:layout_constraintEnd_toStartOf="@+id/android_material_design_spinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/android_material_design_spinner"
-        android:layout_width="249dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Material Design Spinner"
-        android:textColorHint="#05ab9a"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textSnow"
-        app:layout_constraintTop_toTopOf="parent"
-        app:met_floatingLabel="normal" />
-
-    <TextView
-        android:id="@+id/textSurface"
-        android:layout_width="104dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity=""
-        android:text="New Surface:  "
-        android:textColor="@color/colorPrimary"
-        android:textSize="17dp"
-        app:layout_constraintBottom_toTopOf="@+id/inputLayout1"
-        app:layout_constraintEnd_toStartOf="@+id/android_material_design_spinner1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSnow" />
-
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/android_material_design_spinner1"
-        android:layout_width="249dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:hint="Material Design Spinner"
-        android:textColorHint="#05ab9a"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/textSnow"
-        app:layout_constraintTop_toBottomOf="@+id/android_material_design_spinner"
-        app:met_floatingLabel="normal" />
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/inputLayout1"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView"
+        style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="15dp"
-        app:counterEnabled="true"
-        app:counterMaxLength="150"
-        app:hintTextAppearance="@style/MyHintText"
-        app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/android_material_design_spinner1">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/CommentBox"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="Comment"
-            android:inputType="textMultiLine"
-            android:lines="5"
-            android:maxLength="150"
-            android:saveEnabled="false"
-            android:textColorHint="@color/colorPrimary"
-            android:theme="@style/MyEditText" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/username"
+            <TextView
+                android:id="@+id/textSnow"
+                android:layout_width="104dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="34dp"
+                android:gravity="center"
+                android:text="New Snow:  "
+                android:textColor="@color/colorPrimary"
+                android:textSize="17dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/android_material_design_spinner"
+                android:layout_width="227dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:textColorHint="#05ab9a"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:met_floatingLabel="normal" />
+
+            <TextView
+                android:id="@+id/textSurface"
+                android:layout_width="77dp"
+                android:layout_height="25dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text="Surface:"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textSnow"
+                app:layout_constraintVertical_bias="0.809" />
+
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/android_material_design_spinner1"
+                android:layout_width="227dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColorHint="#05ab9a"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/android_material_design_spinner"
+                app:met_floatingLabel="normal" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView2"
+        style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:textColorHint="@color/colorPrimary"
-        android:textSize="17dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLayout1" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inputLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="150"
+                app:hintTextAppearance="@style/MyHintText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <EditText
+                    android:id="@+id/CommentBox"
+                    android:layout_width="491dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:gravity="top"
+                    android:hint="Comment"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:maxLength="150"
+                    android:saveEnabled="false"
+                    android:textColorHint="@color/colorPrimary"
+                    android:theme="@style/MyEditText" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColorHint="@color/colorPrimary"
+                android:textSize="17dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/inputLayout1" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="85dp"
-        android:layout_height="85dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/Submit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <Button
         android:id="@+id/Submit"
-        android:layout_width="180dp"
+        android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="36dp"
         android:background="@color/colorPrimary"
         android:text="Post Report"
         android:textColor="@android:color/white"
         android:theme="@style/MyButton"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/AddPhoto"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/AddPhoto"
-        android:layout_width="180dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"        android:id="@+id/AddPhoto"
+        android:layout_width="150dp"
         android:layout_height="52dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/colorPrimary"
-        android:drawableLeft="@drawable/ic_add_a_photo_white_24dp"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@drawable/ic_add_a_photo_black_24dp"
         android:paddingLeft="10dp"
         android:text="Add Photo"
-        android:textColor="@android:color/white"
-        android:theme="@style/MyButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Submit"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.666" />
+        android:textColor="#7A7A7A"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -174,7 +187,7 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="16dp"
         android:theme="@style/LinearProgress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
