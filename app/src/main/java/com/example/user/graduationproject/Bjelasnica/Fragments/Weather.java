@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -69,7 +70,7 @@ public class Weather extends Fragment {
                             WeatherDay drugiDan = days.get(7);
                             WeatherDay treciDan = days.get(15);
                             WeatherDay cetvrtiDan = days.get(23);
-                            WeatherDay petiDan = days.get(38);
+                            WeatherDay petiDan = days.get(31);
                             day.add(prviDan);
                             day.add(drugiDan);
                             day.add(treciDan);
@@ -102,6 +103,7 @@ public class Weather extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
+
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(recyclerWeather);
 

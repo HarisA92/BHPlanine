@@ -30,7 +30,7 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
     @NonNull
     @Override
     public WeatherViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.weather_list, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.weather_day_list, parent, false);
         return new WeatherViewHolder(v);
     }
 
@@ -90,12 +90,14 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
         String day = parts[0];
         String Date = parts[1];
         String dateInMonth = parts[2];
-        holder.time.setText("Date: " + day + " " + Date + " " + dateInMonth);
-        holder.description.setText(weather.getWeather().get(a).getDescription());
+        holder.time.setText(day + " " + Date + " " + dateInMonth);
+        String setDescription = weather.getWeather().get(a).getDescription();
+        String getDescription = setDescription.substring(0,1).toUpperCase() + setDescription.substring(1);
+        holder.description.setText(getDescription);
         double temp = weather.getMain().getTemp();
-        int tempTransfer = (int) temp;
-        String temperature = String.valueOf(tempTransfer);
-        holder.temperature.setText("Temperature: " + temperature + "°C");
+        int temperature = (int) temp;
+        String weather_temp = String.valueOf(temperature);
+        holder.temp.setText(weather_temp + "°C");
         a++;
     }
 
@@ -109,16 +111,16 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
 
     public class WeatherViewHolder extends RecyclerView.ViewHolder {
         TextView description;
-        TextView temperature;
         TextView time;
         TextView weather_icon;
+        TextView temp;
 
         public WeatherViewHolder(View itemView) {
             super(itemView);
-            description = (TextView) itemView.findViewById(R.id.description);
-            temperature = (TextView) itemView.findViewById(R.id.temperature);
-            time = (TextView) itemView.findViewById(R.id.dateAndTime);
-            weather_icon = (TextView) itemView.findViewById(R.id.weather_icon_text);
+            description = itemView.findViewById(R.id.description);
+            temp = itemView.findViewById(R.id.temperature);
+            time = itemView.findViewById(R.id.dateAndTime);
+            weather_icon = itemView.findViewById(R.id.weather_icon_text);
         }
     }
 }

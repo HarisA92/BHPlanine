@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +25,7 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Home extends AppCompatActivity{
     private static final String SARAJEVO = "Sarajevo";
     private static final String JAHORINA = "Jahorina";
     private static String BJELASNICA_TEXT = "Bjelašnica je planina u centralnom dijelu Bosne i Hercegovine, pripada dinarskom planinskom sistemu. Susjedne planine su joj Igman sa sjeverne strane, koji se praktično naslanja na Bjelašnicu, te Treskavica i Visočica. Bjelašnica je prekrivena snijegom od novembra do maja, a nekada i u ljetnim mjesecima, i otud dolazi objašnjenje za njeno ime.";
@@ -36,10 +38,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private static String JAHORINA_GALLERY = "Jahorina_Gallery";
     private static String BJELASNICA_TRAIL_MAP = "Bjelasnica_trail_map";
     private static String JAHORINA_TRAIL_MAP = "Jahorina_trail_map";
-    private ActionBarDrawerToggle mToggle;
-    private DrawerLayout mDrawerLayout;
-    private NavigationView navigationView;
-    private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +66,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         TextView textJahorina = findViewById(R.id.jahorinaText);
         textJahorina.setText(JAHORINA_TEXT);
 
-        mDrawerLayout = findViewById(R.id.drawerLayout);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
-        mDrawerLayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        navigationView = findViewById(R.id.navigation_view);
-        if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(this);
-        }
         setupFirebaseListener();
     }
 
@@ -112,28 +101,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return mToggle.onOptionsItemSelected(item);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.home_actionbar_menu, menu);
+        return true;
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id){
-            case R.id.nav_hotel:
-                break;
-            case R.id.nav_mountains:
-                break;
-            case R.id.nav_stream:
-                break;
-            case R.id.nav_weather:
-                break;
-            case R.id.sign_out:
-                FirebaseAuth.getInstance().signOut();
-                LoginManager.getInstance().logOut();
-                break;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_bar){
+            FirebaseAuth.getInstance().signOut();
+            LoginManager.getInstance().logOut();
+        }else{
+            return super.onOptionsItemSelected(item);
         }
-        mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 

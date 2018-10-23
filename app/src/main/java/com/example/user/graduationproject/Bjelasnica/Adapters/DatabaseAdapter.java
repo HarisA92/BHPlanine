@@ -25,7 +25,7 @@ public class DatabaseAdapter extends RecyclerView.Adapter<DatabaseAdapter.TableV
     @NonNull
     @Override
     public TableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.weather_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.weather_day_list, parent, false);
         return new TableViewHolder(v);
     }
 
