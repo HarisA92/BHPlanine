@@ -22,7 +22,6 @@ import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.GalleryImageHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.TinyDB;
 import com.example.user.graduationproject.Bjelasnica.ViewPager.ImagePopUp;
 import com.example.user.graduationproject.R;
 import com.google.android.gms.tasks.OnFailureListener;

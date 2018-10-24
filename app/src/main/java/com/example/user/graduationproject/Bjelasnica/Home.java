@@ -16,19 +16,27 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
+import com.example.user.graduationproject.Bjelasnica.Utils.AllMountainInformationHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.Mountain;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResort;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
 import com.facebook.AccessToken;
+import com.facebook.all.All;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class Home extends AppCompatActivity{
     private static final String SARAJEVO = "Sarajevo";
     private static final String JAHORINA = "Jahorina";
-    private static String BJELASNICA_TEXT = "Bjelašnica je planina u centralnom dijelu Bosne i Hercegovine, pripada dinarskom planinskom sistemu. Susjedne planine su joj Igman sa sjeverne strane, koji se praktično naslanja na Bjelašnicu, te Treskavica i Visočica. Bjelašnica je prekrivena snijegom od novembra do maja, a nekada i u ljetnim mjesecima, i otud dolazi objašnjenje za njeno ime.";
     private static String JAHORINA_TEXT = "Jahorina je planina u Bosni i Hercegovini koja pripada Dinarskom planinskom sustavu. Najviši vrh je Ogorjelica sa 1.916 m nadmorske visine. Ljeti je prekrivena gustom zelenom travom, a zimi i do 3 m visokim snijegom. Izvanredna konfiguracija terena, obilje vrlo kvalitetnog snijega, pogodna klima, 20 kilometara staza za alpske discipline kao i blage padine (Rajska dolina) uvrstile su ovu planinu među najljepše i najpoznatije ski-centre.";
     private static String BJELASNICA_WEB_CAMS = "Bjelasnica_livestream";
     private static String JAHORINA_WEB_CAMS = "Jahorina_livestream";
@@ -39,10 +47,16 @@ public class Home extends AppCompatActivity{
     private static String BJELASNICA_TRAIL_MAP = "Bjelasnica_trail_map";
     private static String JAHORINA_TRAIL_MAP = "Jahorina_trail_map";
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private AllMountainInformationHolder holder = new AllMountainInformationHolder();
+    private TextView bjelasnica_base_cm, bjelasnica_lifts_open, bjelasnica_trails_open, bjelasnica_snowfall;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        createBjelasnicaMountainInfo();
+        firebaseHolder.getDatabseReferenceForMountainInformation().addValueEventListener(valueEventListener());
+
         Button MyButton = findViewById(R.id.bjelasnica);
         MyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,12 +75,45 @@ public class Home extends AppCompatActivity{
                 startActivity(i);
             }
         });
-        TextView textBjelasnica = findViewById(R.id.bjelasnicaText);
-        textBjelasnica.setText(BJELASNICA_TEXT);
+
         TextView textJahorina = findViewById(R.id.jahorinaText);
         textJahorina.setText(JAHORINA_TEXT);
 
         setupFirebaseListener();
+    }
+
+    private void createBjelasnicaMountainInfo(){
+        bjelasnica_base_cm = findViewById(R.id.base_cm);
+        bjelasnica_snowfall = findViewById(R.id.snowfall_cm);
+        bjelasnica_lifts_open = findViewById(R.id.lifts_number);
+        bjelasnica_trails_open = findViewById(R.id.trails_opened);
+    }
+
+    private ValueEventListener valueEventListener (){
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                AllMountainInformationHolder getValues = dataSnapshot.getValue(AllMountainInformationHolder.class);
+                ArrayList<AllMountainInformationHolder> arrayList = new ArrayList<>();
+                arrayList.add(getValues);
+                String depthBjelasnica =  arrayList.get(0).getBjelasnica_base_depth();
+                String liftsBjelasnica = arrayList.get(0).getBjelasnica_lifts_open();
+                String snowfallBjelasnica = arrayList.get(0).getBjelasnica_recent_snowfall();
+                String trailsBjelasnica = arrayList.get(0).getBjelasnica_trails_open();
+                bjelasnica_base_cm.setText(depthBjelasnica);
+                bjelasnica_lifts_open.setText(liftsBjelasnica);
+                bjelasnica_snowfall.setText(snowfallBjelasnica);
+                bjelasnica_trails_open.setText(trailsBjelasnica);
+
+                int a = 0;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
     }
 
     private void setupFirebaseListener(){

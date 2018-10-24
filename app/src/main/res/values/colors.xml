@@ -11,6 +11,14 @@
     <color name="text">#333333</color>
     <color name="text_de_emphasized">#666666</color>
     <color name="text_faint">#999999</color>
+
+
+    <color name="green_50">#4CAF50</color>
+    <color name="light_green_50">#673AB7</color>
+    <color name="indigo_500">#3F51B5</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="cyan_500">#00BCD4</color>
+    <color name="light_blue_500">#03A9F4</color>
 </resources>
 
 

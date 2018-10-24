@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,11 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.support.v7.app.ActionBar;
 import android.widget.Toast;
@@ -58,6 +61,8 @@ public class WelcomeScreen extends AppCompatActivity {
     private static final String TAG = "blablablaaaaAAAAAAAAa";
     private CallbackManager mCallbackManager;
     private static final String EMAIL = "email";
+    private AnimationDrawable animationDrawable;
+    private RelativeLayout relativeLayout;
 
 
     @Override
@@ -65,6 +70,11 @@ public class WelcomeScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
         onCreate();
+
+        relativeLayout = (RelativeLayout)findViewById(R.id.relativeLayout);
+        animationDrawable =(AnimationDrawable) relativeLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(4000);
+        animationDrawable.setExitFadeDuration(2000);
 
         mAuth = FirebaseAuth.getInstance();
         //facebook sign in
@@ -119,6 +129,20 @@ public class WelcomeScreen extends AppCompatActivity {
         });
         //loginButton.setReadPermissions("email", "public_profile");
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (animationDrawable != null && !animationDrawable.isRunning())
+            animationDrawable.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (animationDrawable != null && animationDrawable.isRunning())
+            animationDrawable.stop();
     }
 
     private void signIn() {

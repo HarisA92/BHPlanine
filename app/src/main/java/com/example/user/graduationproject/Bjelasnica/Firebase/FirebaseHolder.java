@@ -31,4 +31,8 @@ public class FirebaseHolder {
     public DatabaseReference getDatabaseReferenceForTrailMap(){
         return FirebaseDatabase.getInstance().getReference(SkiResortHolder.getSkiResort().getTrailMap());
     }
+
+    public DatabaseReference getDatabseReferenceForMountainInformation(){
+        return FirebaseDatabase.getInstance().getReference("AllMountains Information");
+    }
 }

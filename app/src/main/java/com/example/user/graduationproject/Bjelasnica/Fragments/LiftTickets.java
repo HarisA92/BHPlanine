@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
-import com.example.user.graduationproject.Bjelasnica.Utils.TinyDB;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
 import com.example.user.graduationproject.R;
 
@@ -73,7 +72,6 @@ public class LiftTickets extends Fragment {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     String value = dataSnapshot.getValue(String.class);
                     dayList.add(value);
-                    int a = 0;
                     saveArrayList(dayList, "list");
                     arrayAdapter.notifyDataSetChanged();
                 }

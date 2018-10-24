@@ -19,7 +19,6 @@ import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.ImageReportAdapter;
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.TinyDB;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
 import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
@@ -106,6 +105,7 @@ public class Report extends Fragment{
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     final Upload upload = postSnapshot.getValue(Upload.class);
                     mUploads.add(upload);
+                    int a = 0;
                     try{
                         saveUserReportPreferences(mUploads);
                     }catch (Exception e){}
