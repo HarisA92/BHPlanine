@@ -59,9 +59,9 @@ public class Gallery extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v  = inflater.inflate(R.layout.fragment_gallery, container, false);
+        View v = inflater.inflate(R.layout.fragment_gallery, container, false);
 
-        if(internetConnection.getInternetConnection() == true){
+        if (internetConnection.getInternetConnection() == true) {
             buildRecyclerView(v);
             firebaseHolder.getDatabaseReferenceForGallery().addChildEventListener(new ChildEventListener() {
                 @Override
@@ -91,14 +91,13 @@ public class Gallery extends Fragment {
 
                 }
             });
-        }
-        else{
+        } else {
             Toast.makeText(getActivity(), "Please connect to the internet", Toast.LENGTH_SHORT).show();
         }
         return v;
     }
 
-    private void buildRecyclerView(View v){
+    private void buildRecyclerView(View v) {
         recyclerView = v.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getContext(), 2);

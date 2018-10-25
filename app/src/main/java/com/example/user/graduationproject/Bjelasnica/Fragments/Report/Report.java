@@ -105,7 +105,6 @@ public class Report extends Fragment{
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     final Upload upload = postSnapshot.getValue(Upload.class);
                     mUploads.add(upload);
-                    int a = 0;
                     try{
                         saveUserReportPreferences(mUploads);
                     }catch (Exception e){}
