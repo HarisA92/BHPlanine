@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0"
-    tools:context=".Bjelasnica.Fragments.LiftTickets">
+    tools:context=".Bjelasnica.ZoomImageTrailMap">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_lift_tickets"
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/photo_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent" />
 
-    </android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>

@@ -33,6 +33,6 @@ public class FirebaseHolder {
     }
 
     public DatabaseReference getDatabseReferenceForMountainInformation(){
-        return FirebaseDatabase.getInstance().getReference("AllMountains Information");
+        return FirebaseDatabase.getInstance().getReference("MountainInformation");
     }
 }

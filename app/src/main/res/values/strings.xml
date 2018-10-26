@@ -140,6 +140,7 @@
     <string name="fb_login_protocol_scheme">fb2186655648072526</string>
 
     <string name="Sign_out">Sign out</string>
+    <string name="title_activity_zoom_image_trail_map">ZoomImageTrailMap</string>
 
 
 </resources>

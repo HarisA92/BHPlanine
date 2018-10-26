@@ -25,37 +25,48 @@
         <activity android:name=".Bjelasnica.WelcomeScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Bjelasnica.Home"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".Bjelasnica.Main"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".Bjelasnica.Home"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Bjelasnica.Main"
+            android:screenOrientation="portrait" />
         <activity android:name=".Bjelasnica.Fragments.Report.PopUp" />
         <activity android:name=".Bjelasnica.ViewPager.ImagePopUp" />
         <activity android:name=".Bjelasnica.ZoomImageReport" />
-        <activity android:name=".Bjelasnica.WebCams.WebCam" android:screenOrientation="landscape" />
+        <activity
+            android:name=".Bjelasnica.WebCams.WebCam"
+            android:screenOrientation="landscape" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            tools:replace="android:value"
-            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
-
+        <activity
+            android:name=".Bjelasnica.ZoomImageTrailMap"
+            android:label="@string/title_activity_zoom_image_trail_map"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
+
 </manifest>

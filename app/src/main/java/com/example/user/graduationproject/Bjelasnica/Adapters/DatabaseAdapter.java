@@ -18,10 +18,6 @@ public class DatabaseAdapter extends RecyclerView.Adapter<DatabaseAdapter.TableV
     private List<WeatherTable> list = new ArrayList<>();
 
 
-    /*public DatabaseAdapter(Context mContext, List<UserReport> mUserReport){
-        context = mContext;
-        userReport = mUserReport;
-    }*/
     @NonNull
     @Override
     public TableViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -72,6 +72,8 @@ public class LiftTickets extends Fragment {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     String value = dataSnapshot.getValue(String.class);
                     dayList.add(value);
+                    String url = dayList.get(0);
+
                     saveArrayList(dayList, "list");
                     arrayAdapter.notifyDataSetChanged();
                 }
@@ -112,7 +114,7 @@ public class LiftTickets extends Fragment {
         Gson gson = new Gson();
         String json = gson.toJson(list);
         editor.putString(key, json);
-        editor.apply();     // This line is IMPORTANT !!!
+        editor.apply();
     }
 
     public ArrayList<String> getArrayList(String key){
@@ -127,4 +129,5 @@ public class LiftTickets extends Fragment {
         arrayAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, list);
         listDays.setAdapter(arrayAdapter);
     }
+
 }
