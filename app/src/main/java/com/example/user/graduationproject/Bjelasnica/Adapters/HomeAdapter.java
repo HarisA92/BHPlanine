@@ -85,7 +85,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 else if(holder.name_of_mountain.getText().toString().equals("Bjelasnica")){
                     Intent intent = new Intent(context, Main.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, BJELASNICA_WEB_CAMS, BJELASNICA_CJENOVNIK, BJELASNICA_GALLERY,BJELASNICA_TRAIL_MAP));
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                     context.startActivity(intent);
                 }
                 else if(holder.name_of_mountain.getText().toString().equals("Ravna Planina")){

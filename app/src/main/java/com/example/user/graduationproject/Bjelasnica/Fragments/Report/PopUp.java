@@ -1,18 +1,27 @@
 package com.example.user.graduationproject.Bjelasnica.Fragments.Report;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -47,22 +56,26 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class PopUp extends AppCompatActivity {
     public static final String CAMERA = "Camera";
     public static final String GALLERY = "Gallery";
     public static final String CANCEL = "Cancel";
-    public static final int IMAGE_WIDTH = 1920;
-    public static final int IMAGE_HEIGHT = 1080;
+    public static final int IMAGE_WIDTH = 1280;
+    public static final int IMAGE_HEIGHT = 720;
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     private EditText mEditText;
     private TextView mUsername;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
-    private Integer CAMERA_REQUEST = 1, SELECT_FILE = 0;
+    private static final int CAMERA_REQUEST = 100, SELECT_FILE = 0;
+    public static final int REQUEST_PERMISSION = 200;
     private Uri mImageUri;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
@@ -72,6 +85,7 @@ public class PopUp extends AppCompatActivity {
     private FirebaseUser user;
     private MaterialBetterSpinner snowSpinner, surfaceSpinner;
     private String spinnerSnow, spinnerSurface;
+    private String imageFilePath;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,8 +99,6 @@ public class PopUp extends AppCompatActivity {
         mImageView = findViewById(R.id.imageView);
         mProgressBar = findViewById(R.id.progress_bar);
         mUsername.setText(getUsername());
-
-        mImageView.setVisibility(View.GONE);
 
         final String mountainName = SkiResortHolder.getSkiResort().getMountain().getValue();
 
@@ -135,6 +147,11 @@ public class PopUp extends AppCompatActivity {
                 spinnerSurface = adapterView.getItemAtPosition(i).toString();
             }
         });
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
+                PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
+        }
     }
 
     @Override
@@ -150,6 +167,36 @@ public class PopUp extends AppCompatActivity {
         mEditText.setText(stateSavedEditText);
     }
 
+    private void openCameraIntent() {
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (pictureIntent.resolveActivity(getPackageManager()) != null) {
+
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            Uri photoUri = FileProvider.getUriForFile(this, getPackageName() +".provider", photoFile);
+            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+            startActivityForResult(pictureIntent, CAMERA_REQUEST);
+        }
+    }
+
+    private File createImageFile() throws IOException{
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "IMG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        imageFilePath = image.getAbsolutePath();
+
+        return image;
+    }
+
+
     private void SelectImage() {
         final CharSequence[] items = {CAMERA, GALLERY, CANCEL};
         AlertDialog.Builder builder = new AlertDialog.Builder(PopUp.this);
@@ -158,10 +205,7 @@ public class PopUp extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (items[i].equals(CAMERA)) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivityForResult(intent, CAMERA_REQUEST);
-                    }
+                    openCameraIntent();
                 } else if (items[i].equals(GALLERY)) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
@@ -175,15 +219,33 @@ public class PopUp extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-            mButtonChooseImage.setVisibility(View.GONE);
-            mImageView.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).into(mImageView);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Thanks for granting Permission", Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
+
+    //requestCode == SELECT_FILE
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST ) {
+            if (resultCode == RESULT_OK ) {
+                mImageUri = Uri.parse(imageFilePath);
+
+                mImageView.setImageURI(Uri.parse(imageFilePath));
+            }
+            else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText(this, "You cancelled the operation", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 
     private String getFileExtension(Uri uri) {
         return MimeTypeMap
@@ -246,10 +308,13 @@ public class PopUp extends AppCompatActivity {
 
     private void uploadFile() {
         final String date = DATE_FORMAT.format(new Date());
-        if (mImageUri != null) {
+        String filename = mImageUri.getLastPathSegment();
+        Uri uri = Uri.parse(filename);
+        int a = 0;
+        if (uri != null) {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(mImageUri));
-            mUploadTask = fileReference.putFile(mImageUri)
+                    + "." + getFileExtension(uri));
+            mUploadTask = fileReference.putFile(uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -275,7 +340,7 @@ public class PopUp extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(PopUp.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PopUp.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
