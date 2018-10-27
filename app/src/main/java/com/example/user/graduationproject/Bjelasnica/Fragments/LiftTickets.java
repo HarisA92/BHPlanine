@@ -71,27 +71,10 @@ public class LiftTickets extends Fragment {
         }
         else{
             Toast.makeText(getActivity(), "Please connect on the internet!", Toast.LENGTH_SHORT).show();
-            getArrayList("list");
+            loadUserReportPreferences();
             buildRecyclerView(v);
             }
         return v;
-    }
-
-    public void saveArrayList(ArrayList<String> list, String key){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SharedPreferences.Editor editor = prefs.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        editor.putString(key, json);
-        editor.apply();
-    }
-
-    public ArrayList<String> getArrayList(String key){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        Gson gson = new Gson();
-        String json = prefs.getString(key, null);
-        Type type = new TypeToken<ArrayList<String>>() {}.getType();
-        return gson.fromJson(json, type);
     }
 
     private ValueEventListener valueEventListener(){
@@ -102,6 +85,7 @@ public class LiftTickets extends Fragment {
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     LiftTicketHolder value = postSnapshot.getValue(LiftTicketHolder.class);
                     arrayList.add(value);
+                    saveUserReportPreferences(arrayList);
                 }
                 liftTicketAdapter.notifyDataSetChanged();
             }
@@ -121,4 +105,20 @@ public class LiftTickets extends Fragment {
         mRecyclerView.setAdapter(liftTicketAdapter);
     }
 
+    private void saveUserReportPreferences(ArrayList<LiftTicketHolder> liftTicketHolders){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("sharepreference", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(liftTicketHolders);
+        editor.putString("ticketprice", json);
+        editor.apply();
+    }
+
+    private void loadUserReportPreferences(){
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("sharepreference", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("ticketprice", null);
+        Type type = new TypeToken<ArrayList<LiftTicketHolder>>(){}.getType();
+        arrayList = gson.fromJson(json, type);
+    }
 }

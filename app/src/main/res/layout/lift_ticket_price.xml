@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
         style="@style/MyCardViewStyle"
@@ -32,6 +32,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:padding="2dp"
                 android:text="Odrasli"
                 android:textColor="@android:color/white"
                 android:textSize="20dp"
@@ -41,14 +42,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/web_stranica_cjenovnik"
+                android:id="@+id/text_cjenovnik"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Napomena: Cijene karte variraju od dijela sezone, za tacne informacije oko cijene karte kliknite na website: "
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +62,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/web_stranica_cjenovnik" />
+                app:layout_constraintTop_toBottomOf="@+id/text_cjenovnik" />
 
             <TextView
                 android:id="@+id/dnevna"
@@ -75,7 +74,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/web_stranica" />
+                app:layout_constraintTop_toBottomOf="@+id/pojedinacna_karta" />
 
             <TextView
                 android:id="@+id/cetirisata"
@@ -131,7 +130,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cetverodnevna" />
+                app:layout_constraintTop_toBottomOf="@+id/desetodnevna" />
 
             <TextView
                 android:id="@+id/desetodnevnaSezona"
@@ -141,6 +140,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/petodnevnaSezona" />
 
@@ -152,8 +152,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/desetodnevnaSezona" />
+                app:layout_constraintTop_toBottomOf="@+id/web_stranica" />
 
             <TextView
                 android:id="@+id/petodnevna"
@@ -164,7 +165,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/pojedinacna_karta" />
+                app:layout_constraintTop_toBottomOf="@+id/cetverodnevna" />
 
             <TextView
                 android:id="@+id/tackice"
@@ -174,8 +175,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/petodnevna" />
+                app:layout_constraintTop_toBottomOf="@+id/desetodnevnaSezona" />
 
             <TextView
                 android:id="@+id/sedmodnevna"
@@ -186,7 +188,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tackice" />
+                app:layout_constraintTop_toBottomOf="@+id/petodnevna" />
 
             <TextView
                 android:id="@+id/desetodnevna"
@@ -208,12 +210,14 @@
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:padding="2dp"
                 android:text="Djeca"
                 android:textColor="@android:color/white"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/desetodnevna" />
+                app:layout_constraintTop_toBottomOf="@+id/tackice" />
 
             <TextView
                 android:id="@+id/djeca_dnevna"
@@ -223,9 +227,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/naslov_cjenovnik_djeca" />
+                app:layout_constraintTop_toBottomOf="@+id/djeca_pojedinacna_karta" />
 
             <TextView
                 android:id="@+id/djeca_cetirisata"
@@ -285,7 +289,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/djeca_cetverodnevna" />
+                app:layout_constraintTop_toBottomOf="@+id/djeca_desetodnevna" />
 
             <TextView
                 android:id="@+id/djeca_desetodnevnaSezona"
@@ -309,7 +313,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/djeca_desetodnevnaSezona" />
+                app:layout_constraintTop_toBottomOf="@+id/naslov_cjenovnik_djeca" />
 
             <TextView
                 android:id="@+id/djeca_petodnevna"
@@ -319,9 +323,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/djeca_pojedinacna_karta" />
+                app:layout_constraintTop_toBottomOf="@+id/djeca_cetverodnevna" />
 
             <TextView
                 android:id="@+id/djeca_tackice"
@@ -333,7 +337,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/djeca_petodnevna" />
+                app:layout_constraintTop_toBottomOf="@+id/djeca_desetodnevnaSezona" />
 
             <TextView
                 android:id="@+id/djeca_sedmodnevna"
@@ -343,9 +347,9 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/djeca_tackice" />
+                app:layout_constraintTop_toBottomOf="@+id/djeca_petodnevna" />
 
             <TextView
                 android:id="@+id/djeca_desetodnevna"
@@ -355,26 +359,27 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/djeca_sedmodnevna" />
 
             <TextView
                 android:id="@+id/naslov_cjenovnik_ostalo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="52dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:padding="2dp"
                 android:text="Sezonske karte, baby ski lift i noćno skijanje(odrasli)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/djeca_desetodnevna" />
+                app:layout_constraintTop_toBottomOf="@+id/djeca_tackice" />
 
             <TextView
                 android:id="@+id/sezonska_karta"
@@ -445,6 +450,7 @@
                 android:layout_marginEnd="8dp"
                 android:background="@color/colorPrimary"
                 android:gravity="center"
+                android:padding="2dp"
                 android:text="Sezonske karte, baby ski lift i noćno skijanje(djeca)"
                 android:textColor="@android:color/white"
                 android:textSize="20dp"
@@ -504,6 +510,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/baby_lift_djeca" />

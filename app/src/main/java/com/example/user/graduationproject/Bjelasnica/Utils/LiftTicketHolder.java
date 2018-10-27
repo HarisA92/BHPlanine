@@ -14,6 +14,7 @@ public class LiftTicketHolder {
     private String desetodnevnaSezona;
     private String tackice;
     private String napomena_web_stranica;
+    private String text_napomena;
 
     private String djeca_pojedinacna_karta;
     private String djeca_dnevna_karta;
@@ -126,6 +127,10 @@ public class LiftTicketHolder {
 
     public String getDjeca_tackice() {
         return djeca_tackice;
+    }
+
+    public String getText_napomena() {
+        return text_napomena;
     }
 
     public String getNapomena_web_stranica() {
