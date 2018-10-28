@@ -79,31 +79,26 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 if(holder.name_of_mountain.getText().toString().equals("Jahorina")){
                     Intent intent = new Intent(context, Main.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA, JAHORINA_WEB_CAMS, JAHORINA_CJENOVNIK, JAHORINA_GALLERY,JAHORINA_TRAIL_MAP));
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                     context.startActivity(intent);
                 }
                 else if(holder.name_of_mountain.getText().toString().equals("Bjelasnica")){
                     Intent intent = new Intent(context, Main.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, BJELASNICA_WEB_CAMS, BJELASNICA_CJENOVNIK, BJELASNICA_GALLERY,BJELASNICA_TRAIL_MAP));
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                     context.startActivity(intent);
                 }
                 else if(holder.name_of_mountain.getText().toString().equals("Ravna Planina")){
                     Intent intent = new Intent(context, Main.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.RAVNAPLANINA, RAVNA_PLANINA, RAVNAPLANINA_WEB_CAMS, RAVNAPLANINA_CJENOVNIK, RAVNAPLANINA_GALLERY, RAVNAPLANINA_TRAIL_MAP));
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                     context.startActivity(intent);
                 }
                 else if(holder.name_of_mountain.getText().toString().equals("Igman")){
                     Intent intent = new Intent(context, Main.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.IGMAN, IGMAN, IGMAN_WEB_CAMS, IGMAN_CJENOVNIK, IGMAN_GALLERY, IGMAN_TRAIL_MAP));
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                     context.startActivity(intent);
                 }
                 else if(holder.name_of_mountain.getText().toString().equals("Vlasic")){
                     Intent intent = new Intent(context, Main.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.VLASIC, VLASIC, VLASIC_WEB_CAMS, VLASIC_CJENOVNIK, VLASIC_GALLERY, VLASIC_TRAIL_MAP));
-                    //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
                     context.startActivity(intent);
                 }
             }

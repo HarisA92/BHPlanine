@@ -26,8 +26,8 @@ public class ZoomImageReport extends AppCompatActivity {
         String imageReport = getIntent().getStringExtra(ImageReportAdapter.IMAGE_ADAPTER);
         String gallery = getIntent().getStringExtra(GalleryAdapter.POSITION);
 
-        Glide.with(getApplicationContext()).load(gallery).into(photoView);
-        Picasso.with(getApplicationContext()).load(imageReport).resize(1920, 1080).onlyScaleDown().into(photoView);
+        Picasso.with(getApplicationContext()).load(gallery).resize(1920, 1080).onlyScaleDown().into(photoView);
+        Glide.with(getApplicationContext()).load(imageReport).into(photoView);
     }
 
     public void onCreate() {

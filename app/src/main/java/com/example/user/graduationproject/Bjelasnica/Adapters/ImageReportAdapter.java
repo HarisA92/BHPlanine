@@ -63,12 +63,7 @@ public class ImageReportAdapter extends RecyclerView.Adapter<ImageReportAdapter.
 
     @Override
     public int getItemCount() {
-        try{
-            return mUploads.size();
-        }catch(java.lang.NullPointerException exception){
-
-        }
-        return 0;
+        return mUploads.size();
     }
 
     class ImageViewHolder extends RecyclerView.ViewHolder {

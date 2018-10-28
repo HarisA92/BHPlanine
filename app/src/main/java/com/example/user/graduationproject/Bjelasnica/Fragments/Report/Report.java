@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,20 +39,18 @@ import java.util.List;
 
 public class Report extends Fragment{
     private FirebaseHolder firebaseHolder = new FirebaseHolder();
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
     private ImageReportAdapter mAdapter;
     private ArrayList<Upload> mUploads = new ArrayList<>();
     private InternetConnection connection = new InternetConnection();
 
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report3, container, false);
         onReportClick(v);
 
         final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
-        if(connection.getInternetConnection() == true){
+        if(connection.getInternetConnection()){
             buildRecyclerView(v);
             firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueEventListener(mAdapter, mProgressCircle, mUploads));
         }
@@ -60,7 +59,7 @@ public class Report extends Fragment{
             try{
                 loadUserReportPreferences();
                 buildRecyclerView(v);
-            }catch (java.lang.NullPointerException exception){
+            }catch (java.lang.NullPointerException ignored){
             }
             mProgressCircle.setVisibility(View.INVISIBLE);
         }
@@ -69,9 +68,9 @@ public class Report extends Fragment{
 
     private void buildRecyclerView(View v){
         mAdapter = new ImageReportAdapter(getContext(), mUploads);
-        mRecyclerView = v.findViewById(R.id.recycler_view);
+        RecyclerView mRecyclerView = v.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -79,20 +78,25 @@ public class Report extends Fragment{
     }
 
     private void saveUserReportPreferences(ArrayList<Upload> uploads){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("share preference", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(uploads);
-        editor.putString("task list", json);
-        editor.apply();
+        if(getActivity() != null){
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences("share preference", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(uploads);
+            editor.putString("task list", json);
+            editor.apply();
+        }
+
     }
 
     private void loadUserReportPreferences(){
+        if(getActivity() != null){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("share preference", Context.MODE_PRIVATE);
         Gson gson = new Gson();
         String json = sharedPreferences.getString("task list", null);
         Type type = new TypeToken<ArrayList<Upload>>(){}.getType();
         mUploads = gson.fromJson(json, type);
+        }
     }
 
     private ValueEventListener valueEventListener(final ImageReportAdapter mAdapter,
@@ -107,7 +111,7 @@ public class Report extends Fragment{
                     mUploads.add(upload);
                     try{
                         saveUserReportPreferences(mUploads);
-                    }catch (Exception e){}
+                    }catch (Exception ignored){}
                 }
                 mAdapter.notifyDataSetChanged();
                 mProgressCircle.setVisibility(View.INVISIBLE);

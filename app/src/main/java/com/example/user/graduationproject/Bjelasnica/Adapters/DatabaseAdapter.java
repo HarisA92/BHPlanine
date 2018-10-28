@@ -40,11 +40,6 @@ public class DatabaseAdapter extends RecyclerView.Adapter<DatabaseAdapter.TableV
         return list.size();
     }
 
-    public void setUserReport(List<WeatherTable> weatherList){
-        this.list = weatherList;
-        notifyDataSetChanged();
-    }
-
     public class TableViewHolder extends RecyclerView.ViewHolder{
         public TextView description;
         public TextView temperature;

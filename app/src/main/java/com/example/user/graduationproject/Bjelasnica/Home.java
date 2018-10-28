@@ -54,15 +54,13 @@ public class Home extends AppCompatActivity {
     private FirebaseHolder firebaseHolder = new FirebaseHolder();
     private InternetConnection internetConnection = new InternetConnection();
     private HomeAdapter homeAdapter;
-    private RecyclerView mRecyclerView;
-    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        if(internetConnection.getInternetConnection() == true){
+        if(internetConnection.getInternetConnection()){
             buildRecyclerView();
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener(homeAdapter, arrayList));
         }
@@ -71,7 +69,7 @@ public class Home extends AppCompatActivity {
             try{
                 loadUserReportPreferences();
                 buildRecyclerView();
-            }catch(Exception e){}
+            }catch(Exception ignored){}
         }
 
         setupFirebaseListener();
@@ -86,14 +84,12 @@ public class Home extends AppCompatActivity {
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     AllMountainInformationHolder getValues = postSnapshot.getValue(AllMountainInformationHolder.class);
                     list.add(getValues);
-                    int a = 0;
                     try{
                         saveUserReportPreferences(list);
-                    }catch (Exception e){}
+                    }catch (Exception ignored){}
                 }
                 adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
@@ -118,9 +114,9 @@ public class Home extends AppCompatActivity {
     }
 
     private void buildRecyclerView(){
-        homeAdapter = new HomeAdapter(getApplicationContext(), arrayList);
-        mRecyclerView = findViewById(R.id.recycler_view_home);
-        mLayoutManager = new LinearLayoutManager(this);
+        homeAdapter = new HomeAdapter(this, arrayList);
+        RecyclerView mRecyclerView = findViewById(R.id.recycler_view_home);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(homeAdapter);
     }
@@ -131,7 +127,6 @@ public class Home extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (firebaseUser != null) {
-                    //do nothing
                 } else {
                     Toast.makeText(Home.this, "Signed out!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Home.this, WelcomeScreen.class);
@@ -144,14 +139,14 @@ public class Home extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener((FirebaseAuth.AuthStateListener) mAuthStateListener);
+        FirebaseAuth.getInstance().addAuthStateListener(mAuthStateListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         if (mAuthStateListener != null) {
-            FirebaseAuth.getInstance().removeAuthStateListener((FirebaseAuth.AuthStateListener) mAuthStateListener);
+            FirebaseAuth.getInstance().removeAuthStateListener(mAuthStateListener);
         }
     }
 
@@ -173,10 +168,4 @@ public class Home extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) { }
-    public boolean isLoggedInOnFacebook() {
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        return accessToken != null;
-    }
 }
