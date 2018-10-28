@@ -82,6 +82,7 @@ public class Home extends AppCompatActivity {
         return new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                list.clear();
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     AllMountainInformationHolder getValues = postSnapshot.getValue(AllMountainInformationHolder.class);
                     list.add(getValues);
