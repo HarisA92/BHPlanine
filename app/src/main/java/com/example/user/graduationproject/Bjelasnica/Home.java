@@ -57,12 +57,6 @@ public class Home extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
 
-    private TextView bjelasnica_base_cm, bjelasnica_lifts_open, bjelasnica_trails_open, bjelasnica_snowfall;
-    private TextView jahorina_base_cm, jahorina_lifts_open, jahorina_trails_open, jahorina_snowfall;
-    private TextView ravnaplanina_base_cm, ravnaplanina_lifts_open, ravnaplanina_trails_open, ravnaplanina_snowfall;
-    private TextView igman_base_cm, igman_lifts_open, igman_trails_open, igman_snowfall;
-    private TextView vlasic_base_cm, vlasic_lifts_open, vlasic_trails_open, vlasic_snowfall;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +120,6 @@ public class Home extends AppCompatActivity {
     private void buildRecyclerView(){
         homeAdapter = new HomeAdapter(getApplicationContext(), arrayList);
         mRecyclerView = findViewById(R.id.recycler_view_home);
-        mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(homeAdapter);

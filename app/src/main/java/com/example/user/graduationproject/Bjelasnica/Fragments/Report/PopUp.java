@@ -1,27 +1,27 @@
 package com.example.user.graduationproject.Bjelasnica.Fragments.Report;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputLayout;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
+
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -30,12 +30,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.user.graduationproject.Bjelasnica.Main;
+import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
 import com.example.user.graduationproject.R;
@@ -56,19 +55,17 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class PopUp extends AppCompatActivity {
     public static final String CAMERA = "Camera";
     public static final String GALLERY = "Gallery";
     public static final String CANCEL = "Cancel";
-    public static final int IMAGE_WIDTH = 1280;
-    public static final int IMAGE_HEIGHT = 720;
+    public static final int IMAGE_WIDTH = 1920;
+    public static final int IMAGE_HEIGHT = 1080;
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     private EditText mEditText;
     private TextView mUsername;
@@ -86,6 +83,7 @@ public class PopUp extends AppCompatActivity {
     private MaterialBetterSpinner snowSpinner, surfaceSpinner;
     private String spinnerSnow, spinnerSurface;
     private String imageFilePath;
+    private FirebaseHolder firebaseHolder = new FirebaseHolder();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,6 +150,8 @@ public class PopUp extends AppCompatActivity {
                 PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
         }
+
+
     }
 
     @Override
@@ -167,35 +167,36 @@ public class PopUp extends AppCompatActivity {
         mEditText.setText(stateSavedEditText);
     }
 
-    private void openCameraIntent() {
-        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (pictureIntent.resolveActivity(getPackageManager()) != null) {
-
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
+            } catch (IOException ex) {
             }
-            catch (IOException e) {
-                e.printStackTrace();
-                return;
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.android.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST);
             }
-            Uri photoUri = FileProvider.getUriForFile(this, getPackageName() +".provider", photoFile);
-            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            startActivityForResult(pictureIntent, CAMERA_REQUEST);
         }
     }
 
-    private File createImageFile() throws IOException{
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "IMG_" + timeStamp + "_";
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
         imageFilePath = image.getAbsolutePath();
-
         return image;
     }
-
 
     private void SelectImage() {
         final CharSequence[] items = {CAMERA, GALLERY, CANCEL};
@@ -205,7 +206,7 @@ public class PopUp extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (items[i].equals(CAMERA)) {
-                    openCameraIntent();
+                    dispatchTakePictureIntent();
                 } else if (items[i].equals(GALLERY)) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
@@ -230,27 +231,41 @@ public class PopUp extends AppCompatActivity {
     }
 
 
-    //requestCode == SELECT_FILE
+    public static String getPath(Context context, Uri uri ) {
+        String result = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = context.getContentResolver( ).query( uri, proj, null, null, null );
+        if(cursor != null){
+            if ( cursor.moveToFirst( ) ) {
+                int column_index = cursor.getColumnIndexOrThrow( proj[0] );
+                result = cursor.getString( column_index );
+            }
+            cursor.close( );
+        }
+        if(result == null) {
+            result = "Not found";
+        }
+        return result;
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST ) {
             if (resultCode == RESULT_OK ) {
                 mImageUri = Uri.parse(imageFilePath);
-
-                mImageView.setImageURI(Uri.parse(imageFilePath));
+                Picasso.with(getApplicationContext()).load("file:" + mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).onlyScaleDown().into(mImageView);
             }
             else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "You cancelled the operation", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-
-    private String getFileExtension(Uri uri) {
-        return MimeTypeMap
-                .getSingleton()
-                .getExtensionFromMimeType(getContentResolver().getType(uri));
+        else if (resultCode == RESULT_OK && requestCode == SELECT_FILE){
+            mImageUri = data.getData();
+            String path = getPath(this.getApplicationContext(), mImageUri);
+            mImageUri = Uri.parse(path);
+            Picasso.with(getApplicationContext()).load("file:" + mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).onlyScaleDown().into(mImageView);
+        }
     }
 
     private String getUsername(){
@@ -271,12 +286,6 @@ public class PopUp extends AppCompatActivity {
         return email;
     }
 
-    private DatabaseReference getDatabaseReference() {
-        return FirebaseDatabase
-                .getInstance()
-                .getReference(SkiResortHolder.getSkiResort().getMountain().getValue());
-    }
-
     private boolean checkDuplicateData(String commentBox, DataSnapshot dataSnapshot){
         Upload upload = new Upload();
         for(DataSnapshot ds: dataSnapshot.getChildren()){
@@ -289,7 +298,7 @@ public class PopUp extends AppCompatActivity {
     }
 
     private void finalCheck(){
-        getDatabaseReference().addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseHolder.getDatabaseReferenceForReport().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(checkDuplicateData(mEditText.getText().toString().toLowerCase(), dataSnapshot)){
@@ -308,13 +317,13 @@ public class PopUp extends AppCompatActivity {
 
     private void uploadFile() {
         final String date = DATE_FORMAT.format(new Date());
-        String filename = mImageUri.getLastPathSegment();
-        Uri uri = Uri.parse(filename);
-        int a = 0;
-        if (uri != null) {
+
+        if (mImageUri != null) {
+            Uri file = Uri.fromFile(new File(String.valueOf(mImageUri)));
+
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
-                    + "." + getFileExtension(uri));
-            mUploadTask = fileReference.putFile(uri)
+                    + "." + file.getLastPathSegment());
+            mUploadTask = fileReference.putFile(file)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

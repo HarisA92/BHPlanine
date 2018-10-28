@@ -23,11 +23,11 @@ public class ZoomImageReport extends AppCompatActivity {
 
         PhotoView photoView = findViewById(R.id.photo_view);
 
-        String image = getIntent().getStringExtra(ImageReportAdapter.IMAGE_ADAPTER);
+        String imageReport = getIntent().getStringExtra(ImageReportAdapter.IMAGE_ADAPTER);
         String gallery = getIntent().getStringExtra(GalleryAdapter.POSITION);
 
         Glide.with(getApplicationContext()).load(gallery).into(photoView);
-        Picasso.with(getApplicationContext()).load(image).into(photoView);
+        Picasso.with(getApplicationContext()).load(imageReport).resize(1920, 1080).onlyScaleDown().into(photoView);
     }
 
     public void onCreate() {
