@@ -93,6 +93,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
+        
     }
 
     private void saveUserReportPreferences(ArrayList<AllMountainInformationHolder> allMountainInformationHolders){
