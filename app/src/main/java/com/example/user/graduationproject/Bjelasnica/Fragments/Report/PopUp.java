@@ -7,23 +7,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -59,44 +54,38 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public class PopUp extends AppCompatActivity {
-    public static final String CAMERA = "Camera";
-    public static final String GALLERY = "Gallery";
-    public static final String CANCEL = "Cancel";
-    public static final int IMAGE_WIDTH = 1920;
-    public static final int IMAGE_HEIGHT = 1080;
+
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+    public static final int REQUEST_PERMISSION = 100;
+    private static final int CAMERA_REQUEST = 100, SELECT_FILE = 0;
     private EditText mEditText;
-    private TextView mUsername;
     private ImageView mImageView;
     private ProgressBar mProgressBar;
-    private static final int CAMERA_REQUEST = 100, SELECT_FILE = 0;
-    public static final int REQUEST_PERMISSION = 200;
     private Uri mImageUri;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
     private StorageTask mUploadTask;
-    private Button mButtonChooseImage;
-    private Button mButtonUpload;
     private FirebaseUser user;
-    private MaterialBetterSpinner snowSpinner, surfaceSpinner;
     private String spinnerSnow, spinnerSurface;
     private String imageFilePath;
-    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private FirebaseHolder firebaseHolder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_up_report);
         onCreate();
-        mButtonChooseImage = findViewById(R.id.AddPhoto);
-        mButtonUpload = findViewById(R.id.Submit);
-        mUsername = findViewById(R.id.username);
+        Button mButtonChooseImage = findViewById(R.id.AddPhoto);
+        Button mButtonUpload = findViewById(R.id.Submit);
+        TextView mUsername = findViewById(R.id.username);
         mEditText = findViewById(R.id.CommentBox);
         mImageView = findViewById(R.id.imageView);
         mProgressBar = findViewById(R.id.progress_bar);
         mUsername.setText(getUsername());
+        firebaseHolder = new FirebaseHolder(this);
 
         final String mountainName = SkiResortHolder.getSkiResort().getMountain().getValue();
 
@@ -114,18 +103,18 @@ public class PopUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mUploadTask != null && mUploadTask.isInProgress()) {
-                    Toast.makeText(PopUp.this, "Upload in progress", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PopUp.this, getResources().getString(R.string.upload_in_progress), Toast.LENGTH_SHORT).show();
                 } else {
                     finalCheck();
                 }
             }
         });
 
-        String[] itemsForSnowSpinner = new String[]{" - ", "5cm", "10cm", "15cm", "20cm", "30cm", "40cm"};
-        String[] itemsForSurfaceSpinner = new String[]{" - ", "Machine Groomed", "Powder", "Wet", "Icy", "Hard Packed", "Variable"};
+        String[] itemsForSnowSpinner = new String[]{getResources().getString(R.string.blank_space), getResources().getString(R.string.size_5cm), getResources().getString(R.string.size_10cm), getResources().getString(R.string.size_15cm), getResources().getString(R.string.size_20cm), getResources().getString(R.string.size_30cm), getResources().getString(R.string.size_40cm)};
+        String[] itemsForSurfaceSpinner = new String[]{getResources().getString(R.string.blank_space), getResources().getString(R.string.machine_groomed), getResources().getString(R.string.powder), getResources().getString(R.string.wet), getResources().getString(R.string.icy), getResources().getString(R.string.hard_packed), getResources().getString(R.string.variable)};
 
-        snowSpinner = findViewById(R.id.android_material_design_spinner);
-        surfaceSpinner = findViewById(R.id.android_material_design_spinner1);
+        MaterialBetterSpinner snowSpinner = findViewById(R.id.android_material_design_spinner);
+        MaterialBetterSpinner surfaceSpinner = findViewById(R.id.android_material_design_spinner1);
 
         ArrayAdapter<String> adapterSnow = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsForSnowSpinner);
         snowSpinner.setAdapter(adapterSnow);
@@ -145,25 +134,43 @@ public class PopUp extends AppCompatActivity {
                 spinnerSurface = adapterView.getItemAtPosition(i).toString();
             }
         });
+        capturePhotoPermission();
+    }
 
+    public static String getPath(Context context, Uri uri) {
+        String result = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            result = "Not found";
+        }
+        return result;
+    }
+
+    private void capturePhotoPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION);
         }
-
-
     }
 
     @Override
-     protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("editTextIsSaved", mEditText.getText().toString());
+        outState.putString(getResources().getString(R.string.on_save_instance_state), mEditText.getText().toString());
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        String stateSavedEditText = savedInstanceState.getString("editTextIsSaved");
+        String stateSavedEditText = savedInstanceState.getString(getResources().getString(R.string.on_save_instance_state));
         mEditText.setText(stateSavedEditText);
     }
 
@@ -173,7 +180,7 @@ public class PopUp extends AppCompatActivity {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            } catch (IOException ex) {
+            } catch (IOException ignored) {
             }
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
@@ -199,19 +206,19 @@ public class PopUp extends AppCompatActivity {
     }
 
     private void SelectImage() {
-        final CharSequence[] items = {CAMERA, GALLERY, CANCEL};
+        final CharSequence[] items = {getResources().getString(R.string.camera), getResources().getString(R.string.gallery), getResources().getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(PopUp.this);
         builder.setTitle("Add Image");
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (items[i].equals(CAMERA)) {
+                if (items[i].equals(getResources().getString(R.string.camera))) {
                     dispatchTakePictureIntent();
-                } else if (items[i].equals(GALLERY)) {
+                } else if (items[i].equals(getResources().getString(R.string.gallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(intent, SELECT_FILE);
-                } else if (items[i].equals(CANCEL)) {
+                } else if (items[i].equals(getResources().getString(R.string.cancel))) {
                     dialogInterface.dismiss();
                 }
             }
@@ -225,50 +232,32 @@ public class PopUp extends AppCompatActivity {
 
         if (requestCode == REQUEST_PERMISSION && grantResults.length > 0) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Thanks for granting Permission", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getResources().getString(R.string.photo_permission), Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-
-    public static String getPath(Context context, Uri uri ) {
-        String result = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = context.getContentResolver( ).query( uri, proj, null, null, null );
-        if(cursor != null){
-            if ( cursor.moveToFirst( ) ) {
-                int column_index = cursor.getColumnIndexOrThrow( proj[0] );
-                result = cursor.getString( column_index );
-            }
-            cursor.close( );
-        }
-        if(result == null) {
-            result = "Not found";
-        }
-        return result;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST ) {
-            if (resultCode == RESULT_OK ) {
+        if (requestCode == CAMERA_REQUEST) {
+            if (resultCode == RESULT_OK) {
                 mImageUri = Uri.parse(imageFilePath);
-                Picasso.with(getApplicationContext()).load("file:" + mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).onlyScaleDown().into(mImageView);
+                Picasso.with(getApplicationContext()).load("this"+mImageUri).into(mImageView);
+            } else if (resultCode == RESULT_CANCELED) {
+
             }
-            else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "You cancelled the operation", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else if (resultCode == RESULT_OK && requestCode == SELECT_FILE){
+        } else if (resultCode == RESULT_OK && requestCode == SELECT_FILE) {
             mImageUri = data.getData();
             String path = getPath(this.getApplicationContext(), mImageUri);
             mImageUri = Uri.parse(path);
-            Picasso.with(getApplicationContext()).load("file:" + mImageUri).resize(IMAGE_WIDTH, IMAGE_HEIGHT).onlyScaleDown().into(mImageView);
+            //Glide.with(this).load(mImageUri).into(mImageView);
+
+            Picasso.with(getApplicationContext()).load("this"+mImageUri).resize(250, 250).into(mImageView);
         }
     }
 
-    private String getUsername(){
+    private String getUsername() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         String emailUser = null;
         if (user != null) {
@@ -277,7 +266,7 @@ public class PopUp extends AppCompatActivity {
         return emailUser;
     }
 
-    private String getUserEmail(){
+    private String getUserEmail() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         String email = null;
         if (user != null) {
@@ -286,28 +275,28 @@ public class PopUp extends AppCompatActivity {
         return email;
     }
 
-    private boolean checkDuplicateData(String commentBox, DataSnapshot dataSnapshot){
+    private boolean checkDuplicateData(String commentBox, DataSnapshot dataSnapshot) {
         Upload upload = new Upload();
-        for(DataSnapshot ds: dataSnapshot.getChildren()){
-            upload.setName(ds.getValue(Upload.class).getName());
-            if(upload.getName().equals(commentBox)){
+        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+            upload.setName(Objects.requireNonNull(ds.getValue(Upload.class)).getName());
+            if (upload.getName().equals(commentBox)) {
                 return true;
             }
         }
         return false;
     }
 
-    private void finalCheck(){
+    private void finalCheck() {
         firebaseHolder.getDatabaseReferenceForReport().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(checkDuplicateData(mEditText.getText().toString().toLowerCase(), dataSnapshot)){
-                    Toast.makeText(PopUp.this, "Someone has already posted similar post, try another one!", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                if (checkDuplicateData(mEditText.getText().toString().toLowerCase(), dataSnapshot)) {
+                    Toast.makeText(PopUp.this, getResources().getString(R.string.similar_post), Toast.LENGTH_SHORT).show();
+                } else {
                     uploadFile();
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -333,9 +322,9 @@ public class PopUp extends AppCompatActivity {
                                     mProgressBar.setProgress(0);
                                 }
                             }, 2000);
-                            Toast.makeText(PopUp.this, "Upload successful", Toast.LENGTH_LONG).show();
+                            Toast.makeText(PopUp.this, getResources().getString(R.string.upload_successful), Toast.LENGTH_LONG).show();
                             Upload upload = new Upload(mEditText.getText().toString().toLowerCase(),
-                                    taskSnapshot.getDownloadUrl().toString(),
+                                    Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(),
                                     getUsername(),
                                     spinnerSnow,
                                     spinnerSurface,
@@ -349,7 +338,7 @@ public class PopUp extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(PopUp.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PopUp.this, getResources().getString(R.string.error) + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -360,13 +349,15 @@ public class PopUp extends AppCompatActivity {
                         }
                     });
         } else {
-            Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.upload_image), Toast.LENGTH_SHORT).show();
         }
     }
 
     public void onCreate() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
     }
 }
 

@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class TrailMap extends Fragment {
     private InternetConnection internetConnection = new InternetConnection();
-    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
     private ArrayList<String> trailMapList = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;

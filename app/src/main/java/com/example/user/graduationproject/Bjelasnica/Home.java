@@ -51,9 +51,10 @@ public class Home extends AppCompatActivity {
 
     private ArrayList<AllMountainInformationHolder> arrayList = new ArrayList<>();
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private FirebaseHolder firebaseHolder = new FirebaseHolder(this);
     private InternetConnection internetConnection = new InternetConnection();
     private HomeAdapter homeAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class Home extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         };
-        
+
     }
 
     private void saveUserReportPreferences(ArrayList<AllMountainInformationHolder> allMountainInformationHolders){

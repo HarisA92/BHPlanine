@@ -12,6 +12,7 @@ import com.example.user.graduationproject.Bjelasnica.Fragments.Weather;
 import com.example.user.graduationproject.Bjelasnica.Fragments.Webcams;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
+
     private int numberOfTabs;
 
     public ViewPagerAdapter(final FragmentManager fm, final int numberOfTabs) {

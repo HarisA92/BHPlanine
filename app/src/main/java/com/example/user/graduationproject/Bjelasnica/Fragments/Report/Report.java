@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Report extends Fragment{
-    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
     private ImageReportAdapter mAdapter;
     private ArrayList<Upload> mUploads = new ArrayList<>();
     private InternetConnection connection = new InternetConnection();

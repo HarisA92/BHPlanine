@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.user.graduationproject.Bjelasnica.Fragments.Report.Report;
 import com.example.user.graduationproject.Bjelasnica.Main;
 import com.example.user.graduationproject.Bjelasnica.Utils.AllMountainInformationHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.Mountain;
@@ -23,8 +22,6 @@ import java.util.ArrayList;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
-    private Context context;
-    private ArrayList<AllMountainInformationHolder> allMountainInformationHolders;
     private static final String SARAJEVO = "Sarajevo";
     private static final String JAHORINA = "Jahorina";
     private static final String RAVNA_PLANINA = "Pale";
@@ -50,6 +47,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private static String IGMAN_CJENOVNIK = "Igman_cjenovnik";
     private static String IGMAN_GALLERY = "Igman_Gallery";
     private static String IGMAN_TRAIL_MAP = "Igman_trail_map";
+    private Context context;
+    private ArrayList<AllMountainInformationHolder> allMountainInformationHolders;
 
     public HomeAdapter(Context context, ArrayList<AllMountainInformationHolder> allMountainInformationHolders) {
         this.context = context;
@@ -76,30 +75,37 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.name_of_mountain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(holder.name_of_mountain.getText().toString().equals("Jahorina")){
-                    Intent intent = new Intent(context, Main.class);
-                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA, JAHORINA_WEB_CAMS, JAHORINA_CJENOVNIK, JAHORINA_GALLERY,JAHORINA_TRAIL_MAP));
-                    context.startActivity(intent);
-                }
-                else if(holder.name_of_mountain.getText().toString().equals("Bjelasnica")){
-                    Intent intent = new Intent(context, Main.class);
-                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, BJELASNICA_WEB_CAMS, BJELASNICA_CJENOVNIK, BJELASNICA_GALLERY,BJELASNICA_TRAIL_MAP));
-                    context.startActivity(intent);
-                }
-                else if(holder.name_of_mountain.getText().toString().equals("Ravna Planina")){
-                    Intent intent = new Intent(context, Main.class);
-                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.RAVNAPLANINA, RAVNA_PLANINA, RAVNAPLANINA_WEB_CAMS, RAVNAPLANINA_CJENOVNIK, RAVNAPLANINA_GALLERY, RAVNAPLANINA_TRAIL_MAP));
-                    context.startActivity(intent);
-                }
-                else if(holder.name_of_mountain.getText().toString().equals("Igman")){
-                    Intent intent = new Intent(context, Main.class);
-                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.IGMAN, IGMAN, IGMAN_WEB_CAMS, IGMAN_CJENOVNIK, IGMAN_GALLERY, IGMAN_TRAIL_MAP));
-                    context.startActivity(intent);
-                }
-                else if(holder.name_of_mountain.getText().toString().equals("Vlasic")){
-                    Intent intent = new Intent(context, Main.class);
-                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.VLASIC, VLASIC, VLASIC_WEB_CAMS, VLASIC_CJENOVNIK, VLASIC_GALLERY, VLASIC_TRAIL_MAP));
-                    context.startActivity(intent);
+                switch (holder.name_of_mountain.getText().toString()) {
+                    case "Jahorina": {
+                        Intent intent = new Intent(context, Main.class);
+                        SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, JAHORINA, JAHORINA_WEB_CAMS, JAHORINA_CJENOVNIK, JAHORINA_GALLERY, JAHORINA_TRAIL_MAP));
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case "Bjelasnica": {
+                        Intent intent = new Intent(context, Main.class);
+                        SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, SARAJEVO, BJELASNICA_WEB_CAMS, BJELASNICA_CJENOVNIK, BJELASNICA_GALLERY, BJELASNICA_TRAIL_MAP));
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case "Ravna Planina": {
+                        Intent intent = new Intent(context, Main.class);
+                        SkiResortHolder.setSkiResort(new SkiResort(Mountain.RAVNAPLANINA, RAVNA_PLANINA, RAVNAPLANINA_WEB_CAMS, RAVNAPLANINA_CJENOVNIK, RAVNAPLANINA_GALLERY, RAVNAPLANINA_TRAIL_MAP));
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case "Igman": {
+                        Intent intent = new Intent(context, Main.class);
+                        SkiResortHolder.setSkiResort(new SkiResort(Mountain.IGMAN, IGMAN, IGMAN_WEB_CAMS, IGMAN_CJENOVNIK, IGMAN_GALLERY, IGMAN_TRAIL_MAP));
+                        context.startActivity(intent);
+                        break;
+                    }
+                    case "Vlasic": {
+                        Intent intent = new Intent(context, Main.class);
+                        SkiResortHolder.setSkiResort(new SkiResort(Mountain.VLASIC, VLASIC, VLASIC_WEB_CAMS, VLASIC_CJENOVNIK, VLASIC_GALLERY, VLASIC_TRAIL_MAP));
+                        context.startActivity(intent);
+                        break;
+                    }
                 }
             }
         });
@@ -111,6 +117,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         private TextView base_cm, lifts_open, trails_open, snowfall, location_of_mountain;
         private Button name_of_mountain;
 

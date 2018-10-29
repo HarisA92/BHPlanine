@@ -52,7 +52,7 @@ import static com.google.firebase.database.FirebaseDatabase.getInstance;
 
 public class LiftTickets extends Fragment {
     private InternetConnection internetConnection = new InternetConnection();
-    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
     private ArrayList<LiftTicketHolder> arrayList = new ArrayList<>();
     private LiftTicketAdapter liftTicketAdapter;
     private RecyclerView mRecyclerView;

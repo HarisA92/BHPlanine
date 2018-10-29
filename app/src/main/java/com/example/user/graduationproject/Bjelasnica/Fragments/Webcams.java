@@ -33,7 +33,7 @@ import java.util.List;
 
 
 public class Webcams extends Fragment {
-    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
     private InternetConnection internetConnection = new InternetConnection();
     private List<WebCamLinks> list = new ArrayList<>();
     private String han_url;

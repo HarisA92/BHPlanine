@@ -142,5 +142,44 @@
     <string name="Sign_out">Sign out</string>
     <string name="title_activity_zoom_image_trail_map">ZoomImageTrailMap</string>
 
+    <!-- String where are located in adapters -->
+    <string name="WIDTH">"1920"</string>
+    <string name="HEIGHT">"1080"</string>
+    <string name="POSITION">"POSITION"</string>
+
+    <!-- String where are located in firebase -->
+    <string name="mountain_information">"MountainInformation"</string>
+
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="upload_in_progress">Upload in progress..</string>
+    <string name="blank_space">-</string>
+    <string name="size_5cm">5cm</string>
+    <string name="size_10cm">10cm</string>
+    <string name="size_15cm">15cm</string>
+    <string name="size_20cm">20cm</string>
+    <string name="size_25cm">25cm</string>
+    <string name="size_30cm">30cm</string>
+    <string name="size_40cm">40cm</string>
+    <string name="machine_groomed">Machine Groomed</string>
+    <string name="powder">Powder</string>
+    <string name="wet">Wet</string>
+    <string name="icy">Icy</string>
+    <string name="variable">Variable</string>
+    <string name="hard_packed">Hard Packed</string>
+
+    <string name="on_save_instance_state">editTextIsSaved</string>
+    <string name="fileprovider_photo_capture">com.example.android.fileprovider</string>
+    <string name="add_image">Add Image</string>
+    <string name="add_gallery_image">image/*</string>
+    <string name="photo_permission">Permission granted!</string>
+    <string name="similar_post">Someone has already posted similar post, try another one!</string>
+    <string name="upload_successful">Upload successful!</string>
+    <string name="upload_image">Can\'t post a report without image</string>
+    <string name="error">Error</string>
+
+
 
 </resources>

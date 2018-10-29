@@ -49,7 +49,7 @@ import static com.facebook.share.internal.ShareConstants.IMAGE_URL;
 
 public class Gallery extends Fragment {
     private InternetConnection internetConnection = new InternetConnection();
-    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private GalleryAdapter galleryAdapter;

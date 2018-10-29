@@ -30,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class WebCam extends AppCompatActivity {
-    private FirebaseHolder firebaseHolder = new FirebaseHolder();
+    private FirebaseHolder firebaseHolder = new FirebaseHolder(this);
     private InternetConnection internetConnection = new InternetConnection();
     private ProgressDialog pDialog;
     private VideoView videoview;

@@ -1,8 +1,6 @@
 package com.example.user.graduationproject.Bjelasnica.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -16,15 +14,14 @@ import com.example.user.graduationproject.Bjelasnica.Utils.LiftTicketHolder;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import static com.fasterxml.jackson.databind.jsonFormatVisitors.JsonValueFormat.COLOR;
-
 public class LiftTicketAdapter extends RecyclerView.Adapter<LiftTicketAdapter.ViewHolder> {
+
     private Context context;
     private ArrayList<LiftTicketHolder> list;
-
+    private String title;
+    private String url;
 
     public LiftTicketAdapter(Context context, ArrayList<LiftTicketHolder> list) {
         this.context = context;
@@ -55,14 +52,12 @@ public class LiftTicketAdapter extends RecyclerView.Adapter<LiftTicketAdapter.Vi
         holder.petodnevna.setText(liftTicketsHolder.getPetodnevna());
         holder.napomena_text.setText(liftTicketsHolder.getText_napomena());
 
-        String title = SkiResortHolder.getSkiResort().getMountain().getValue();
-        String url = liftTicketsHolder.getNapomena_web_stranica();
-        //holder.napomena_web_stranica.setText(liftTicketsHolder.getNapomena_web_stranica());
+        title = SkiResortHolder.getSkiResort().getMountain().getValue();
+        url = liftTicketsHolder.getNapomena_web_stranica();
         final String ulr1 = "<a href=" + url + ">" + title + "</a>";
         holder.napomena_web_stranica.setMovementMethod(LinkMovementMethod.getInstance());
         holder.napomena_web_stranica.setText(Html.fromHtml(ulr1));
         holder.napomena_web_stranica.setClickable(true);
-        //holder.napomena_web_stranica.setTextColor(COLOR.hashCode());
         holder.djecija_cetiri_sata.setText(liftTicketsHolder.getDjeca_cetirisata());
         holder.djecija_cetvero_dnevna.setText(liftTicketsHolder.getDjeca_cetverodnevna());
         holder.djecija_deseto_dnevna.setText(liftTicketsHolder.getDjeca_desetodnevna());
@@ -95,16 +90,13 @@ public class LiftTicketAdapter extends RecyclerView.Adapter<LiftTicketAdapter.Vi
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView dnevna_karta, cetiri_sata, cetvero_dnevna, deseto_dnevna, desetodnevna_sezona, dvodnevna
-                , petodnevna, petodnevna_sezona, pojedinacna_karta, sedmodnevna, tackice_sezona, trodnevna_karta
-                , napomena_web_stranica, napomena_text;
-
-        TextView djecija_dnevna_karta, djecija_cetiri_sata, djecija_cetvero_dnevna, djecija_deseto_dnevna
-                , djecija_desetodnevna_sezona, djecija_dvodnevna, djecija_petodnevna, djecija_petodnevna_sezona
-                , djecija_pojedinacna_karta, djecija_sedmodnevna, djecija_tackice_sezona, djecija_trodnevna_karta;
-
+        TextView dnevna_karta, cetiri_sata, cetvero_dnevna, deseto_dnevna, desetodnevna_sezona, dvodnevna,
+                petodnevna, petodnevna_sezona, pojedinacna_karta, sedmodnevna, tackice_sezona, trodnevna_karta,
+                napomena_web_stranica, napomena_text;
+        TextView djecija_dnevna_karta, djecija_cetiri_sata, djecija_cetvero_dnevna, djecija_deseto_dnevna,
+                djecija_desetodnevna_sezona, djecija_dvodnevna, djecija_petodnevna, djecija_petodnevna_sezona,
+                djecija_pojedinacna_karta, djecija_sedmodnevna, djecija_tackice_sezona, djecija_trodnevna_karta;
         TextView sezonska, predsezonska, porodicniPaket, babylift, nocno;
-
         TextView djecija_sezonska, djecija_predsezonska, djecija_porodicniPaket, djecija_babylift, djecija_nocno;
 
         public ViewHolder(View itemView) {
