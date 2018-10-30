@@ -27,14 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:tooltipText="Send an email"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:fabSize="normal"
-        android:innerRadius="0dp"
-        android:backgroundTint="@color/brand_main"
-        app:srcCompat="@drawable/baseline_add_white_36dp"
-        app:borderWidth="0dp"/>
+         />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"

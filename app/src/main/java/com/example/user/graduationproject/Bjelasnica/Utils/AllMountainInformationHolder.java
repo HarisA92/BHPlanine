@@ -7,6 +7,11 @@ public class AllMountainInformationHolder {
     private String trails_open;
     private String location_of_mountain;
     private String name_of_mountain;
+    private String opening_date;
+
+    public String getOpening_date() {
+        return opening_date;
+    }
 
     public String getBase_depth() {
         return base_depth;
