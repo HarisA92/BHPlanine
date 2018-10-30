@@ -113,7 +113,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return allMountainInformationHolders.size();
+        try{
+            return allMountainInformationHolders.size();
+        }catch (Exception ignored){
+
+        }
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

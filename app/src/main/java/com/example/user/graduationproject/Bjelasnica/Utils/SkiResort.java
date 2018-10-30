@@ -9,6 +9,15 @@ public class SkiResort {
     private final String gallery;
     private final String trailMap;
 
+    public SkiResort(Mountain mountain, String city, String liveStream, String ticketPrice, String gallery, String trailMap) {
+        this.mountain = mountain;
+        this.city = city;
+        this.liveStream = liveStream;
+        this.ticketPrice = ticketPrice;
+        this.gallery = gallery;
+        this.trailMap = trailMap;
+    }
+
     public String getTrailMap() {
         return trailMap;
     }
@@ -25,20 +34,11 @@ public class SkiResort {
         return city;
     }
 
-    public String getLiveStream(){
+    public String getLiveStream() {
         return liveStream;
     }
 
-    public String getTicketPriceList(){
+    public String getTicketPriceList() {
         return ticketPrice;
-    }
-
-    public SkiResort(Mountain mountain, String city, String liveStream, String ticketPrice, String gallery, String trailMap) {
-        this.mountain = mountain;
-        this.city = city;
-        this.liveStream = liveStream;
-        this.ticketPrice = ticketPrice;
-        this.gallery = gallery;
-        this.trailMap = trailMap;
     }
 }

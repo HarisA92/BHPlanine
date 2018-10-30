@@ -1,8 +1,7 @@
 package com.example.user.graduationproject.Bjelasnica.Utils;
 
-import com.google.firebase.database.Exclude;
-
 public class Upload {
+
     private String mName;
     private String mImageUrl;
     private String mKey;

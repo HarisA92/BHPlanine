@@ -1,24 +1,33 @@
 package com.example.user.graduationproject.Bjelasnica.JSONWeather.Client;
 
+import android.content.Context;
+
 import com.example.user.graduationproject.Bjelasnica.JSONWeather.Model.WeatherResult;
+import com.example.user.graduationproject.BuildConfig;
+import com.example.user.graduationproject.R;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WeatherClient {
-    private static final String BASE_URL = "http://api.openweathermap.org";
-    private static final String APP_ID = "f286ae1cbd2243b2ef4d50959abb4b57";
-    private static final String METRIC_UNITS = "Metric";
+
+    private Context context;
 
     private final WeatherService weatherService =
             new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+                    .baseUrl("http://api.openweathermap.org")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
                     .create(WeatherService.class);
 
+    public WeatherClient(Context context) {
+        this.context = context;
+    }
+
     public Call<WeatherResult> getWeather(final String location) {
-        return weatherService.getWeather(location, APP_ID, METRIC_UNITS);
+        return weatherService.getWeather(location, BuildConfig.ApiKey_Weather, context.getResources().getString(R.string.METRIC_UNITS));
     }
 }

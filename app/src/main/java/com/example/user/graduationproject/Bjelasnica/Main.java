@@ -9,8 +9,11 @@ import com.example.user.graduationproject.Bjelasnica.Adapters.ViewPagerAdapter;
 import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
 
+import java.util.Objects;
+
 public class Main extends AppCompatActivity {
-    final int[] ICONS = new int[]{
+
+    private final int[] ICONS = new int[]{
             R.drawable.report,
             R.drawable.weatherwhite,
             R.drawable.webcam,
@@ -23,8 +26,8 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
+        final ViewPager viewPager = findViewById(R.id.pager);
+        TabLayout tabLayout = findViewById(R.id.tablayout);
         tabLayout.addTab(tabLayout.newTab().setText("Report"));
         tabLayout.addTab(tabLayout.newTab().setText("Weather"));
         tabLayout.addTab(tabLayout.newTab().setText("Webcams"));
@@ -32,12 +35,12 @@ public class Main extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Lift Tickets"));
         tabLayout.addTab(tabLayout.newTab().setText("Gallery"));
         tabLayout.setTabMode(TabLayout.GRAVITY_FILL);
-        tabLayout.getTabAt(0).setIcon(ICONS[0]);
-        tabLayout.getTabAt(1).setIcon(ICONS[1]);
-        tabLayout.getTabAt(2).setIcon(ICONS[2]);
-        tabLayout.getTabAt(3).setIcon(ICONS[3]);
-        tabLayout.getTabAt(4).setIcon(ICONS[4]);
-        tabLayout.getTabAt(5).setIcon(ICONS[5]);
+        Objects.requireNonNull(tabLayout.getTabAt(0)).setIcon(ICONS[0]);
+        Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(ICONS[1]);
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(ICONS[2]);
+        Objects.requireNonNull(tabLayout.getTabAt(3)).setIcon(ICONS[3]);
+        Objects.requireNonNull(tabLayout.getTabAt(4)).setIcon(ICONS[4]);
+        Objects.requireNonNull(tabLayout.getTabAt(5)).setIcon(ICONS[5]);
 
         Main.this.setTitle(SkiResortHolder.getSkiResort().getMountain().getValue());
 

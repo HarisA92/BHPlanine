@@ -33,7 +33,7 @@
         app:fabSize="normal"
         android:innerRadius="0dp"
         android:backgroundTint="@color/brand_main"
-        app:srcCompat="@drawable/white_pencil"
+        app:srcCompat="@drawable/baseline_add_white_36dp"
         app:borderWidth="0dp"/>
 
     <android.support.v7.widget.RecyclerView

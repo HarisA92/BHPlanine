@@ -1,9 +1,9 @@
 package com.example.user.graduationproject.Bjelasnica.Utils;
 
 public class WebCamLinks {
+
     private String bjelasnica_han;
     private String jahorina_lavina;
-
 
     public String getBjelasnica_han() {
         return bjelasnica_han;

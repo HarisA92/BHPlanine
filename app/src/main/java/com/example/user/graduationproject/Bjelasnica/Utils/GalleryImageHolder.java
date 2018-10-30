@@ -1,6 +1,7 @@
 package com.example.user.graduationproject.Bjelasnica.Utils;
 
 public class GalleryImageHolder {
+
     private String imageId;
 
     public GalleryImageHolder(String imageId) {

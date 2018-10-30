@@ -19,7 +19,7 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
 
     private List<WeatherDay> weatherDays;
     private Context context;
-    Typeface weatherFont;
+    private Typeface weatherFont;
 
     public RecyclerWeather(List<WeatherDay> WeatherDays, Context mContext, Typeface WeatherFont) {
         weatherDays = WeatherDays;
@@ -37,8 +37,8 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
     @Override
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, int position) {
         WeatherDay weather = weatherDays.get(position);
-        int a = 0;
         holder.weather_icon.setTypeface(weatherFont);
+        int a = 0;
         switch (weather.getWeather().get(a).getIcon()) {
             case "01d":
                 holder.weather_icon.setText(R.string.wi_day_sunny);
@@ -92,7 +92,7 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
         String dateInMonth = parts[2];
         holder.time.setText(day + " " + Date + " " + dateInMonth);
         String setDescription = weather.getWeather().get(a).getDescription();
-        String getDescription = setDescription.substring(0,1).toUpperCase() + setDescription.substring(1);
+        String getDescription = setDescription.substring(0, 1).toUpperCase() + setDescription.substring(1);
         holder.description.setText(getDescription);
         double temp = weather.getMain().getTemp();
         int temperature = (int) temp;
@@ -103,19 +103,20 @@ public class RecyclerWeather extends RecyclerView.Adapter<RecyclerWeather.Weathe
 
     @Override
     public int getItemCount() {
-        try{
+        try {
             return weatherDays.size();
-        }catch (java.lang.NullPointerException exception){ }
+        } catch (java.lang.NullPointerException ignored) {
+        }
         return 0;
     }
 
-    public class WeatherViewHolder extends RecyclerView.ViewHolder {
+    class WeatherViewHolder extends RecyclerView.ViewHolder {
         TextView description;
         TextView time;
         TextView weather_icon;
         TextView temp;
 
-        public WeatherViewHolder(View itemView) {
+        WeatherViewHolder(View itemView) {
             super(itemView);
             description = itemView.findViewById(R.id.description);
             temp = itemView.findViewById(R.id.temperature);

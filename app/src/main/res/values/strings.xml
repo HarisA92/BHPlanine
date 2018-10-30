@@ -139,7 +139,7 @@
     <string name="facebook_app_id">2186655648072526</string>
     <string name="fb_login_protocol_scheme">fb2186655648072526</string>
 
-    <string name="Sign_out">Sign out</string>
+    <string name="Sign_out">Logged out</string>
     <string name="title_activity_zoom_image_trail_map">ZoomImageTrailMap</string>
 
     <!-- String where are located in adapters -->
@@ -150,6 +150,7 @@
     <!-- String where are located in firebase -->
     <string name="mountain_information">"MountainInformation"</string>
 
+    <!-- String where are located in popup.class -->
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="cancel">Cancel</string>
@@ -180,6 +181,26 @@
     <string name="upload_image">Can\'t post a report without image</string>
     <string name="error">Error</string>
 
+    <!-- String where are located in report fragment -->
+    <string name="connect_internet">Make sure your device is connected to the internet in order to continue.</string>
+    <string name="sharedPreferences">sharedPreferences</string>
+    <string name="sharedPreferences_list">list</string>
+    <string name="PATH_TO_WEATHER_FONT">fonts/weather.ttf</string>
+    <string name="LOCATION_AND_COUNTRY_CODE">%s,BA</string>
+    <string name="URL_LINK">URL_LINK</string>
+
+    <!-- String where are located in weather JSON -->
+
+    <string name="BASE_URL">http://api.openweathermap.org</string>
+    <string name="APP_ID">f286ae1cbd2243b2ef4d50959abb4b57</string>
+    <string name="METRIC_UNITS">Metric</string>
+    <string name="EMAIL">Email</string>
+
+    <!--  -->
+
+    <string name="log_in">Sucessfully logged!</string>
+    <string name="log_in_failed">Authentication failed:</string>
+    <string name="contact_us">Contact us</string>
 
 
 </resources>

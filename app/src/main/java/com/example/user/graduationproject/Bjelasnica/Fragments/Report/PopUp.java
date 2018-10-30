@@ -242,8 +242,8 @@ public class PopUp extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST) {
             if (resultCode == RESULT_OK) {
+                Glide.with(this).load(imageFilePath).into(mImageView);
                 mImageUri = Uri.parse(imageFilePath);
-                Picasso.with(getApplicationContext()).load("this"+mImageUri).into(mImageView);
             } else if (resultCode == RESULT_CANCELED) {
 
             }
@@ -251,9 +251,7 @@ public class PopUp extends AppCompatActivity {
             mImageUri = data.getData();
             String path = getPath(this.getApplicationContext(), mImageUri);
             mImageUri = Uri.parse(path);
-            //Glide.with(this).load(mImageUri).into(mImageView);
-
-            Picasso.with(getApplicationContext()).load("this"+mImageUri).resize(250, 250).into(mImageView);
+            Glide.with(this).load(path).into(mImageView);
         }
     }
 

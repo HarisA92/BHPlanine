@@ -1,6 +1,7 @@
 package com.example.user.graduationproject.Bjelasnica.Utils;
 
 public class LiftTicketHolder {
+
     private String pojedinacna_karta;
     private String dnevna_karta;
     private String cetirisata;

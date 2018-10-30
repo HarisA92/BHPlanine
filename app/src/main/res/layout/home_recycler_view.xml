@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -13,7 +14,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text="Naziv Planine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:text="BASE DEPTH"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,7 +52,7 @@
                 android:layout_marginTop="4dp"
                 android:text="-"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/base_depth" />
 
@@ -64,7 +64,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="Babin Do"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/base_cm" />
@@ -81,12 +81,12 @@
 
             <TextView
                 android:id="@+id/recent_snowfall"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="RECENT SNOWFALL"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/mountain_base_depth"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -98,7 +98,7 @@
                 android:layout_marginTop="4dp"
                 android:text="-"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 app:layout_constraintStart_toEndOf="@+id/mountain_base_depth"
                 app:layout_constraintTop_toBottomOf="@+id/recent_snowfall" />
 
@@ -108,8 +108,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="24h"
-                android:textSize="10dp"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/mountain_base_depth"
                 app:layout_constraintTop_toBottomOf="@+id/snowfall_cm" />
 
@@ -149,7 +151,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="10dp"
                 android:text="LIFTS OPEN"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -161,7 +163,7 @@
                 android:layout_marginTop="4dp"
                 android:text="-"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lifts_open" />
 
@@ -173,7 +175,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="of 5"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lifts_number" />
@@ -195,7 +197,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="TRAILS OPEN"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/ski_lifts_open"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -207,7 +209,7 @@
                 android:layout_marginTop="8dp"
                 android:text="-"
                 android:textColor="@color/colorPrimary"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 app:layout_constraintStart_toEndOf="@+id/ski_lifts_open"
                 app:layout_constraintTop_toBottomOf="@+id/trails_open" />
 
@@ -219,7 +221,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="of 7"
-                android:textSize="10dp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ski_lifts_open"
                 app:layout_constraintTop_toBottomOf="@+id/trails_opened" />

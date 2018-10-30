@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="#E0E0E0"
     tools:context="com.example.user.graduationproject.Bjelasnica.Home">
 
@@ -17,4 +17,17 @@
             app:layout_constraintTop_toTopOf="parent">
         </android.support.v7.widget.RecyclerView>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:fabSize="normal"
+            android:innerRadius="0dp"
+            android:backgroundTint="@color/brand_main"
+            app:srcCompat="@drawable/baseline_mail_white_36dp"
+            app:borderWidth="0dp"/>
 </android.support.constraint.ConstraintLayout>

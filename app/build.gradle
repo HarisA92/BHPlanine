@@ -11,9 +11,20 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField 'String', "ApiKey", Google_signIn_api
+            resValue 'string', "api_key", Google_signIn_api
+            buildConfigField 'String', "ApiKey_Weather", Openweather_api
+            resValue 'string', "api_key_weather", Openweather_api
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', "ApiKey", Google_signIn_api
+            resValue 'string', "api_key", Google_signIn_api
+            buildConfigField 'String', "ApiKey_Weather", Openweather_api
+            resValue 'string', "api_key_weather", Openweather_api
         }
     }
     buildToolsVersion '28.0.3'
