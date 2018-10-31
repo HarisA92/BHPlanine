@@ -186,7 +186,8 @@
     <string name="sharedPreferences">sharedPreferences</string>
     <string name="sharedPreferences_list">list</string>
     <string name="PATH_TO_WEATHER_FONT">fonts/weather.ttf</string>
-    <string name="LOCATION_AND_COUNTRY_CODE">%s,BA,%s</string>
+    <string name="LOCATION_AND_COUNTRY_CODE">%s,BA, %s</string>
+    <string name="LANGUAGE">hr</string>
 
 
     <string name="URL_LINK">URL_LINK</string>
