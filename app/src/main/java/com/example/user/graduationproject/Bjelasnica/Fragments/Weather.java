@@ -37,7 +37,7 @@ public class Weather extends Fragment {
     private List<WeatherDay> days;
     private List<WeatherDay> day;
     private Typeface weatherFont;
-    private String language = "hr";
+    private static String language = "hr";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -90,7 +90,7 @@ public class Weather extends Fragment {
     }
 
     private static String getLocation(View v) {
-        return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity());
+        return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity(), language);
     }
 
     private void buildRecyclerView(View v) {
