@@ -6,12 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".Bjelasnica.Fragments.Weather">
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/weather_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </android.support.v7.widget.RecyclerView>
 
     <android.support.v7.widget.RecyclerView
@@ -22,7 +20,6 @@
         android:layout_alignParentTop="true"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="216dp">
-
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

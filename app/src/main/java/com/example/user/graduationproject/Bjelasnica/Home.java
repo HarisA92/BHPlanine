@@ -65,7 +65,6 @@ public class Home extends AppCompatActivity {
             buildRecyclerView();
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener(homeAdapter, arrayList));
         } else {
-            Toast.makeText(this, getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             try {
                 loadUserReportPreferences();
                 buildRecyclerView();

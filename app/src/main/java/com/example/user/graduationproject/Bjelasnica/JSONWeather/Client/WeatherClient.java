@@ -27,7 +27,7 @@ public class WeatherClient {
         this.context = context;
     }
 
-    public Call<WeatherResult> getWeather(final String location) {
-        return weatherService.getWeather(location, BuildConfig.ApiKey_Weather, context.getResources().getString(R.string.METRIC_UNITS));
+    public Call<WeatherResult> getWeather(final String location, final String language) {
+        return weatherService.getWeather(location, language, BuildConfig.ApiKey_Weather, context.getResources().getString(R.string.METRIC_UNITS));
     }
 }

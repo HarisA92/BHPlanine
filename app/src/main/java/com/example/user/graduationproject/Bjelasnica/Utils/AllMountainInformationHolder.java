@@ -8,6 +8,16 @@ public class AllMountainInformationHolder {
     private String location_of_mountain;
     private String name_of_mountain;
     private String opening_date;
+    private String lifts_open_of;
+    private String trails_open_of;
+
+    public String getTrails_open_of() {
+        return trails_open_of;
+    }
+
+    public String getLifts_open_of() {
+        return lifts_open_of;
+    }
 
     public String getOpening_date() {
         return opening_date;

@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/relativeLayout"
     android:background="@drawable/animation_welcome_screen"
     tools:context="com.example.user.graduationproject.Bjelasnica.WelcomeScreen">
 
@@ -17,12 +17,13 @@
         android:layout_marginBottom="0dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="113dp"
+            android:id="@+id/welcome_screen_logo"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
-            android:src="@drawable/welcome_photo"
+            android:src="@drawable/welcome_photo_logo"
             app:layout_constraintBottom_toTopOf="@+id/facebook_sign_in"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -38,10 +39,10 @@
             android:layout_marginBottom="8dp"
             android:background="@null"
             android:backgroundTint="#3B5998"
-            android:drawableLeft="@drawable/facebook_icon"
+            android:drawableStart="@drawable/facebook_logo"
             android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Log in with Facebook"
+            android:paddingStart="8dp"
+            android:text="@string/welcome_screen_facebook"
             android:textAllCaps="false"
             android:textColor="#FFFF"
             app:layout_constraintBottom_toTopOf="@+id/textView"
@@ -59,12 +60,12 @@
             android:layout_marginEnd="8dp"
             android:background="@null"
             android:backgroundTint="#ffff"
-            android:drawableLeft="@drawable/google_icon"
+            android:drawableStart="@drawable/google_logo"
             android:gravity="center"
-            android:paddingLeft="8dp"
-            android:text="Log in with Google"
+            android:paddingStart="8dp"
+            android:text="@string/welcome_screen_google"
             android:textAllCaps="false"
-            android:textColor="#FFFF"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -77,7 +78,7 @@
             android:layout_marginStart="2dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="165dp"
-            android:background="#FFFFFF"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.192"
@@ -93,8 +94,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="160dp"
-            android:text="OR"
-            android:textColor="#FFFF"
+            android:text="@string/welcome_screen_or"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -107,13 +108,12 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="2dp"
             android:layout_marginBottom="165dp"
-            android:background="#FFFFFF"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView"
             app:layout_constraintHorizontal_bias="0.81"
             app:layout_constraintStart_toStartOf="parent" />
     </android.support.constraint.ConstraintLayout>
-
 
 
 </RelativeLayout>

@@ -8,9 +8,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.user.graduationproject.BuildConfig;
 import com.example.user.graduationproject.R;
 import com.facebook.AccessToken;
@@ -56,6 +58,7 @@ public class WelcomeScreen extends AppCompatActivity {
         animationDrawable.setExitFadeDuration(2000);
         mAuth = FirebaseAuth.getInstance();
         mCallbackManager = CallbackManager.Factory.create();
+        ImageView logo = findViewById(R.id.welcome_screen_logo);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(BuildConfig.ApiKey)

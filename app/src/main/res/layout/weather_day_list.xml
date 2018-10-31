@@ -19,7 +19,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:textSize="50dp"
+            android:textSize="50sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,8 +31,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="18dp"
             android:gravity="center"
-            android:text="Descript"
-            android:textSize="20dp"
+            android:textSize="17sp"
             app:layout_constraintStart_toEndOf="@+id/temperature"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,9 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="14dp"
-            android:text="time"
             android:gravity="center"
-            android:textSize="15dp"
+            android:textSize="15sp"
             app:layout_constraintStart_toEndOf="@+id/temperature"
             app:layout_constraintTop_toBottomOf="@+id/description" />
 
@@ -56,8 +54,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:text="temp"
-            android:textSize="35dp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

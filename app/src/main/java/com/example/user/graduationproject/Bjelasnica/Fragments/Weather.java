@@ -37,6 +37,7 @@ public class Weather extends Fragment {
     private List<WeatherDay> days;
     private List<WeatherDay> day;
     private Typeface weatherFont;
+    private String language = "hr";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
