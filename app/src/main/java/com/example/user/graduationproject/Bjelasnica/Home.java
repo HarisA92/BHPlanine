@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.HomeAdapter;
@@ -41,12 +42,14 @@ public class Home extends AppCompatActivity {
     private FirebaseHolder firebaseHolder = new FirebaseHolder(this);
     private InternetConnection internetConnection = new InternetConnection();
     private HomeAdapter homeAdapter;
+    private ProgressBar mProgressCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        mProgressCircle = findViewById(R.id.progress_circle);
         FloatingActionButton floatingActionButton = findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +71,7 @@ public class Home extends AppCompatActivity {
             try {
                 loadUserReportPreferences();
                 buildRecyclerView();
+                mProgressCircle.setVisibility(View.INVISIBLE);
             } catch (Exception ignored) {
             }
         }
@@ -90,6 +94,7 @@ public class Home extends AppCompatActivity {
                     }
                 }
                 adapter.notifyDataSetChanged();
+                mProgressCircle.setVisibility(View.INVISIBLE);
             }
 
             @Override

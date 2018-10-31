@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/space">
 
 
     <android.support.v7.widget.CardView
@@ -28,10 +29,10 @@
                 android:layout_width="104dp"
                 android:layout_height="28dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="34dp"
+                android:layout_marginTop="35dp"
                 android:gravity="center"
-                android:text="New Snow:  "
-                android:textColor="@color/colorPrimary"
+                android:paddingRight="4dp"
+                android:text="@string/popup_snow"
                 android:textSize="17dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,7 +46,7 @@
                 android:textColorHint="#05ab9a"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:met_floatingLabel="normal" />
+                app:met_floatingLabel="normal"/>
 
             <TextView
                 android:id="@+id/textSurface"
@@ -55,8 +56,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
-                android:text="Surface:"
-                android:textColor="@color/colorPrimary"
+                android:text="@string/popup_surface"
                 android:textSize="17dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +106,8 @@
                 app:counterMaxLength="150"
                 app:hintTextAppearance="@style/MyHintText"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
                     android:id="@+id/CommentBox"
@@ -132,7 +133,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:textColorHint="@color/colorPrimary"
                 android:textSize="17dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -143,10 +143,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
         app:layout_constraintStart_toEndOf="@+id/AddPhoto"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 

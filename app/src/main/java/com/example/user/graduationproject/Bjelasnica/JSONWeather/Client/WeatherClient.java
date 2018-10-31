@@ -28,6 +28,6 @@ public class WeatherClient {
     }
 
     public Call<WeatherResult> getWeather(final String location) {
-        return weatherService.getWeather(location, BuildConfig.ApiKey_Weather,context.getResources().getString(R.string.LANGUAGE) , context.getResources().getString(R.string.METRIC_UNITS));
+        return weatherService.getWeather(location, BuildConfig.ApiKey_Weather, context.getResources().getString(R.string.METRIC_UNITS));
     }
 }

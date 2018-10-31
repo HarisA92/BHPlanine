@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.JSONWeather.Client.WeatherClient;
@@ -37,7 +38,6 @@ public class Weather extends Fragment {
     private List<WeatherDay> days;
     private List<WeatherDay> day;
     private Typeface weatherFont;
-    private static String language = "hr";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class Weather extends Fragment {
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         WeatherClient weatherClient = new WeatherClient(getActivity());
         InternetConnection connection = new InternetConnection();
-
+        final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
         if (connection.getInternetConnection()) {
             weatherClient.getWeather(getLocation(v))
                     .enqueue(new Callback<WeatherResult>() {
@@ -71,6 +71,7 @@ public class Weather extends Fragment {
                                 } catch (Exception ignored) {
                                 }
                             }
+                            mProgressCircle.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -82,6 +83,7 @@ public class Weather extends Fragment {
             try {
                 loadUserReportPreferences();
                 buildRecyclerView(v);
+                mProgressCircle.setVisibility(View.INVISIBLE);
             } catch (Exception ignored) {
             }
         }
@@ -90,7 +92,7 @@ public class Weather extends Fragment {
     }
 
     private static String getLocation(View v) {
-        return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity(), language);
+        return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity());
     }
 
     private void buildRecyclerView(View v) {

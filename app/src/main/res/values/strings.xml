@@ -139,7 +139,8 @@
     <string name="facebook_app_id">2186655648072526</string>
     <string name="fb_login_protocol_scheme">fb2186655648072526</string>
 
-    <string name="Sign_out">Logged out</string>
+    <string name="Sign_out">Sign out</string>
+
     <string name="title_activity_zoom_image_trail_map">ZoomImageTrailMap</string>
 
     <!-- String where are located in adapters -->
@@ -186,7 +187,7 @@
     <string name="sharedPreferences">sharedPreferences</string>
     <string name="sharedPreferences_list">list</string>
     <string name="PATH_TO_WEATHER_FONT">fonts/weather.ttf</string>
-    <string name="LOCATION_AND_COUNTRY_CODE">%s,BA, %s</string>
+    <string name="LOCATION_AND_COUNTRY_CODE">%s,BA</string>
     <string name="LANGUAGE">hr</string>
 
 
@@ -246,5 +247,8 @@
     <string name="home_screen_of">of</string>
     <string name="home_screen_trails">TRAILS OPEN</string>
 
+    <string name="popup_snow">New Snow:</string>
+    <string name="popup_surface">Surface:</string>
 
+    New Snow:
 </resources>
