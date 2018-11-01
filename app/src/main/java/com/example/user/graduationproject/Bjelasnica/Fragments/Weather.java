@@ -102,25 +102,24 @@ public class Weather extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(recyclerWeather);
-
     }
 
     private void saveUserReportPreferences(List<WeatherDay> days) {
         if (getActivity() != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferences), Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferencesWeather), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(days);
-            editor.putString(getResources().getString(R.string.sharedPreferences_list), json);
+            editor.putString(getResources().getString(R.string.sharedPreferencesWeather_list), json);
             editor.apply();
         }
     }
 
     private void loadUserReportPreferences() {
         if (getActivity() != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferences), Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferencesWeather), Context.MODE_PRIVATE);
             Gson gson = new Gson();
-            String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferences_list), null);
+            String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferencesWeather_list), null);
             Type type = new TypeToken<ArrayList<WeatherDay>>() {
             }.getType();
             day = gson.fromJson(json, type);

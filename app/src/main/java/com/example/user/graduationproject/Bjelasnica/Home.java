@@ -110,26 +110,29 @@ public class Home extends AppCompatActivity {
     }
 
     private void saveUserReportPreferences(ArrayList<AllMountainInformationHolder> allMountainInformationHolders) {
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.sharedPreferences), Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.sharedPreferencesHome), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
         String json = gson.toJson(allMountainInformationHolders);
-        editor.putString(getResources().getString(R.string.sharedPreferences_list), json);
+        editor.putString(getResources().getString(R.string.sharedPreferencesHome_list), json);
         editor.apply();
+        int a = 0;
     }
 
     private void loadUserReportPreferences() {
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.sharedPreferences), Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.sharedPreferencesHome), Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferences_list), null);
+        String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferencesHome_list), null);
         Type type = new TypeToken<ArrayList<AllMountainInformationHolder>>() {
         }.getType();
         arrayList = gson.fromJson(json, type);
+        int a = 0;
     }
 
     private void buildRecyclerView() {
         homeAdapter = new HomeAdapter(this, arrayList);
         RecyclerView mRecyclerView = findViewById(R.id.recycler_view_home);
+        mRecyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(homeAdapter);

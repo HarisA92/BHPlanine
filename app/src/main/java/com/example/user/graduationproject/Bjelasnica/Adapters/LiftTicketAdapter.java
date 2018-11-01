@@ -58,6 +58,7 @@ public class LiftTicketAdapter extends RecyclerView.Adapter<LiftTicketAdapter.Vi
         holder.napomena_web_stranica.setMovementMethod(LinkMovementMethod.getInstance());
         holder.napomena_web_stranica.setText(Html.fromHtml(ulr1));
         holder.napomena_web_stranica.setClickable(true);
+
         holder.djecija_cetiri_sata.setText(liftTicketsHolder.getDjeca_cetirisata());
         holder.djecija_cetvero_dnevna.setText(liftTicketsHolder.getDjeca_cetverodnevna());
         holder.djecija_deseto_dnevna.setText(liftTicketsHolder.getDjeca_desetodnevna());
@@ -70,6 +71,19 @@ public class LiftTicketAdapter extends RecyclerView.Adapter<LiftTicketAdapter.Vi
         holder.djecija_sedmodnevna.setText(liftTicketsHolder.getDjeca_sedmodnevna());
         holder.djecija_tackice_sezona.setText(liftTicketsHolder.getDjeca_tackice());
         holder.djecija_trodnevna_karta.setText(liftTicketsHolder.getDjeca_trodnevna());
+
+        if(!holder.djecija_predsezonska.getText().toString().matches("")){
+
+        }
+        else if(holder.djecija_sezonska.getText().toString().matches("")){
+
+        }
+        else if(holder.djecija_porodicniPaket.getText().toString().matches("")){
+
+        }
+        else{
+            holder.djecija_predsezonska.setVisibility(View.GONE);
+        }
 
         holder.sezonska.setText(liftTicketsHolder.getSezonska());
         holder.predsezonska.setText(liftTicketsHolder.getPredsezonska());

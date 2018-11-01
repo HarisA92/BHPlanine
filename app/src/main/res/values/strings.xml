@@ -184,8 +184,15 @@
 
     <!-- String where are located in report fragment -->
     <string name="connect_internet">Make sure your device is connected to the internet in order to continue.</string>
-    <string name="sharedPreferences">sharedPreferences</string>
-    <string name="sharedPreferences_list">list</string>
+    <string name="sharedPreferencesReport">sharedPreferences</string>
+    <string name="sharedPreferencesReport_list">list</string>
+    <string name="sharedPreferencesHome">sharedPreferences</string>
+    <string name="sharedPreferencesHome_list">list</string>
+    <string name="sharedPreferencesWeather">sharedPreferences</string>
+    <string name="sharedPreferencesWeather_list">list</string>
+    <string name="sharedPreferencesLiftTickets">sharedPreferences</string>
+    <string name="sharedPreferencesLiftTickets_list">list</string>
+
     <string name="PATH_TO_WEATHER_FONT">fonts/weather.ttf</string>
     <string name="LOCATION_AND_COUNTRY_CODE">%s,BA</string>
     <string name="LANGUAGE">hr</string>
