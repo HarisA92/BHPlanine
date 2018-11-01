@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,7 +36,6 @@ public class Report extends Fragment {
     private ImageReportAdapter mAdapter;
     private ArrayList<Upload> mUploads = new ArrayList<>();
     private InternetConnection connection = new InternetConnection();
-
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report3, container, false);
@@ -76,7 +77,6 @@ public class Report extends Fragment {
             editor.putString(getResources().getString(R.string.sharedPreferences_list), json);
             editor.apply();
         }
-
     }
 
     private void loadUserReportPreferences() {

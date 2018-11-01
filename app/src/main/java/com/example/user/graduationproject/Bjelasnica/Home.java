@@ -56,8 +56,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View view) {
                 try{
                     Intent intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:" + "bhplaninesupp@gmail.com"));
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "your_subject");
-                    intent.putExtra(Intent.EXTRA_TEXT, "your_text");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Please enter a title");
                     startActivity(intent);
                 }catch(ActivityNotFoundException ignored){
                 }
@@ -102,6 +101,12 @@ public class Home extends AppCompatActivity {
             }
         };
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUserReportPreferences();
     }
 
     private void saveUserReportPreferences(ArrayList<AllMountainInformationHolder> allMountainInformationHolders) {

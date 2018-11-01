@@ -63,9 +63,7 @@ public class ImageReportAdapter extends RecyclerView.Adapter<ImageReportAdapter.
     public int getItemCount() {
         try {
             return uploads.size();
-
-        } catch (Exception e) {
-
+        } catch (Exception ignored) {
         }
         return 0;
     }
