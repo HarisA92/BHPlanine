@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.LiftTicketAdapter;
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
-import com.example.user.graduationproject.Bjelasnica.Utils.LiftTicketHolder;
+import com.example.user.graduationproject.Bjelasnica.utils.InternetConnection;
+import com.example.user.graduationproject.Bjelasnica.utils.LiftTicketHolder;
 import com.example.user.graduationproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,11 +31,14 @@ public class LiftTickets extends Fragment {
 
     private ArrayList<LiftTicketHolder> arrayList = new ArrayList<>();
     private LiftTicketAdapter liftTicketAdapter;
+    private String getMountain;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lift_tickets, container, false);
+
+        getMountain = String.valueOf(getActivity().getTitle());
 
         InternetConnection internetConnection = new InternetConnection();
         FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
@@ -81,19 +84,19 @@ public class LiftTickets extends Fragment {
 
     private void saveUserReportPreferences(ArrayList<LiftTicketHolder> liftTicketHolders) {
         if (getActivity() != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferencesLiftTickets), Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesLiftTickets), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(liftTicketHolders);
-            editor.putString(getResources().getString(R.string.sharedPreferencesLiftTickets_list), json);
+            editor.putString(getMountain + getResources().getString(R.string.sharedPreferencesLiftTickets_list), json);
             editor.apply();
         }
     }
 
     private void loadUserReportPreferences() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferencesLiftTickets), Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesLiftTickets), Context.MODE_PRIVATE);
         Gson gson = new Gson();
-        String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferencesLiftTickets_list), null);
+        String json = sharedPreferences.getString(getMountain + getResources().getString(R.string.sharedPreferencesLiftTickets_list), null);
         Type type = new TypeToken<ArrayList<LiftTicketHolder>>() {
         }.getType();
         arrayList = gson.fromJson(json, type);

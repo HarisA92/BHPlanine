@@ -20,8 +20,8 @@ import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.HomeAdapter;
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.AllMountainInformationHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
+import com.example.user.graduationproject.Bjelasnica.utils.AllMountainInformationHolder;
+import com.example.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.example.user.graduationproject.R;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;

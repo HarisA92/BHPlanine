@@ -18,8 +18,8 @@ import com.example.user.graduationproject.Bjelasnica.JSONWeather.Client.WeatherC
 import com.example.user.graduationproject.Bjelasnica.JSONWeather.Model.WeatherDay;
 import com.example.user.graduationproject.Bjelasnica.JSONWeather.Model.WeatherResult;
 import com.example.user.graduationproject.Bjelasnica.JSONWeather.RecyclerWeather;
-import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
-import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
+import com.example.user.graduationproject.Bjelasnica.utils.InternetConnection;
+import com.example.user.graduationproject.Bjelasnica.utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -38,10 +38,14 @@ public class Weather extends Fragment {
     private List<WeatherDay> days;
     private List<WeatherDay> day;
     private Typeface weatherFont;
+    private String getMountain;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_weather3, container, false);
+
+
+        getMountain = String.valueOf(getActivity().getTitle());
 
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         WeatherClient weatherClient = new WeatherClient(getActivity());
@@ -106,20 +110,20 @@ public class Weather extends Fragment {
 
     private void saveUserReportPreferences(List<WeatherDay> days) {
         if (getActivity() != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferencesWeather), Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesWeather), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(days);
-            editor.putString(getResources().getString(R.string.sharedPreferencesWeather_list), json);
+            editor.putString(getMountain + getResources().getString(R.string.sharedPreferencesWeather_list), json);
             editor.apply();
         }
     }
 
     private void loadUserReportPreferences() {
         if (getActivity() != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferencesWeather), Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesWeather), Context.MODE_PRIVATE);
             Gson gson = new Gson();
-            String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferencesWeather_list), null);
+            String json = sharedPreferences.getString(getMountain + getResources().getString(R.string.sharedPreferencesWeather_list), null);
             Type type = new TypeToken<ArrayList<WeatherDay>>() {
             }.getType();
             day = gson.fromJson(json, type);

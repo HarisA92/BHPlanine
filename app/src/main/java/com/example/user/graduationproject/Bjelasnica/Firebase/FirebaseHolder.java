@@ -2,7 +2,7 @@ package com.example.user.graduationproject.Bjelasnica.Firebase;
 
 import android.content.Context;
 
-import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
+import com.example.user.graduationproject.Bjelasnica.utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

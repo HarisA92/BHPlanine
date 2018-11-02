@@ -1,4 +1,4 @@
-package com.example.user.graduationproject.Bjelasnica.Utils;
+package com.example.user.graduationproject.Bjelasnica.utils;
 
 public class LiftTicketHolder {
 
@@ -16,6 +16,9 @@ public class LiftTicketHolder {
     private String tackice;
     private String napomena_web_stranica;
     private String text_napomena;
+    private String dodatno_odrasli1;
+    private String dodatno_odrasli2;
+    private String dodatno_odrasli3;
 
     private String djeca_pojedinacna_karta;
     private String djeca_dnevna_karta;
@@ -29,6 +32,10 @@ public class LiftTicketHolder {
     private String djeca_petodnevnaSezona;
     private String djeca_desetodnevnaSezona;
     private String djeca_tackice;
+    private String djeca_dodatno1;
+    private String djeca_dodatno2;
+    private String djeca_dodatno3;
+
 
     private String sezonska;
     private String predsezonska;
@@ -41,6 +48,51 @@ public class LiftTicketHolder {
     private String djeca_babylift;
     private String djeca_nocno;
     private String djeca_porodicni_paket;
+
+    private String odrasli_naslov;
+    private String djeca_naslov;
+    private String odrasli_naslov_sezonske;
+    private String djeca_naslov_sezonske;
+
+    public String getDodatno_odrasli1() {
+        return dodatno_odrasli1;
+    }
+
+    public String getDodatno_odrasli2() {
+        return dodatno_odrasli2;
+    }
+
+    public String getDodatno_odrasli3() {
+        return dodatno_odrasli3;
+    }
+
+    public String getDjeca_dodatno1() {
+        return djeca_dodatno1;
+    }
+
+    public String getDjeca_dodatno2() {
+        return djeca_dodatno2;
+    }
+
+    public String getDjeca_dodatno3() {
+        return djeca_dodatno3;
+    }
+
+    public String getOdrasli_naslov() {
+        return odrasli_naslov;
+    }
+
+    public String getDjeca_naslov() {
+        return djeca_naslov;
+    }
+
+    public String getOdrasli_naslov_sezonske() {
+        return odrasli_naslov_sezonske;
+    }
+
+    public String getDjeca_naslov_sezonske() {
+        return djeca_naslov_sezonske;
+    }
 
     public String getDjeca_sezonska() {
         return djeca_sezonska;

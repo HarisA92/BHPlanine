@@ -1,4 +1,4 @@
-package com.example.user.graduationproject.Bjelasnica.Utils;
+package com.example.user.graduationproject.Bjelasnica.utils;
 
 public class GalleryImageHolder {
 

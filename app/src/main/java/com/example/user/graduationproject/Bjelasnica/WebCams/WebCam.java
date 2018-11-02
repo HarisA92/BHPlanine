@@ -12,7 +12,7 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
+import com.example.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.example.user.graduationproject.R;
 
 public class WebCam extends AppCompatActivity {

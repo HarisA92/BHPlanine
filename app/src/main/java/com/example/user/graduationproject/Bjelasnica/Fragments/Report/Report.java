@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,8 +16,8 @@ import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.ImageReportAdapter;
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
-import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
+import com.example.user.graduationproject.Bjelasnica.utils.InternetConnection;
+import com.example.user.graduationproject.Bjelasnica.utils.Upload;
 import com.example.user.graduationproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,7 +78,7 @@ public class Report extends Fragment {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(uploads);
-            editor.putString(getResources().getString(R.string.sharedPreferencesReport_list), json);
+            editor.putString(getMountain + getResources().getString(R.string.sharedPreferencesReport_list), json);
             editor.apply();
         }
     }
@@ -88,7 +87,7 @@ public class Report extends Fragment {
         if (getActivity() != null) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesReport), Context.MODE_PRIVATE);
             Gson gson = new Gson();
-            String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferencesReport_list), null);
+            String json = sharedPreferences.getString(getMountain + getResources().getString(R.string.sharedPreferencesReport_list), null);
             Type type = new TypeToken<ArrayList<Upload>>() {
             }.getType();
             mUploads = gson.fromJson(json, type);

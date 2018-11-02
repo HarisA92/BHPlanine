@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.ViewPagerAdapter;
-import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
+import com.example.user.graduationproject.Bjelasnica.utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
 
 import java.util.Objects;

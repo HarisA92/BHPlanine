@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
+import com.example.user.graduationproject.Bjelasnica.utils.Upload;
 import com.example.user.graduationproject.Bjelasnica.ZoomImageReport;
 import com.example.user.graduationproject.R;
 import com.squareup.picasso.Picasso;

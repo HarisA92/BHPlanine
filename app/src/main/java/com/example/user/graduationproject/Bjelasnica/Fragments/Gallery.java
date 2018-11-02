@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.user.graduationproject.Bjelasnica.Adapters.GalleryAdapter;
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.InternetConnection;
+import com.example.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.example.user.graduationproject.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

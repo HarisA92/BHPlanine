@@ -30,8 +30,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.user.graduationproject.Bjelasnica.Firebase.FirebaseHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.Upload;
+import com.example.user.graduationproject.Bjelasnica.utils.SkiResortHolder;
+import com.example.user.graduationproject.Bjelasnica.utils.Upload;
 import com.example.user.graduationproject.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,7 +47,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.File;

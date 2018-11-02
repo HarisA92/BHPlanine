@@ -7,14 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.user.graduationproject.Bjelasnica.Main;
-import com.example.user.graduationproject.Bjelasnica.Utils.AllMountainInformationHolder;
-import com.example.user.graduationproject.Bjelasnica.Utils.Mountain;
-import com.example.user.graduationproject.Bjelasnica.Utils.SkiResort;
-import com.example.user.graduationproject.Bjelasnica.Utils.SkiResortHolder;
+import com.example.user.graduationproject.Bjelasnica.utils.AllMountainInformationHolder;
+import com.example.user.graduationproject.Bjelasnica.utils.Mountain;
+import com.example.user.graduationproject.Bjelasnica.utils.SkiResort;
+import com.example.user.graduationproject.Bjelasnica.utils.SkiResortHolder;
 import com.example.user.graduationproject.R;
 
 import java.util.ArrayList;
@@ -53,19 +52,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        try{
+        try {
             return allMountainInformationHolders.size();
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
         }
         return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView base_cm, lifts_open, trails_open, snowfall, location_of_mountain, name_of_mountain,
                 opening_date_of_mountain, lifts_number_of, trails_open_of;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             base_cm = itemView.findViewById(R.id.base_cm);
@@ -102,13 +101,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 }
                 case 3: {
                     Intent intent = new Intent(context, Main.class);
-                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.RAVNAPLANINA, context.getResources().getString(R.string.RAVNAPLANINA_WEATHER), context.getResources().getString(R.string.RAVNAPLANINA_WEBCAMS), context.getResources().getString(R.string.RAVNAPLANINA_PRICETICKETS),  context.getResources().getString(R.string.RAVNAPLANINA_GALLERY),  context.getResources().getString(R.string.RAVNAPLANINA_TRAIL_MAP)));
+                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.RAVNAPLANINA, context.getResources().getString(R.string.RAVNAPLANINA_WEATHER), context.getResources().getString(R.string.RAVNAPLANINA_WEBCAMS), context.getResources().getString(R.string.RAVNAPLANINA_PRICETICKETS), context.getResources().getString(R.string.RAVNAPLANINA_GALLERY), context.getResources().getString(R.string.RAVNAPLANINA_TRAIL_MAP)));
                     context.startActivity(intent);
                     break;
                 }
                 case 4: {
                     Intent intent = new Intent(context, Main.class);
-                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.VLASIC, context.getResources().getString(R.string.VLASIC_WEATHER), context.getResources().getString(R.string.VLASIC_WEBCAMS),  context.getResources().getString(R.string.VLASIC_PRICETICKETS),  context.getResources().getString(R.string.VLASIC_GALLERY),  context.getResources().getString(R.string.RAVNAPLANINA_TRAIL_MAP)));
+                    SkiResortHolder.setSkiResort(new SkiResort(Mountain.VLASIC, context.getResources().getString(R.string.VLASIC_WEATHER), context.getResources().getString(R.string.VLASIC_WEBCAMS), context.getResources().getString(R.string.VLASIC_PRICETICKETS), context.getResources().getString(R.string.VLASIC_GALLERY), context.getResources().getString(R.string.RAVNAPLANINA_TRAIL_MAP)));
                     context.startActivity(intent);
                     break;
                 }
