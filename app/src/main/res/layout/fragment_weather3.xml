@@ -5,7 +5,7 @@
     android:id="@+id/swipe_refresh_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".Bjelasnica.Fragments.Weather">
+    tools:context=".Bjelasnica.fragments.Weather">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/weather_recycler_view"

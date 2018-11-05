@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.user.graduationproject">
+    package="com.bhplanine.user.graduationproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -13,14 +13,14 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".Bjelasnica.SkiResortApplication"
+        android:name="com.bhplanine.user.graduationproject.Bjelasnica.utils.SkiResortApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/bhplanine_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Bjelasnica.WelcomeScreen">
+        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.WelcomeScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,17 +28,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Bjelasnica.Home"
+            android:name="com.bhplanine.user.graduationproject.Bjelasnica.Home"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Bjelasnica.Main"
+            android:name="com.bhplanine.user.graduationproject.Bjelasnica.Main"
             android:screenOrientation="portrait" />
-        <activity android:name=".Bjelasnica.Fragments.Report.PopUp" />
-        <activity android:name=".Bjelasnica.ViewPager.ImagePopUp" />
-        <activity android:name=".Bjelasnica.ZoomImageReport" />
-        <activity
-            android:name=".Bjelasnica.WebCams.WebCam"
-            android:screenOrientation="landscape" />
+        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.fragments.report.PopUp" />
+        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageReport" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -62,13 +58,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Bjelasnica.ZoomImageTrailMap"
+            android:name="com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageTrailMap"
             android:label="@string/title_activity_zoom_image_trail_map"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.example.android.fileprovider"
+            android:authorities="com.bhplanine.android.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -76,7 +72,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".Bjelasnica.ZoomImageGallery"></activity>
+        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageGallery"></activity>
     </application>
 
 </manifest>

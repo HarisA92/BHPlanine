@@ -136,8 +136,8 @@
     <string name="wi_moon_waning_gibbous">&#xf082;</string>
     <string name="wi_night_partly_cloudy">&#xf083;</string>
 
-    <string name="facebook_app_id">2186655648072526</string>
-    <string name="fb_login_protocol_scheme">fb2186655648072526</string>
+    <string name="facebook_app_id">572708606521020</string>
+    <string name="fb_login_protocol_scheme">fb572708606521020</string>
 
     <string name="Sign_out">Sign out</string>
 
@@ -256,6 +256,9 @@
 
     <string name="popup_snow">New Snow:</string>
     <string name="popup_surface">Surface:</string>
+    <string name="popup_comment">Comment</string>
+
+
 
 
 

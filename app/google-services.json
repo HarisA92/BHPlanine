@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:504840954745:android:24d999f6e00c6563",
+        "mobilesdk_app_id": "1:504840954745:android:a3e72881aa9eca2e",
         "android_client_info": {
-          "package_name": "com.example.user.graduationproject"
+          "package_name": "com.bhplanine.user.graduationproject"
         }
       },
       "oauth_client": [
         {
-          "client_id": "504840954745-2vap4ubdpsfrildlh62lh73e32tt1p80.apps.googleusercontent.com",
+          "client_id": "504840954745-ammbd9u976a8kpit85gppj7n1ojrnugj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.user.graduationproject",
-            "certificate_hash": "ac9b8463abfc59ea538c96481dd04cd0fd9aac23"
+            "package_name": "com.bhplanine.user.graduationproject",
+            "certificate_hash": "a2e6eb7466e68a2fffb60b6f20ed3b0febbaa142"
           }
         },
         {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "504840954745-hm8ucu3hauo697rhbbi5bh5873t0js56.apps.googleusercontent.com",
+              "client_id": "504840954745-q90si6cc9n09cb5ke29cvunc3g4epvo3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
