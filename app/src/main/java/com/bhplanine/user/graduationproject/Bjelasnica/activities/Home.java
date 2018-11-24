@@ -1,12 +1,10 @@
-package com.bhplanine.user.graduationproject.Bjelasnica;
+package com.bhplanine.user.graduationproject.Bjelasnica.activities;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,55 +41,39 @@ public class Home extends AppCompatActivity {
     private InternetConnection internetConnection = new InternetConnection();
     private HomeAdapter homeAdapter;
     private ProgressBar mProgressCircle;
+    private RecyclerView mRecyclerView;
+    private FloatingActionButton floatingActionButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        buildRecyclerView();
         mProgressCircle = findViewById(R.id.progress_circle);
-        FloatingActionButton floatingActionButton = findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "bhplaninesupp@gmail.com"));
-                    startActivity(intent);
-                } catch (ActivityNotFoundException ignored) {
-                }
-            }
-        });
+        floatingActionButton = findViewById(R.id.fab);
+        sendEmail();
 
         if (internetConnection.getInternetConnection()) {
-            buildRecyclerView();
-            firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener(homeAdapter, arrayList));
+            firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener());
         } else {
-            try {
-                loadUserReportPreferences();
-                buildRecyclerView();
-                mProgressCircle.setVisibility(View.INVISIBLE);
-            } catch (Exception ignored) {
-            }
+            loadUserReportPreferences();
+            buildRecyclerAdapter();
+            mProgressCircle.setVisibility(View.INVISIBLE);
         }
-
         setupFirebaseListener();
     }
 
-    private ValueEventListener valueEventListener(final HomeAdapter adapter,
-                                                  final ArrayList<AllMountainInformationHolder> list) {
+    private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                list.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     AllMountainInformationHolder getValues = postSnapshot.getValue(AllMountainInformationHolder.class);
-                    list.add(getValues);
-                    try {
-                        saveUserReportPreferences(list);
-                    } catch (Exception ignored) {
-                    }
+                    arrayList.add(getValues);
                 }
-                adapter.notifyDataSetChanged();
+                saveUserReportPreferences(arrayList);
+                buildRecyclerAdapter();
+                homeAdapter.notifyDataSetChanged();
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
 
@@ -99,13 +81,18 @@ public class Home extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         };
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadUserReportPreferences();
+    private void buildRecyclerAdapter() {
+        homeAdapter = new HomeAdapter(this, arrayList);
+        mRecyclerView.setAdapter(homeAdapter);
+    }
+
+    private void buildRecyclerView() {
+        mRecyclerView = findViewById(R.id.recycler_view_home);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     private void saveUserReportPreferences(ArrayList<AllMountainInformationHolder> allMountainInformationHolders) {
@@ -126,28 +113,39 @@ public class Home extends AppCompatActivity {
         arrayList = gson.fromJson(json, type);
     }
 
-    private void buildRecyclerView() {
-        homeAdapter = new HomeAdapter(this, arrayList);
-        RecyclerView mRecyclerView = findViewById(R.id.recycler_view_home);
-        mRecyclerView.setNestedScrollingEnabled(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(homeAdapter);
+    private void sendEmail() {
+        floatingActionButton.setOnClickListener(view -> {
+            if (internetConnection.getInternetConnection()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "bhplaninesupp@gmail.com"));
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setupFirebaseListener() {
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                if (firebaseUser != null) {
-                } else {
-                    Toast.makeText(Home.this, getResources().getString(R.string.Sign_out), Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Home.this, WelcomeScreen.class);
-                    startActivity(intent);
-                }
+        mAuthStateListener = firebaseAuth -> {
+            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+            if (firebaseUser != null) {
+            } else {
+                Toast.makeText(Home.this, getResources().getString(R.string.Sign_out), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Home.this, WelcomeScreen.class);
+                startActivity(intent);
             }
         };
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUserReportPreferences();
     }
 
     @Override

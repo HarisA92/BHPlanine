@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.bhplanine.user.graduationproject.Bjelasnica.fragments.Gallery;
 import com.bhplanine.user.graduationproject.Bjelasnica.fragments.LiftTickets;
-import com.bhplanine.user.graduationproject.Bjelasnica.fragments.report.Report;
+import com.bhplanine.user.graduationproject.Bjelasnica.fragments.Report;
 import com.bhplanine.user.graduationproject.Bjelasnica.fragments.TrailMap;
 import com.bhplanine.user.graduationproject.Bjelasnica.fragments.Weather;
 import com.bhplanine.user.graduationproject.Bjelasnica.fragments.Webcams;

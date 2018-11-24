@@ -1,4 +1,4 @@
-package com.bhplanine.user.graduationproject.Bjelasnica.fragments.report;
+package com.bhplanine.user.graduationproject.Bjelasnica.activities;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -18,8 +18,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,8 +31,6 @@ import com.bhplanine.user.graduationproject.Bjelasnica.firebase.FirebaseHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.SkiResortHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.Upload;
 import com.bhplanine.user.graduationproject.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -43,10 +39,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.File;
@@ -108,21 +102,13 @@ public class PopUp extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference(mountainName);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference(mountainName);
 
-        mButtonChooseImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SelectImage();
-            }
-        });
+        mButtonChooseImage.setOnClickListener(v -> SelectImage());
 
-        mButtonUpload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mUploadTask != null && mUploadTask.isInProgress()) {
-                    Toast.makeText(PopUp.this, getResources().getString(R.string.upload_in_progress), Toast.LENGTH_SHORT).show();
-                } else {
-                    finalCheck();
-                }
+        mButtonUpload.setOnClickListener(v -> {
+            if (mUploadTask != null && mUploadTask.isInProgress()) {
+                Toast.makeText(PopUp.this, getResources().getString(R.string.upload_in_progress), Toast.LENGTH_SHORT).show();
+            } else {
+                finalCheck();
             }
         });
 
@@ -137,19 +123,9 @@ public class PopUp extends AppCompatActivity {
         ArrayAdapter<String> adapterSurface = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, itemsForSurfaceSpinner);
         surfaceSpinner.setAdapter(adapterSurface);
 
-        snowSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                spinnerSnow = adapterView.getItemAtPosition(i).toString();
-            }
-        });
+        snowSpinner.setOnItemClickListener((adapterView, view, i, l) -> spinnerSnow = adapterView.getItemAtPosition(i).toString());
 
-        surfaceSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                spinnerSurface = adapterView.getItemAtPosition(i).toString();
-            }
-        });
+        surfaceSpinner.setOnItemClickListener((adapterView, view, i, l) -> spinnerSurface = adapterView.getItemAtPosition(i).toString());
         capturePhotoPermission();
     }
 
@@ -310,40 +286,24 @@ public class PopUp extends AppCompatActivity {
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + file.getLastPathSegment());
             mUploadTask = fileReference.putFile(file)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setProgress(0);
-                                }
-                            }, 2000);
-                            Toast.makeText(PopUp.this, getResources().getString(R.string.upload_successful), Toast.LENGTH_LONG).show();
-                            Upload upload = new Upload(mEditText.getText().toString().toLowerCase(),
-                                    Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(),
-                                    getUsername(),
-                                    spinnerSnow,
-                                    spinnerSurface,
-                                    date, getUserEmail()
-                            );
-                            String uploadId = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadId).setValue(upload);
-                            finish();
-                        }
+                    .addOnSuccessListener(taskSnapshot -> {
+                        new Handler().postDelayed(() -> mProgressBar.setProgress(0), 2000);
+                        Toast.makeText(PopUp.this, getResources().getString(R.string.upload_successful), Toast.LENGTH_LONG).show();
+                        Upload upload = new Upload(mEditText.getText().toString().toLowerCase(),
+                                Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(),
+                                getUsername(),
+                                spinnerSnow,
+                                spinnerSurface,
+                                date, getUserEmail()
+                        );
+                        String uploadId = mDatabaseRef.push().getKey();
+                        mDatabaseRef.child(uploadId).setValue(upload);
+                        finish();
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(PopUp.this, getResources().getString(R.string.error) + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                            mProgressBar.setProgress((int) progress);
-                        }
+                    .addOnFailureListener(e -> Toast.makeText(PopUp.this, getResources().getString(R.string.error) + e.getMessage(), Toast.LENGTH_SHORT).show())
+                    .addOnProgressListener(taskSnapshot -> {
+                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                        mProgressBar.setProgress((int) progress);
                     });
         } else {
             Toast.makeText(this, getResources().getString(R.string.upload_image), Toast.LENGTH_SHORT).show();

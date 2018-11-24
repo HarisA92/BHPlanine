@@ -35,13 +35,10 @@ public class TrailMapAdapter extends RecyclerView.Adapter<TrailMapAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Picasso.with(context).load(list.get(position)).centerCrop().resize(1280, 720).into(holder.imageView);
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), ZoomImageTrailMap.class);
-                intent.putExtra(context.getResources().getString(R.string.POSITION), list.get(position));
-                context.startActivity(intent);
-            }
+        holder.imageView.setOnClickListener(view -> {
+            Intent intent = new Intent(view.getContext(), ZoomImageTrailMap.class);
+            intent.putExtra(context.getResources().getString(R.string.POSITION), list.get(position));
+            context.startActivity(intent);
         });
     }
 

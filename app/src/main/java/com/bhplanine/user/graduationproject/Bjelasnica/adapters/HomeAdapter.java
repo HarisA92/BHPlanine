@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bhplanine.user.graduationproject.Bjelasnica.Main;
+import com.bhplanine.user.graduationproject.Bjelasnica.activities.Main;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.AllMountainInformationHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.Mountain;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.SkiResort;
@@ -52,11 +52,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        try {
-            return allMountainInformationHolders.size();
-        } catch (Exception ignored) {
-        }
-        return 0;
+        return allMountainInformationHolders.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

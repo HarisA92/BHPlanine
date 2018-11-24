@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.WelcomeScreen">
+        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.WelcomeScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,12 +28,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bhplanine.user.graduationproject.Bjelasnica.Home"
+            android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.Home"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.bhplanine.user.graduationproject.Bjelasnica.Main"
+            android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.Main"
             android:screenOrientation="portrait" />
-        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.fragments.report.PopUp" />
+        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.PopUp" />
         <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageReport" />
 
         <meta-data

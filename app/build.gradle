@@ -16,7 +16,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.bhplanine.user.graduationproject"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 27
         versionCode 5
         versionName "5"
@@ -53,6 +53,10 @@ android {
             versionName '5.0'
             versionNameSuffix 'bhplaninesuffix'
         }
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
     }
 }
 
@@ -96,6 +100,12 @@ dependencies {
     implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
     androidTestImplementation 'junit:junit:4.12'
     testImplementation 'junit:junit:4.12'
+
+    //rxjava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.3'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.github.FrangSierra:RxFirebase:1.5.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

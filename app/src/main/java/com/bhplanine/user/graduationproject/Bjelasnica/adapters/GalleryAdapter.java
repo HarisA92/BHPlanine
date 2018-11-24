@@ -36,14 +36,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         Glide.with(context).load(list.get(position)).into(holder.imageView);
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ZoomImageGallery.class);
-                intent.putExtra(context.getResources().getString(R.string.POSITION), list.get(position));
-                v.getContext().startActivity(intent);
-            }
-        });
+        holder.imageView.setOnClickListener( view -> {
+            Intent intent = new Intent(view.getContext(), ZoomImageGallery.class);
+            intent.putExtra(context.getResources().getString(R.string.POSITION), list.get(position));
+            view.getContext().startActivity(intent);
+                });
     }
 
     @Override

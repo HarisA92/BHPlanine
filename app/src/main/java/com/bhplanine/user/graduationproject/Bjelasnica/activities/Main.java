@@ -1,4 +1,4 @@
-package com.bhplanine.user.graduationproject.Bjelasnica;
+package com.bhplanine.user.graduationproject.Bjelasnica.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;

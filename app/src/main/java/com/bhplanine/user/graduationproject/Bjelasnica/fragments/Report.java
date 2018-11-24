@@ -1,4 +1,4 @@
-package com.bhplanine.user.graduationproject.Bjelasnica.fragments.report;
+package com.bhplanine.user.graduationproject.Bjelasnica.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bhplanine.user.graduationproject.Bjelasnica.activities.PopUp;
 import com.bhplanine.user.graduationproject.Bjelasnica.adapters.ImageReportAdapter;
 import com.bhplanine.user.graduationproject.Bjelasnica.firebase.FirebaseHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.Upload;
@@ -27,49 +28,74 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Report extends Fragment {
 
     private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
-    private ImageReportAdapter mAdapter;
     private ArrayList<Upload> mUploads = new ArrayList<>();
     private InternetConnection connection = new InternetConnection();
     private String getMountain;
+    private RecyclerView mRecyclerView;
+    private ImageReportAdapter mAdapter;
+    private ProgressBar mProgressCircle;
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report3, container, false);
         onReportClick(v);
+        buildRecyclerView(v);
+        getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
 
-        getMountain = String.valueOf(getActivity().getTitle());
-
-        final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
+        mProgressCircle = v.findViewById(R.id.progress_circle);
         if (connection.getInternetConnection()) {
-            buildRecyclerView(v);
-            firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueEventListener(mAdapter, mProgressCircle, mUploads));
+            firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueEventListener());
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
-            try {
-                loadUserReportPreferences();
-                buildRecyclerView(v);
-            } catch (java.lang.NullPointerException ignored) {
-            }
+            loadUserReportPreferences();
+            buildRecyclerAdapter();
             mProgressCircle.setVisibility(View.INVISIBLE);
         }
         return v;
     }
 
-
     private void buildRecyclerView(View v) {
-        mAdapter = new ImageReportAdapter(getContext(), mUploads);
-        RecyclerView mRecyclerView = v.findViewById(R.id.recycler_view);
+        mRecyclerView = v.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    private void buildRecyclerAdapter(){
+        mAdapter = new ImageReportAdapter(getContext(), mUploads);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private ValueEventListener valueEventListener() {
+        return new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mUploads.clear();
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    final Upload upload = postSnapshot.getValue(Upload.class);
+                    if (postSnapshot.exists()){
+                        mUploads.add(upload);
+                    }
+                }
+                saveUserReportPreferences(mUploads);
+                buildRecyclerAdapter();
+                mAdapter.notifyDataSetChanged();
+                mProgressCircle.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     private void saveUserReportPreferences(ArrayList<Upload> uploads) {
@@ -91,43 +117,13 @@ public class Report extends Fragment {
             Type type = new TypeToken<ArrayList<Upload>>() {
             }.getType();
             mUploads = gson.fromJson(json, type);
-            int a = 0;
         }
     }
 
-    private ValueEventListener valueEventListener(final ImageReportAdapter mAdapter,
-                                                  final ProgressBar mProgressCircle,
-                                                  final ArrayList<Upload> mUploads) {
-        return new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mUploads.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    final Upload upload = postSnapshot.getValue(Upload.class);
-                    mUploads.add(upload);
-                    try {
-                        saveUserReportPreferences(mUploads);
-                    } catch (Exception ignored) {
-                    }
-                }
-                mAdapter.notifyDataSetChanged();
-                mProgressCircle.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        };
-    }
-
     private void onReportClick(View v) {
-        v.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(getActivity(), PopUp.class);
-                startActivity(intent);
-            }
+        v.findViewById(R.id.fab).setOnClickListener(v1 -> {
+            final Intent intent = new Intent(getActivity(), PopUp.class);
+            startActivity(intent);
         });
     }
 

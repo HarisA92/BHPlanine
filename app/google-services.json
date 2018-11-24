@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "504840954745-ammbd9u976a8kpit85gppj7n1ojrnugj.apps.googleusercontent.com",
+          "client_id": "504840954745-9pgogssld513s8g3ud9ck3jnas0udtd6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.bhplanine.user.graduationproject",
-            "certificate_hash": "a2e6eb7466e68a2fffb60b6f20ed3b0febbaa142"
+            "certificate_hash": "ac9b8463abfc59ea538c96481dd04cd0fd9aac23"
           }
         },
         {

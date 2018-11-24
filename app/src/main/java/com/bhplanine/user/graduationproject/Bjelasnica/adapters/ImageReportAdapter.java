@@ -43,13 +43,10 @@ public class ImageReportAdapter extends RecyclerView.Adapter<ImageReportAdapter.
         holder.textSnow.setText(uploadCurrent.getmSnow());
         holder.date.setText(uploadCurrent.getDate());
 
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ZoomImageReport.class);
-                intent.putExtra(context.getResources().getString(R.string.POSITION), uploadCurrent.getImageUrl());
-                context.startActivity(intent);
-            }
+        holder.imageView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, ZoomImageReport.class);
+            intent.putExtra(context.getResources().getString(R.string.POSITION), uploadCurrent.getImageUrl());
+            context.startActivity(intent);
         });
 
         Picasso.with(context)
@@ -61,11 +58,7 @@ public class ImageReportAdapter extends RecyclerView.Adapter<ImageReportAdapter.
 
     @Override
     public int getItemCount() {
-        try {
-            return uploads.size();
-        } catch (Exception ignored) {
-        }
-        return 0;
+        return uploads.size();
     }
 
     class ImageViewHolder extends RecyclerView.ViewHolder {
