@@ -5,10 +5,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,7 +23,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.Bjelasnica.adapters.HomeAdapter;
-import com.bhplanine.user.graduationproject.Bjelasnica.firebase.FirebaseHolder;
+import com.bhplanine.user.graduationproject.Bjelasnica.fragments.navigationFragments.AccommodationDrawerFragment;
+import com.bhplanine.user.graduationproject.Bjelasnica.fragments.navigationFragments.MountainsDrawerFragment;
+import com.bhplanine.user.graduationproject.Bjelasnica.fragments.navigationFragments.WeatherDrawerFragment;
+import com.bhplanine.user.graduationproject.Bjelasnica.fragments.navigationFragments.WebcamsDrawerFragment;
+import com.bhplanine.user.graduationproject.Bjelasnica.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.AllMountainInformationHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.R;
@@ -33,151 +43,72 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class Home extends AppCompatActivity {
+public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private ArrayList<AllMountainInformationHolder> arrayList = new ArrayList<>();
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private FirebaseHolder firebaseHolder = new FirebaseHolder(this);
-    private InternetConnection internetConnection = new InternetConnection();
-    private HomeAdapter homeAdapter;
-    private ProgressBar mProgressCircle;
-    private RecyclerView mRecyclerView;
-    private FloatingActionButton floatingActionButton;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        buildRecyclerView();
-        mProgressCircle = findViewById(R.id.progress_circle);
-        floatingActionButton = findViewById(R.id.fab);
-        sendEmail();
 
-        if (internetConnection.getInternetConnection()) {
-            firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener());
-        } else {
-            loadUserReportPreferences();
-            buildRecyclerAdapter();
-            mProgressCircle.setVisibility(View.INVISIBLE);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MountainsDrawerFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_mountains);
         }
-        setupFirebaseListener();
     }
 
-    private ValueEventListener valueEventListener() {
-        return new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    AllMountainInformationHolder getValues = postSnapshot.getValue(AllMountainInformationHolder.class);
-                    arrayList.add(getValues);
-                }
-                saveUserReportPreferences(arrayList);
-                buildRecyclerAdapter();
-                homeAdapter.notifyDataSetChanged();
-                mProgressCircle.setVisibility(View.INVISIBLE);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-    }
-
-    private void buildRecyclerAdapter() {
-        homeAdapter = new HomeAdapter(this, arrayList);
-        mRecyclerView.setAdapter(homeAdapter);
-    }
-
-    private void buildRecyclerView() {
-        mRecyclerView = findViewById(R.id.recycler_view_home);
-        mRecyclerView.setNestedScrollingEnabled(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-    }
-
-    private void saveUserReportPreferences(ArrayList<AllMountainInformationHolder> allMountainInformationHolders) {
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.sharedPreferencesHome), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(allMountainInformationHolders);
-        editor.putString(getResources().getString(R.string.sharedPreferencesHome_list), json);
-        editor.apply();
-    }
-
-    private void loadUserReportPreferences() {
-        SharedPreferences sharedPreferences = this.getSharedPreferences(getResources().getString(R.string.sharedPreferencesHome), Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferencesHome_list), null);
-        Type type = new TypeToken<ArrayList<AllMountainInformationHolder>>() {
-        }.getType();
-        arrayList = gson.fromJson(json, type);
-    }
-
-    private void sendEmail() {
-        floatingActionButton.setOnClickListener(view -> {
-            if (internetConnection.getInternetConnection()) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "bhplaninesupp@gmail.com"));
-                startActivity(intent);
-            } else {
-                Toast.makeText(this, getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void setupFirebaseListener() {
-        mAuthStateListener = firebaseAuth -> {
-            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-            if (firebaseUser != null) {
-            } else {
-                Toast.makeText(Home.this, getResources().getString(R.string.Sign_out), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Home.this, WelcomeScreen.class);
-                startActivity(intent);
-            }
-        };
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_mountains:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MountainsDrawerFragment()).commit();
+                break;
+            case R.id.nav_weather:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new WeatherDrawerFragment()).commit();
+                break;
+            case R.id.nav_hotel:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new AccommodationDrawerFragment()).commit();
+                break;
+            case R.id.nav_stream:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new WebcamsDrawerFragment()).commit();
+                break;
+            case R.id.nav_send:
+                Toast.makeText(this, "Send", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.sign_out:
+                Toast.makeText(this, "Send", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finishAffinity();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadUserReportPreferences();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(mAuthStateListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (mAuthStateListener != null) {
-            FirebaseAuth.getInstance().removeAuthStateListener(mAuthStateListener);
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.home_actionbar_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.log_out) {
-            FirebaseAuth.getInstance().signOut();
-            LoginManager.getInstance().logOut();
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            return super.onOptionsItemSelected(item);
+            super.onBackPressed();
         }
-        return true;
     }
-
 }

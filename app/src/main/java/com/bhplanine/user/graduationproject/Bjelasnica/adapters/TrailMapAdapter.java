@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageTrailMap;
+import com.bhplanine.user.graduationproject.Bjelasnica.activities.ZoomImageTrailMap;
 import com.bhplanine.user.graduationproject.R;
 import com.squareup.picasso.Picasso;
 

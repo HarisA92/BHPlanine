@@ -12,7 +12,7 @@ import com.bhplanine.user.graduationproject.R;
 import java.util.Objects;
 
 
-public class Webcams extends Fragment {
+public class WebcamsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {

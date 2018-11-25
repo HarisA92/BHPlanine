@@ -29,12 +29,13 @@
         </activity>
         <activity
             android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.Home"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.Main"
             android:screenOrientation="portrait" />
         <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.PopUp" />
-        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageReport" />
+        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.ZoomImageReport" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -58,7 +59,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageTrailMap"
+            android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.ZoomImageTrailMap"
             android:label="@string/title_activity_zoom_image_trail_map"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -72,7 +73,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageGallery"></activity>
+        <activity android:name="com.bhplanine.user.graduationproject.Bjelasnica.activities.ZoomImageGallery"></activity>
     </application>
 
 </manifest>

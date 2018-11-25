@@ -1,4 +1,4 @@
-package com.bhplanine.user.graduationproject.Bjelasnica.jsonweather.client;
+package com.bhplanine.user.graduationproject.Bjelasnica.retrofit.client;
 
 import android.content.Context;
 

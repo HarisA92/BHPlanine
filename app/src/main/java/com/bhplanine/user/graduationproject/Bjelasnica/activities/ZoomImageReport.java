@@ -1,4 +1,4 @@
-package com.bhplanine.user.graduationproject.Bjelasnica.utils;
+package com.bhplanine.user.graduationproject.Bjelasnica.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -8,22 +8,23 @@ import com.bumptech.glide.Glide;
 import com.bhplanine.user.graduationproject.R;
 import com.github.chrisbanes.photoview.PhotoView;
 
-public class ZoomImageGallery extends AppCompatActivity {
 
-    PhotoView photoView;
+public class ZoomImageReport extends AppCompatActivity {
+
+    private PhotoView photoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_zoom_image_gallery);
+        setContentView(R.layout.activity_image_report);
         onCreate();
         photoView = findViewById(R.id.photo_view);
-        getGalleryImage();
+        getImageReport();
     }
 
-    private void getGalleryImage() {
-        String gallery = getIntent().getStringExtra(this.getString(R.string.POSITION));
-        Glide.with(this).load(gallery).into(photoView);
+    private void getImageReport() {
+        String imageReport = getIntent().getStringExtra(this.getResources().getString(R.string.POSITION));
+        Glide.with(this).load(imageReport).into(photoView);
     }
 
     public void onCreate() {

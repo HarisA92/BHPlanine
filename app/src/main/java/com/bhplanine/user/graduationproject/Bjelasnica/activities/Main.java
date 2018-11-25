@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.bhplanine.user.graduationproject.Bjelasnica.adapters.ViewPagerAdapter;
+import com.bhplanine.user.graduationproject.Bjelasnica.adapters.TabLayoutAdapter;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.SkiResortHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomOutPageTransformer;
 import com.bhplanine.user.graduationproject.R;
@@ -45,11 +47,11 @@ public class Main extends AppCompatActivity {
 
         Main.this.setTitle(SkiResortHolder.getSkiResort().getMountain().getValue());
 
-        final ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        final TabLayoutAdapter adapter = new TabLayoutAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
@@ -65,4 +67,13 @@ public class Main extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
 }

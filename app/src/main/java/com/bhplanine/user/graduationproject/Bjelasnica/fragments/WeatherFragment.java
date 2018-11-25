@@ -17,8 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.Bjelasnica.adapters.WeatherAdapter;
-import com.bhplanine.user.graduationproject.Bjelasnica.jsonweather.client.WeatherClient;
-import com.bhplanine.user.graduationproject.Bjelasnica.jsonweather.model.WeatherDay;
+import com.bhplanine.user.graduationproject.Bjelasnica.retrofit.client.WeatherClient;
+import com.bhplanine.user.graduationproject.Bjelasnica.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.SkiResortHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.BuildConfig;
@@ -37,7 +37,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class Weather extends Fragment {
+public class WeatherFragment extends Fragment {
 
     private List<WeatherDay> days;
     private Typeface weatherFont;

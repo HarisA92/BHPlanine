@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.Bjelasnica.adapters.TrailMapAdapter;
-import com.bhplanine.user.graduationproject.Bjelasnica.firebase.FirebaseHolder;
+import com.bhplanine.user.graduationproject.Bjelasnica.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.R;
 import com.google.firebase.database.ChildEventListener;
@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
-public class TrailMap extends Fragment {
+public class TrailMapFragment extends Fragment {
 
     private ArrayList<String> trailMapList = new ArrayList<>();
     private TrailMapAdapter trailMapAdapter;

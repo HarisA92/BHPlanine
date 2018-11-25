@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageGallery;
+import com.bhplanine.user.graduationproject.Bjelasnica.activities.ZoomImageGallery;
 import com.bhplanine.user.graduationproject.R;
 
 import java.util.ArrayList;

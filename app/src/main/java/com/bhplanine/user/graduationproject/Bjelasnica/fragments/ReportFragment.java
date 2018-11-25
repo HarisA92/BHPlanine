@@ -15,8 +15,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.Bjelasnica.activities.PopUp;
-import com.bhplanine.user.graduationproject.Bjelasnica.adapters.ImageReportAdapter;
-import com.bhplanine.user.graduationproject.Bjelasnica.firebase.FirebaseHolder;
+import com.bhplanine.user.graduationproject.Bjelasnica.adapters.ReportAdapter;
+import com.bhplanine.user.graduationproject.Bjelasnica.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.Upload;
 import com.bhplanine.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.R;
@@ -30,14 +30,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Report extends Fragment {
+public class ReportFragment extends Fragment {
 
     private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
     private ArrayList<Upload> mUploads = new ArrayList<>();
     private InternetConnection connection = new InternetConnection();
     private String getMountain;
     private RecyclerView mRecyclerView;
-    private ImageReportAdapter mAdapter;
+    private ReportAdapter mAdapter;
     private ProgressBar mProgressCircle;
 
     @Override
@@ -70,7 +70,7 @@ public class Report extends Fragment {
     }
 
     private void buildRecyclerAdapter(){
-        mAdapter = new ImageReportAdapter(getContext(), mUploads);
+        mAdapter = new ReportAdapter(getContext(), mUploads);
         mRecyclerView.setAdapter(mAdapter);
     }
 

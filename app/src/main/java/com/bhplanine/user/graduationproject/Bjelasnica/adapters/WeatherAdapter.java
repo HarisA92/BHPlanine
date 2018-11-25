@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bhplanine.user.graduationproject.Bjelasnica.jsonweather.model.WeatherDay;
+import com.bhplanine.user.graduationproject.Bjelasnica.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.R;
 
 import java.util.Date;

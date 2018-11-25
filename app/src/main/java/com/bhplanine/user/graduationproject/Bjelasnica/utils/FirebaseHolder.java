@@ -1,4 +1,4 @@
-package com.bhplanine.user.graduationproject.Bjelasnica.firebase;
+package com.bhplanine.user.graduationproject.Bjelasnica.utils;
 
 import android.content.Context;
 
@@ -36,6 +36,4 @@ public class FirebaseHolder {
     public DatabaseReference getDatabseReferenceForMountainInformation() {
         return FirebaseDatabase.getInstance().getReference(context.getResources().getString(R.string.mountain_information));
     }
-
-
 }

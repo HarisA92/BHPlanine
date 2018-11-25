@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.Bjelasnica.adapters.LiftTicketAdapter;
-import com.bhplanine.user.graduationproject.Bjelasnica.firebase.FirebaseHolder;
+import com.bhplanine.user.graduationproject.Bjelasnica.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.models.LiftTicketHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.R;
@@ -27,7 +27,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
-public class LiftTickets extends Fragment {
+public class LiftTicketsFragment extends Fragment {
 
     private ArrayList<LiftTicketHolder> arrayList = new ArrayList<>();
     private LiftTicketAdapter liftTicketAdapter;

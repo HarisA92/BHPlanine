@@ -11,18 +11,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bhplanine.user.graduationproject.Bjelasnica.models.Upload;
-import com.bhplanine.user.graduationproject.Bjelasnica.utils.ZoomImageReport;
+import com.bhplanine.user.graduationproject.Bjelasnica.activities.ZoomImageReport;
 import com.bhplanine.user.graduationproject.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ImageReportAdapter extends RecyclerView.Adapter<ImageReportAdapter.ImageViewHolder> {
+public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ImageViewHolder> {
 
     private final Context context;
     private final ArrayList<Upload> uploads;
 
-    public ImageReportAdapter(final Context context, final ArrayList<Upload> uploads) {
+    public ReportAdapter(final Context context, final ArrayList<Upload> uploads) {
         this.context = context;
         this.uploads = uploads;
     }

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.Bjelasnica.adapters.GalleryAdapter;
-import com.bhplanine.user.graduationproject.Bjelasnica.firebase.FirebaseHolder;
+import com.bhplanine.user.graduationproject.Bjelasnica.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.Bjelasnica.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.R;
 import com.google.firebase.database.ChildEventListener;
@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseError;
 
 import java.util.ArrayList;
 
-public class Gallery extends Fragment {
+public class GalleryFragment extends Fragment {
 
     private InternetConnection internetConnection = new InternetConnection();
     private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());

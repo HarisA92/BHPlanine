@@ -1,9 +1,8 @@
-package com.bhplanine.user.graduationproject.Bjelasnica.jsonweather.client;
+package com.bhplanine.user.graduationproject.Bjelasnica.retrofit.client;
 
-import com.bhplanine.user.graduationproject.Bjelasnica.jsonweather.model.WeatherResult;
+import com.bhplanine.user.graduationproject.Bjelasnica.retrofit.model.WeatherResult;
 
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 

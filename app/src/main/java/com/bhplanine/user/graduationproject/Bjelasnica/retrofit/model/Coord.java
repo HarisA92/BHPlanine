@@ -1,4 +1,4 @@
-package com.bhplanine.user.graduationproject.Bjelasnica.jsonweather.model;
+package com.bhplanine.user.graduationproject.Bjelasnica.retrofit.model;
 
 public class Coord {
 
