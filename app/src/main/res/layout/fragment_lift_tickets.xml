@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/space"
-    tools:context=".Bjelasnica.fragments.LiftTicketsFragment">
+    tools:context=".fragments.LiftTicketsFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_lift_tickets"

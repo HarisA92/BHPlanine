@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Bjelasnica.fragments.navigationFragments.AccommodationDrawerFragment">
+    tools:context=".fragments.navigationFragments.AccommodationDrawerFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
