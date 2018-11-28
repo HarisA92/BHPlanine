@@ -9,19 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.R;
+import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder> {
+public class WeatherDrawerAdapter extends RecyclerView.Adapter<WeatherDrawerAdapter.ViewHolder> {
 
     private List<WeatherDay> weatherDays;
     private Context context;
     private Typeface weatherFont;
+    private List<String> list = new ArrayList<>();
 
-    public WeatherAdapter(List<WeatherDay> WeatherDays, Context mContext, Typeface WeatherFont) {
+
+    public WeatherDrawerAdapter(List<WeatherDay> WeatherDays, Context mContext, Typeface WeatherFont) {
         weatherDays = WeatherDays;
         context = mContext;
         weatherFont = WeatherFont;
@@ -29,13 +32,13 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
 
     @NonNull
     @Override
-    public WeatherViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public WeatherDrawerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.weather_day_list, parent, false);
-        return new WeatherViewHolder(v);
+        return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WeatherViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WeatherDrawerAdapter.ViewHolder holder, int position) {
         WeatherDay weather = weatherDays.get(position);
         holder.weather_icon.setTypeface(weatherFont);
 
@@ -99,8 +102,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         int temperature = (int) temp;
         String weather_temp = String.valueOf(temperature);
         holder.temp.setText(weather_temp + "°C");
-        a++;
 
+        list.add("Bjelašnica");
+        list.add("Jahorina");
+        list.add("Ravna Planina");
+        list.add("Vlašić");
+        list.add("Igman");
+        holder.mountain.setText(list.get(position));
+
+
+        a++;
     }
 
     @Override
@@ -108,15 +119,16 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         return weatherDays.size();
     }
 
-    class WeatherViewHolder extends RecyclerView.ViewHolder {
-
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView mountain;
         TextView description;
         TextView time;
         TextView weather_icon;
         TextView temp;
 
-        WeatherViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
+            mountain = itemView.findViewById(R.id.mountain_name);
             description = itemView.findViewById(R.id.description);
             temp = itemView.findViewById(R.id.temperature);
             time = itemView.findViewById(R.id.dateAndTime);

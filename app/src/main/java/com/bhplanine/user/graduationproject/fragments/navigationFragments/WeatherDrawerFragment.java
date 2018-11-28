@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bhplanine.user.graduationproject.BuildConfig;
 import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.adapters.WeatherAdapter;
+import com.bhplanine.user.graduationproject.adapters.WeatherDrawerAdapter;
 import com.bhplanine.user.graduationproject.retrofit.client.WeatherClient;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherResult;
@@ -72,8 +73,18 @@ public class WeatherDrawerFragment extends Fragment {
     }
 
     private void buildRecyclerAdapter() {
-        WeatherAdapter weatherAdapter = new WeatherAdapter(days, getContext(), weatherFont);
-        mRecyclerView.setAdapter(weatherAdapter);
+        WeatherDrawerAdapter weatherDrawerAdapter = new WeatherDrawerAdapter(days, getContext(), weatherFont);
+        mRecyclerView.setAdapter(weatherDrawerAdapter);
+    }
+
+    private List<String> namesOfMountain(){
+        List<String> nameOfMountain = new ArrayList<>();
+        nameOfMountain.add("Bjelasnica");
+        nameOfMountain.add("Jahorina");
+        nameOfMountain.add("Ravna Planina");
+        nameOfMountain.add("Vlasic");
+        nameOfMountain.add("Igman");
+        return nameOfMountain;
     }
 
     private void getAPI() {
@@ -142,6 +153,7 @@ public class WeatherDrawerFragment extends Fragment {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private List<WeatherDay> getWeatherList(List<WeatherDay> weatherDays) {
