@@ -33,7 +33,7 @@ public class WeatherDrawerAdapter extends RecyclerView.Adapter<WeatherDrawerAdap
     @NonNull
     @Override
     public WeatherDrawerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.weather_day_list, parent, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.weather_day_list_drawer, parent, false);
         return new ViewHolder(v);
     }
 
@@ -109,8 +109,6 @@ public class WeatherDrawerAdapter extends RecyclerView.Adapter<WeatherDrawerAdap
         list.add("Vlašić");
         list.add("Igman");
         holder.mountain.setText(list.get(position));
-
-
         a++;
     }
 

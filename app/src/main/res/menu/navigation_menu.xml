@@ -4,18 +4,26 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-    <item android:id="@+id/nav_mountains"
-         android:title="Mountains"
-        android:icon="@drawable/mountain"/>
-    <item android:id="@+id/nav_weather"
-        android:title="Weather"
-        android:icon="@drawable/weatherblack"/>
-    <item android:id="@+id/nav_stream"
-        android:title="Webcams"
-        android:icon="@drawable/webcam"/>
-    <item android:id="@+id/nav_hotel"
-        android:title="Accommodation"
-        android:icon="@drawable/hotels"/>
+        <item
+            android:id="@+id/nav_mountains"
+            android:icon="@drawable/mountain"
+            android:title="Mountains" />
+        <item
+            android:id="@+id/nav_weather"
+            android:icon="@drawable/weatherblack"
+            android:title="Weather" />
+        <item
+            android:id="@+id/nav_stream"
+            android:icon="@drawable/webcam"
+            android:title="Webcams" />
+        <item
+            android:id="@+id/nav_hotel"
+            android:icon="@drawable/hotels"
+            android:title="Accommodation" />
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/news"
+            android:title="News" />
 
     </group>
 
@@ -25,9 +33,10 @@
                 android:id="@+id/nav_send"
                 android:icon="@drawable/fui_ic_mail_white_24dp"
                 android:title="Contact us" />
-            <item android:id="@+id/sign_out"
-                android:title="Sign out"
-                android:icon="@drawable/sign_out"/>
+            <item
+                android:id="@+id/sign_out"
+                android:icon="@drawable/sign_out"
+                android:title="Sign out" />
         </menu>
     </item>
 </menu>

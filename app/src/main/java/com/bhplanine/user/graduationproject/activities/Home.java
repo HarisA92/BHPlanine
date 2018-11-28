@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.AccommodationDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.MountainsDrawerFragment;
+import com.bhplanine.user.graduationproject.fragments.navigationFragments.NewsDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.WeatherDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.WebcamsDrawerFragment;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
@@ -101,6 +102,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.nav_stream:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new WebcamsDrawerFragment()).commit();
+                break;
+            case R.id.nav_news:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new NewsDrawerFragment()).commit();
                 break;
             case R.id.nav_send:
                 sendEmail();

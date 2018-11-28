@@ -45,6 +45,10 @@ public class Main extends AppCompatActivity {
         Objects.requireNonNull(tabLayout.getTabAt(4)).setIcon(ICONS[4]);
         Objects.requireNonNull(tabLayout.getTabAt(5)).setIcon(ICONS[5]);
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         Main.this.setTitle(SkiResortHolder.getSkiResort().getMountain().getValue());
 
         final TabLayoutAdapter adapter = new TabLayoutAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
@@ -69,6 +73,11 @@ public class Main extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
