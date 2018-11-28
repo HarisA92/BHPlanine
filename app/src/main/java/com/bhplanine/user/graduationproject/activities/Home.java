@@ -41,6 +41,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private InternetConnection internetConnection = new InternetConnection();
     private TextView username, email;
     private ImageView imageView;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();

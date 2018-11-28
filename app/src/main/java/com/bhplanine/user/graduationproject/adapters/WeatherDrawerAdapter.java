@@ -104,10 +104,11 @@ public class WeatherDrawerAdapter extends RecyclerView.Adapter<WeatherDrawerAdap
         holder.temp.setText(weather_temp + "°C");
 
         list.add("Bjelašnica");
+        list.add("Igman");
         list.add("Jahorina");
         list.add("Ravna Planina");
         list.add("Vlašić");
-        list.add("Igman");
+
         holder.mountain.setText(list.get(position));
         a++;
     }

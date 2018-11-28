@@ -11,31 +11,31 @@
 
     <ImageView
         android:id="@+id/image_google_facebook"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/user_google_facebook"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/user_google_facebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
         android:paddingTop="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image_google_facebook" />
+        app:layout_constraintBottom_toTopOf="@+id/email_google_facebook"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/email_google_facebook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_google_facebook" />
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

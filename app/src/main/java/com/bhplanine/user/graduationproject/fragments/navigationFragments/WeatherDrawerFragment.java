@@ -94,19 +94,19 @@ public class WeatherDrawerFragment extends Fragment {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
             Observable<WeatherResult> jahorina = weatherClient.getWeatherService()
-                    .getWeather("Jahorina", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
+                    .getWeather("Pervizi", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
             Observable<WeatherResult> ravnaplanina = weatherClient.getWeatherService()
-                    .getWeather("Pale", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
+                    .getWeather("Jahorina", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
             Observable<WeatherResult> vlasic = weatherClient.getWeatherService()
-                    .getWeather("Travnik", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
+                    .getWeather("Pale", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
             Observable<WeatherResult> igman = weatherClient.getWeatherService()
-                    .getWeather("Pervizi", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
+                    .getWeather("Travnik", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
