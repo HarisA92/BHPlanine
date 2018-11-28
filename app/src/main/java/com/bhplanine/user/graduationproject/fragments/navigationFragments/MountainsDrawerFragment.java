@@ -48,13 +48,13 @@ public class MountainsDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mountains, container, false);
         buildRecyclerView(v);
-
+        mProgressCircle = v.findViewById(R.id.progress_bar_mountain_drawer);
         if (internetConnection.getInternetConnection()) {
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener());
         } else {
             loadUserReportPreferences();
             buildRecyclerAdapter();
-            //mProgressCircle.setVisibility(View.INVISIBLE);
+            mProgressCircle.setVisibility(View.INVISIBLE);
         }
         return v;
     }
@@ -82,7 +82,7 @@ public class MountainsDrawerFragment extends Fragment {
                 saveUserReportPreferences(arrayList);
                 buildRecyclerAdapter();
                 homeAdapter.notifyDataSetChanged();
-                //mProgressCircle.setVisibility(View.INVISIBLE);
+                mProgressCircle.setVisibility(View.INVISIBLE);
             }
 
             @Override
