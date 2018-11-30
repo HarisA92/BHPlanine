@@ -16,10 +16,34 @@
             android:id="@+id/nav_stream"
             android:icon="@drawable/webcam"
             android:title="Webcams" />
+
         <item
             android:id="@+id/nav_hotel"
             android:icon="@drawable/hotels"
             android:title="Accommodation" />
+
+        <item
+            android:id="@+id/bjelasnica"
+            android:title="Bjelašnica"
+            android:visible="false"
+            />
+        <item
+            android:id="@+id/jahorina"
+            android:title="Jahorina"
+            android:visible="false" />
+        <item
+            android:id="@+id/ravnaplanina"
+            android:title="Ravna Planina"
+            android:visible="false" />
+        <item
+            android:id="@+id/vlasic"
+            android:title="Vlašić"
+            android:visible="false" />
+        <item
+            android:id="@+id/igman"
+            android:title="Igman"
+            android:visible="false" />
+
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/news"

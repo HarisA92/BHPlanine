@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,19 +30,17 @@ import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
-
 import java.util.Objects;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
+    private NavigationView navigationView;
     private FirebaseUser firebaseUser;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private InternetConnection internetConnection = new InternetConnection();
     private TextView username, email;
     private ImageView imageView;
-    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +52,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -73,9 +71,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         imageView = view.findViewById(R.id.image_google_facebook);
         getUsernameAndEmail();
         setupFirebaseListener();
+        hideItem();
     }
 
-    private void getUsernameAndEmail(){
+    private void getUsernameAndEmail() {
         String name = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName();
         String user_email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         Uri userImage = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
@@ -85,38 +84,80 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Glide.with(this).load(userImage).apply(RequestOptions.circleCropTransform()).into(imageView);
     }
 
+    private void showItem() {
+        Menu menu = navigationView.getMenu();
+        boolean bjelasnica = !menu.findItem(R.id.bjelasnica).isVisible();
+        menu.findItem(R.id.bjelasnica).setVisible(bjelasnica);
+        boolean jahorina = !menu.findItem(R.id.jahorina).isVisible();
+        menu.findItem(R.id.jahorina).setVisible(jahorina);
+        boolean ravnaplanina = !menu.findItem(R.id.ravnaplanina).isVisible();
+        menu.findItem(R.id.ravnaplanina).setVisible(ravnaplanina);
+        boolean vlasic = !menu.findItem(R.id.vlasic).isVisible();
+        menu.findItem(R.id.vlasic).setVisible(vlasic);
+        boolean igman = !menu.findItem(R.id.igman).isVisible();
+        menu.findItem(R.id.igman).setVisible(igman);
+    }
+
+    private void hideItem() {
+        Menu menu = navigationView.getMenu();
+        menu.findItem(R.id.bjelasnica).setVisible(false);
+        menu.findItem(R.id.jahorina).setVisible(false);
+        menu.findItem(R.id.ravnaplanina).setVisible(false);
+        menu.findItem(R.id.vlasic).setVisible(false);
+        menu.findItem(R.id.igman).setVisible(false);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_mountains:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MountainsDrawerFragment()).commit();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_weather:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new WeatherDrawerFragment()).commit();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_hotel:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new AccommodationDrawerFragment()).commit();
+                showItem();
                 break;
             case R.id.nav_stream:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new WebcamsDrawerFragment()).commit();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_news:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new NewsDrawerFragment()).commit();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_send:
                 sendEmail();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.sign_out:
                 FirebaseAuth.getInstance().signOut();
                 LoginManager.getInstance().logOut();
+                drawer.closeDrawer(GravityCompat.START);
                 break;
         }
-        drawer.closeDrawer(GravityCompat.START);
+
+        if (item.getItemId() == R.id.bjelasnica) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new AccommodationDrawerFragment()).commit();
+            drawer.closeDrawer(GravityCompat.START);
+            hideItem();
+        } else if (item.getItemId() == R.id.jahorina) {
+
+        } else if (item.getItemId() == R.id.ravnaplanina) {
+
+        } else if (item.getItemId() == R.id.vlasic) {
+
+        } else if (item.getItemId() == R.id.igman) {
+
+        }
         return true;
     }
 
@@ -138,6 +179,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            hideItem();
         } else {
             finishAffinity();
             super.onBackPressed();
