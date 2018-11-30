@@ -107,6 +107,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         menu.findItem(R.id.igman).setVisible(false);
     }
 
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
