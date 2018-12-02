@@ -117,14 +117,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         menu.findItem(R.id.igman).setVisible(false);
     }
 
-    private String getMountain(){
-        return SkiResortHolder.getSkiResort().getMountain().getValue();
-    }
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         String[] mountain = {"Bjelašnica", "Jahorina", "Ravna Planina", "Vlašić", "Igman"};
-        String[] fragments = {"Mountains", "Weather", "Webcams", "News"};
 
         switch (item.getItemId()) {
             case R.id.nav_mountains:
@@ -188,7 +183,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         toggle.syncState();
     }
 

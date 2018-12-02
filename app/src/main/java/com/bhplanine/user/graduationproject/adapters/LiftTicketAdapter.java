@@ -146,6 +146,7 @@ public class LiftTicketAdapter extends RecyclerView.Adapter<LiftTicketAdapter.Vi
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+
         TextView dnevna_karta, cetiri_sata, cetvero_dnevna, deseto_dnevna, desetodnevna_sezona, dvodnevna,
                 petodnevna, petodnevna_sezona, pojedinacna_karta, sedmodnevna, tackice_sezona, trodnevna_karta,
                 napomena_web_stranica, napomena_text, dodatno_mjesto_odrasli1, dodatno_mjesto_odrasli2, dodatno_mjesto_odrasli3;
@@ -210,7 +211,6 @@ public class LiftTicketAdapter extends RecyclerView.Adapter<LiftTicketAdapter.Vi
             djecija_porodicniPaket = itemView.findViewById(R.id.porodicni_paket_djeca);
             djecija_babylift = itemView.findViewById(R.id.baby_lift_djeca);
             djecija_nocno = itemView.findViewById(R.id.nocno_djeca);
-
         }
     }
 }

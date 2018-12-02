@@ -30,8 +30,6 @@
     </style>
 
     <style name="MyCardViewStyle_weather" parent="Theme.AppCompat.Light">
-        <item name="cardCornerRadius">8dp</item>
-        <item name="cardElevation">2dp</item>
         <item name="cardBackgroundColor">@color/light_blue</item>
     </style>
 
