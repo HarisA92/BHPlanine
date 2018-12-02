@@ -1,6 +1,7 @@
 package com.bhplanine.user.graduationproject.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,29 +19,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.R;
-import com.bhplanine.user.graduationproject.fragments.navigationFragments.AccommodationDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.MountainsDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.NewsDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.WeatherDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.WebcamsDrawerFragment;
+import com.bhplanine.user.graduationproject.fragments.navigationFragments.expandListFragments.ContentFragment;
+import com.bhplanine.user.graduationproject.models.SkiResort;
+import com.bhplanine.user.graduationproject.models.SkiResortHolder;
+import com.bhplanine.user.graduationproject.utils.FragmentNavigationManager;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
+import com.bhplanine.user.graduationproject.utils.NavigationManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.lang.reflect.Array;
 import java.util.Objects;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
-    private FirebaseUser firebaseUser;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private InternetConnection internetConnection = new InternetConnection();
     private TextView username, email;
     private ImageView imageView;
+    private Bundle bundle;
+    private NavigationManager navigationManager;
+    private ActionBarDrawerToggle toggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +58,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        bundle = new Bundle();
+        navigationManager = FragmentNavigationManager.obtain(this);
 
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -107,10 +117,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         menu.findItem(R.id.igman).setVisible(false);
     }
 
-
+    private String getMountain(){
+        return SkiResortHolder.getSkiResort().getMountain().getValue();
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        String[] mountain = {"Bjelašnica", "Jahorina", "Ravna Planina", "Vlašić", "Igman"};
+        String[] fragments = {"Mountains", "Weather", "Webcams", "News"};
+
         switch (item.getItemId()) {
             case R.id.nav_mountains:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -147,20 +162,40 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
 
         if (item.getItemId() == R.id.bjelasnica) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new AccommodationDrawerFragment()).commit();
+            navigationManager.showFragmentAccommodation(mountain[0]);
             drawer.closeDrawer(GravityCompat.START);
             hideItem();
         } else if (item.getItemId() == R.id.jahorina) {
-
+            navigationManager.showFragmentAccommodation(mountain[1]);
+            drawer.closeDrawer(GravityCompat.START);
+            hideItem();
         } else if (item.getItemId() == R.id.ravnaplanina) {
-
+            navigationManager.showFragmentAccommodation(mountain[2]);
+            drawer.closeDrawer(GravityCompat.START);
+            hideItem();
         } else if (item.getItemId() == R.id.vlasic) {
-
+            navigationManager.showFragmentAccommodation(mountain[3]);
+            drawer.closeDrawer(GravityCompat.START);
+            hideItem();
         } else if (item.getItemId() == R.id.igman) {
-
+            navigationManager.showFragmentAccommodation(mountain[4]);
+            drawer.closeDrawer(GravityCompat.START);
+            hideItem();
         }
         return true;
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        toggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
     }
 
     @Override

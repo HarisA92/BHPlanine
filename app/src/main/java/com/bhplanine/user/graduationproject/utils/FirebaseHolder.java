@@ -36,4 +36,8 @@ public class FirebaseHolder {
     public DatabaseReference getDatabseReferenceForMountainInformation() {
         return FirebaseDatabase.getInstance().getReference(context.getResources().getString(R.string.mountain_information));
     }
+
+    public DatabaseReference getDatabaseReferenceForAccommodation(String title){
+        return FirebaseDatabase.getInstance().getReference(title);
+    }
 }

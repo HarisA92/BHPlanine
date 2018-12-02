@@ -26,12 +26,12 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class MountainsDrawerFragment extends Fragment {
 
     private ArrayList<AllMountainInformationHolder> arrayList = new ArrayList<>();
-    private FirebaseAuth.AuthStateListener mAuthStateListener;
     private InternetConnection internetConnection = new InternetConnection();
     private HomeAdapter homeAdapter;
     private ProgressBar mProgressCircle;
@@ -48,6 +48,7 @@ public class MountainsDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mountains, container, false);
         buildRecyclerView(v);
+        Objects.requireNonNull(getActivity()).setTitle("Mountains");
         mProgressCircle = v.findViewById(R.id.progress_bar_mountain_drawer);
         if (internetConnection.getInternetConnection()) {
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener());

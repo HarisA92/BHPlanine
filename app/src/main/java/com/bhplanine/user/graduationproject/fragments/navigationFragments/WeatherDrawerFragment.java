@@ -59,6 +59,7 @@ public class WeatherDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_weather_drawer, container, false);
         buildRecyclerView(v);
+        Objects.requireNonNull(getActivity()).setTitle("Weather");
         progressBar = v.findViewById(R.id.progress_bar_weather_drawer);
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         getAPI();
