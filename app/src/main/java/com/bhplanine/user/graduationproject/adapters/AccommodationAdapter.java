@@ -8,6 +8,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,8 +45,7 @@ public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdap
         holder.title.setText(accommodationHolder.getTitle());
         holder.overview.setText(accommodationHolder.getOverview());
         String website = accommodationHolder.getWebsite();
-        String title = accommodationHolder.getTitle();
-        String URL = "<a href=" + website + ">" + accommodationHolder.getOpis_web_stranice() + title + "</a>";
+        String URL = "<a href=" + website + ">" + "Saznaj više" + "</a>";
         holder.website.setMovementMethod(LinkMovementMethod.getInstance());
         holder.website.setText(Html.fromHtml(URL));
         holder.website.setClickable(true);
@@ -58,7 +58,8 @@ public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdap
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title, overview, website;
+        private TextView title, overview;
+        private Button website, reservation;
         private ImageView image;
 
         ViewHolder(View itemView) {
@@ -67,6 +68,7 @@ public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdap
             overview = itemView.findViewById(R.id.text_accommodation);
             image = itemView.findViewById(R.id.image_accommodation);
             website = itemView.findViewById(R.id.website_accommodation);
+            reservation = itemView.findViewById(R.id.reservation_accommodation);
         }
     }
 }

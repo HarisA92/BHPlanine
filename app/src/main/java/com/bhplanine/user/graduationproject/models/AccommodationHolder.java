@@ -6,11 +6,6 @@ public class AccommodationHolder {
     private String title;
     private String overview;
     private String website;
-    private String opis_web_stranice;
-
-    public String getOpis_web_stranice() {
-        return opis_web_stranice;
-    }
 
     public String getWebsite() {
         return website;

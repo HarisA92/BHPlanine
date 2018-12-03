@@ -71,7 +71,7 @@ public class MountainsDrawerFragment extends Fragment {
         homeAdapter = new HomeAdapter(getActivity(), arrayList);
         mRecyclerView.setAdapter(homeAdapter);
     }
-    
+
 
     private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
