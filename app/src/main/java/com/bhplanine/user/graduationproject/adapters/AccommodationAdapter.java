@@ -19,8 +19,6 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
-import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
-
 public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdapter.ViewHolder> {
 
     private ArrayList<AccommodationHolder> accommodationList;
@@ -45,11 +43,13 @@ public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdap
         holder.title.setText(accommodationHolder.getTitle());
         holder.overview.setText(accommodationHolder.getOverview());
         String website = accommodationHolder.getWebsite();
+        String reservation = accommodationHolder.getReservation();
         String URL = "<a href=" + website + ">" + "Saznaj više" + "</a>";
+        String URLReservation = "<a href=" + reservation + ">" + "Rezervacije" + "</a>";
         holder.website.setMovementMethod(LinkMovementMethod.getInstance());
         holder.website.setText(Html.fromHtml(URL));
-        holder.website.setClickable(true);
-
+        holder.reservation.setMovementMethod(LinkMovementMethod.getInstance());
+        holder.reservation.setText(Html.fromHtml(URLReservation));
     }
 
     @Override

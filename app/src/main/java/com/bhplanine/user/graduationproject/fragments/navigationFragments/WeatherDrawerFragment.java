@@ -78,16 +78,6 @@ public class WeatherDrawerFragment extends Fragment {
         mRecyclerView.setAdapter(weatherDrawerAdapter);
     }
 
-    private List<String> namesOfMountain(){
-        List<String> nameOfMountain = new ArrayList<>();
-        nameOfMountain.add("Bjelasnica");
-        nameOfMountain.add("Jahorina");
-        nameOfMountain.add("Ravna Planina");
-        nameOfMountain.add("Vlasic");
-        nameOfMountain.add("Igman");
-        return nameOfMountain;
-    }
-
     private void getAPI() {
         if(connection.getInternetConnection()) {
             Observable<WeatherResult> bjelasnica = weatherClient.getWeatherService()
@@ -154,7 +144,6 @@ public class WeatherDrawerFragment extends Fragment {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private List<WeatherDay> getWeatherList(List<WeatherDay> weatherDays) {

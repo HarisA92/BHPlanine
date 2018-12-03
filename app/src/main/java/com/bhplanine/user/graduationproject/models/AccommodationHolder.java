@@ -6,6 +6,11 @@ public class AccommodationHolder {
     private String title;
     private String overview;
     private String website;
+    private String reservation;
+
+    public String getReservation() {
+        return reservation;
+    }
 
     public String getWebsite() {
         return website;

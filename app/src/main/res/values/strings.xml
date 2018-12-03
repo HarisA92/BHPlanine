@@ -192,6 +192,10 @@
     <string name="sharedPreferencesWeather_list">listWeater</string>
     <string name="sharedPreferencesLiftTickets">sharedPreferencesLiftTickets</string>
     <string name="sharedPreferencesLiftTickets_list">listLiftTickets</string>
+    <string name="sharedPreferencesAccommodation">sharedPreferencesAccommodation</string>
+    <string name="sharedPreferencesAccommodation_list">accommodation</string>
+
+
 
     <string name="PATH_TO_WEATHER_FONT">fonts/weather.ttf</string>
     <string name="LOCATION_AND_COUNTRY_CODE">%s,BA</string>
