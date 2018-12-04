@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.R;
+import com.bhplanine.user.graduationproject.activities.Home;
 import com.bhplanine.user.graduationproject.adapters.AccommodationAdapter;
 import com.bhplanine.user.graduationproject.models.AccommodationHolder;
-import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +26,6 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class ContentFragment extends Fragment {
@@ -50,6 +49,7 @@ public class ContentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_content, container, false);
         buildRecyclerView(v);
+
         mountaint = Objects.requireNonNull(getArguments()).getString(MOUNTAINT_ACCOMMODATION);
         Objects.requireNonNull(getActivity()).setTitle(mountaint);
 
@@ -136,5 +136,4 @@ public class ContentFragment extends Fragment {
         adapter = new AccommodationAdapter(list, getContext());
         mRecyclerView.setAdapter(adapter);
     }
-
 }

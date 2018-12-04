@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.BuildConfig;
 import com.bhplanine.user.graduationproject.R;
-import com.bhplanine.user.graduationproject.adapters.WeatherAdapter;
+import com.bhplanine.user.graduationproject.activities.Home;
 import com.bhplanine.user.graduationproject.adapters.WeatherDrawerAdapter;
 import com.bhplanine.user.graduationproject.retrofit.client.WeatherClient;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
@@ -64,6 +64,14 @@ public class WeatherDrawerFragment extends Fragment {
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         getAPI();
         return v;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+        }
     }
 
     private void buildRecyclerView(View v) {
@@ -173,14 +181,6 @@ public class WeatherDrawerFragment extends Fragment {
             Type type = new TypeToken<ArrayList<WeatherDay>>() {
             }.getType();
             days = gson.fromJson(json, type);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
-            compositeDisposable.dispose();
         }
     }
 }
