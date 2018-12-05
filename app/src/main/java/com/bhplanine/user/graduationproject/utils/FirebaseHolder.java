@@ -40,4 +40,5 @@ public class FirebaseHolder {
     public DatabaseReference getDatabaseReferenceForAccommodation(String title){
         return FirebaseDatabase.getInstance().getReference(title);
     }
+
 }

@@ -196,6 +196,7 @@
     <string name="sharedPreferencesAccommodation_list">accommodation</string>
 
 
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 
     <string name="PATH_TO_WEATHER_FONT">fonts/weather.ttf</string>
     <string name="LOCATION_AND_COUNTRY_CODE">%s,BA</string>
