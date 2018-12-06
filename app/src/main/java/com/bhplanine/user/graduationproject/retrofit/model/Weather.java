@@ -3,16 +3,11 @@ package com.bhplanine.user.graduationproject.retrofit.model;
 public class Weather {
 
     private int id;
-    private String main;
     private String description;
     private String icon;
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setMain(String main) {
-        this.main = main;
     }
 
     public void setDescription(String description) {
@@ -25,10 +20,6 @@ public class Weather {
 
     public int getId() {
         return id;
-    }
-
-    public String getMain() {
-        return main;
     }
 
     public String getDescription() {

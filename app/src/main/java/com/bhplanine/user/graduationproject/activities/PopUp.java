@@ -3,7 +3,6 @@ package com.bhplanine.user.graduationproject.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -26,11 +25,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
+import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.models.SkiResortHolder;
 import com.bhplanine.user.graduationproject.models.Upload;
-import com.bhplanine.user.graduationproject.R;
+import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,8 +42,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.File;
@@ -60,28 +65,11 @@ public class PopUp extends AppCompatActivity {
     private Uri mImageUri;
     private StorageReference mStorageRef;
     private DatabaseReference mDatabaseRef;
-    private StorageTask mUploadTask;
+    private StorageTask<UploadTask.TaskSnapshot> uploadTask;
     private FirebaseUser user;
     private String spinnerSnow, spinnerSurface;
     private String imageFilePath;
     private FirebaseHolder firebaseHolder;
-
-    public static String getPath(Context context, Uri uri) {
-        String result = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
-                result = cursor.getString(column_index);
-            }
-            cursor.close();
-        }
-        if (result == null) {
-            result = "Not found";
-        }
-        return result;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +93,7 @@ public class PopUp extends AppCompatActivity {
         mButtonChooseImage.setOnClickListener(v -> SelectImage());
 
         mButtonUpload.setOnClickListener(v -> {
-            if (mUploadTask != null && mUploadTask.isInProgress()) {
+            if (uploadTask != null && uploadTask.isInProgress()) {
                 Toast.makeText(PopUp.this, getResources().getString(R.string.upload_in_progress), Toast.LENGTH_SHORT).show();
             } else {
                 finalCheck();
@@ -127,6 +115,24 @@ public class PopUp extends AppCompatActivity {
 
         surfaceSpinner.setOnItemClickListener((adapterView, view, i, l) -> spinnerSurface = adapterView.getItemAtPosition(i).toString());
         capturePhotoPermission();
+    }
+
+
+    public static String getPath(Context context, Uri uri) {
+        String result = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            result = "Not found";
+        }
+        return result;
     }
 
     private void capturePhotoPermission() {
@@ -184,18 +190,15 @@ public class PopUp extends AppCompatActivity {
         final CharSequence[] items = {getResources().getString(R.string.camera), getResources().getString(R.string.gallery), getResources().getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(PopUp.this);
         builder.setTitle("Add Image");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (items[i].equals(getResources().getString(R.string.camera))) {
-                    dispatchTakePictureIntent();
-                } else if (items[i].equals(getResources().getString(R.string.gallery))) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-                    startActivityForResult(intent, SELECT_FILE);
-                } else if (items[i].equals(getResources().getString(R.string.cancel))) {
-                    dialogInterface.dismiss();
-                }
+        builder.setItems(items, (dialogInterface, i) -> {
+            if (items[i].equals(getResources().getString(R.string.camera))) {
+                dispatchTakePictureIntent();
+            } else if (items[i].equals(getResources().getString(R.string.gallery))) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setType("image/*");
+                startActivityForResult(intent, SELECT_FILE);
+            } else if (items[i].equals(getResources().getString(R.string.cancel))) {
+                dialogInterface.dismiss();
             }
         });
         builder.show();
@@ -219,8 +222,6 @@ public class PopUp extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Glide.with(this).load(imageFilePath).into(mImageView);
                 mImageUri = Uri.parse(imageFilePath);
-            } else if (resultCode == RESULT_CANCELED) {
-
             }
         } else if (resultCode == RESULT_OK && requestCode == SELECT_FILE) {
             mImageUri = data.getData();
@@ -262,7 +263,7 @@ public class PopUp extends AppCompatActivity {
     private void finalCheck() {
         firebaseHolder.getDatabaseReferenceForReport().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (checkDuplicateData(mEditText.getText().toString().toLowerCase(), dataSnapshot)) {
                     Toast.makeText(PopUp.this, getResources().getString(R.string.similar_post), Toast.LENGTH_SHORT).show();
                 } else {
@@ -271,7 +272,7 @@ public class PopUp extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -279,32 +280,37 @@ public class PopUp extends AppCompatActivity {
 
     private void uploadFile() {
         final String date = DATE_FORMAT.format(new Date());
-
         if (mImageUri != null) {
             Uri file = Uri.fromFile(new File(String.valueOf(mImageUri)));
-
             StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()
                     + "." + file.getLastPathSegment());
-            mUploadTask = fileReference.putFile(file)
-                    .addOnSuccessListener(taskSnapshot -> {
-                        new Handler().postDelayed(() -> mProgressBar.setProgress(0), 2000);
-                        Toast.makeText(PopUp.this, getResources().getString(R.string.upload_successful), Toast.LENGTH_LONG).show();
-                        Upload upload = new Upload(mEditText.getText().toString().toLowerCase(),
-                                Objects.requireNonNull(taskSnapshot.getDownloadUrl()).toString(),
-                                getUsername(),
-                                spinnerSnow,
-                                spinnerSurface,
-                                date, getUserEmail()
-                        );
-                        String uploadId = mDatabaseRef.push().getKey();
-                        mDatabaseRef.child(uploadId).setValue(upload);
-                        finish();
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(PopUp.this, getResources().getString(R.string.error) + e.getMessage(), Toast.LENGTH_SHORT).show())
-                    .addOnProgressListener(taskSnapshot -> {
-                        double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                        mProgressBar.setProgress((int) progress);
-                    });
+            uploadTask = fileReference.putFile(file);
+            uploadTask.continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw Objects.requireNonNull(task.getException());
+                }
+                return fileReference.getDownloadUrl();
+            }).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    new Handler().postDelayed(() -> mProgressBar.setProgress(0), 2000);
+                    Toast.makeText(PopUp.this, getResources().getString(R.string.upload_successful), Toast.LENGTH_LONG).show();
+                    Uri downloadUri = task.getResult();
+
+                    Upload upload = new Upload(mEditText.getText().toString().toLowerCase(),
+                            Objects.requireNonNull(downloadUri).toString(),
+                            getUsername(),
+                            spinnerSnow,
+                            spinnerSurface,
+                            date, getUserEmail());
+                    String uploadId = mDatabaseRef.push().getKey();
+                    mDatabaseRef.child(Objects.requireNonNull(uploadId)).setValue(upload);
+                    finish();
+                }
+            }).addOnFailureListener(e -> Toast.makeText(PopUp.this, getResources().getString(R.string.error) + e.getMessage(), Toast.LENGTH_SHORT).show());
+            uploadTask.addOnProgressListener(taskSnapshot -> {
+                double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                mProgressBar.setProgress((int) progress);
+            });
         } else {
             Toast.makeText(this, getResources().getString(R.string.upload_image), Toast.LENGTH_SHORT).show();
         }

@@ -3,7 +3,7 @@ package com.bhplanine.user.graduationproject.models;
 public class Upload {
 
     private String mName;
-    private String mImageUrl;
+    private String imageUrl;
     private String mKey;
     private String mSnow;
     private String mTrail;
@@ -13,9 +13,9 @@ public class Upload {
     public Upload() {
     }
 
-    public Upload(String name, String imageUrl, String key, String snow, String trail, String Date, String userEmail) {
+    public Upload(String name, String mImageUrl, String key, String snow, String trail, String Date, String userEmail) {
         mName = name;
-        mImageUrl = imageUrl;
+        imageUrl = mImageUrl;
         mKey = key;
         mSnow = snow;
         mTrail = trail;
@@ -35,24 +35,12 @@ public class Upload {
         return mSnow;
     }
 
-    public void setmSnow(String mSnow) {
-        this.mSnow = mSnow;
-    }
-
     public String getmTrail() {
         return mTrail;
     }
 
-    public void setmTrail(String mTrail) {
-        this.mTrail = mTrail;
-    }
-
     public String getmKey() {
         return mKey;
-    }
-
-    public void setmKey(String mKey) {
-        this.mKey = mKey;
     }
 
     public String getName() {
@@ -64,11 +52,7 @@ public class Upload {
     }
 
     public String getImageUrl() {
-        return mImageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        mImageUrl = imageUrl;
+        return imageUrl;
     }
 
     public String getEmail() {

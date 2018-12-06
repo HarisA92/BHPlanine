@@ -13,9 +13,13 @@ import android.widget.TextView;
 import com.bhplanine.user.graduationproject.models.Upload;
 import com.bhplanine.user.graduationproject.activities.ZoomImageReport;
 import com.bhplanine.user.graduationproject.R;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
 
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ImageViewHolder> {
 
@@ -48,12 +52,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ImageViewH
             intent.putExtra(context.getResources().getString(R.string.POSITION), uploadCurrent.getImageUrl());
             context.startActivity(intent);
         });
-
-        Picasso.with(context)
-                .load(uploadCurrent.getImageUrl())
-                .fit()
-                .centerCrop()
-                .into(holder.imageView);
+        Glide.with(context).load(uploadCurrent.getImageUrl()).apply(RequestOptions.centerCropTransform()).into(holder.imageView);
     }
 
     @Override

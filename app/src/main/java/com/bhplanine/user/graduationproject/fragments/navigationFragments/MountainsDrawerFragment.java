@@ -32,7 +32,6 @@ import java.util.Objects;
 public class MountainsDrawerFragment extends Fragment {
 
     private ArrayList<AllMountainInformationHolder> arrayList = new ArrayList<>();
-    private InternetConnection internetConnection = new InternetConnection();
     private HomeAdapter homeAdapter;
     private ProgressBar mProgressCircle;
     private RecyclerView mRecyclerView;
@@ -49,6 +48,7 @@ public class MountainsDrawerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_mountains, container, false);
         buildRecyclerView(v);
         Objects.requireNonNull(getActivity()).setTitle("Mountains");
+        InternetConnection internetConnection = new InternetConnection();
         mProgressCircle = v.findViewById(R.id.progress_bar_mountain_drawer);
         if (internetConnection.getInternetConnection()) {
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener());
@@ -76,7 +76,7 @@ public class MountainsDrawerFragment extends Fragment {
     private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     AllMountainInformationHolder getValues = postSnapshot.getValue(AllMountainInformationHolder.class);
                     arrayList.add(getValues);
@@ -88,7 +88,7 @@ public class MountainsDrawerFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         };
     }
@@ -119,5 +119,13 @@ public class MountainsDrawerFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         firebaseHolder = new FirebaseHolder(context);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(firebaseHolder.getDatabseReferenceForMountainInformation() != null){
+            firebaseHolder.getDatabseReferenceForMountainInformation().removeEventListener(valueEventListener());
+        }
     }
 }

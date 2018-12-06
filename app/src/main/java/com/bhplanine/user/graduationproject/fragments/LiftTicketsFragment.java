@@ -20,11 +20,13 @@ import com.bhplanine.user.graduationproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class LiftTicketsFragment extends Fragment {
@@ -32,16 +34,18 @@ public class LiftTicketsFragment extends Fragment {
     private ArrayList<LiftTicketHolder> arrayList = new ArrayList<>();
     private LiftTicketAdapter liftTicketAdapter;
     private String getMountain;
+    private FirebaseHolder firebaseHolder;
 
+    @AddTrace(name = "onCreateLiftTicketsFragment")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lift_tickets, container, false);
 
-        getMountain = String.valueOf(getActivity().getTitle());
+        getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
+        firebaseHolder = new FirebaseHolder(getActivity());
 
         InternetConnection internetConnection = new InternetConnection();
-        FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
         if (internetConnection.getInternetConnection()) {
             buildRecyclerView(v);
             firebaseHolder.getDatabaseReferenceForTicketPrice().addValueEventListener(valueEventListener());
@@ -56,7 +60,7 @@ public class LiftTicketsFragment extends Fragment {
     private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arrayList.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     LiftTicketHolder value = postSnapshot.getValue(LiftTicketHolder.class);
@@ -67,7 +71,7 @@ public class LiftTicketsFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         };
     }
@@ -94,11 +98,21 @@ public class LiftTicketsFragment extends Fragment {
     }
 
     private void loadUserReportPreferences() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesLiftTickets), Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(getMountain + getResources().getString(R.string.sharedPreferencesLiftTickets_list), null);
-        Type type = new TypeToken<ArrayList<LiftTicketHolder>>() {
-        }.getType();
-        arrayList = gson.fromJson(json, type);
+        if(getActivity() != null){
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesLiftTickets), Context.MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = sharedPreferences.getString(getMountain + getResources().getString(R.string.sharedPreferencesLiftTickets_list), null);
+            Type type = new TypeToken<ArrayList<LiftTicketHolder>>() {
+            }.getType();
+            arrayList = gson.fromJson(json, type);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(firebaseHolder.getDatabaseReferenceForTicketPrice() != null){
+            firebaseHolder.getDatabaseReferenceForTicketPrice().removeEventListener(valueEventListener());
+        }
     }
 }

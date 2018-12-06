@@ -25,6 +25,7 @@ import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherResult;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.utils.RetrofitHolder;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -40,6 +41,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class WeatherDrawerFragment extends Fragment {
@@ -47,12 +49,13 @@ public class WeatherDrawerFragment extends Fragment {
     private List<WeatherDay> days = new ArrayList<>();
     private List<WeatherDay> bjelasnicaList, jahorinaList, ravnaplaninaList, igmanList, vlasicList;
     private Typeface weatherFont;
-    private WeatherClient weatherClient = new WeatherClient(getActivity());
-    private InternetConnection connection = new InternetConnection();
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private WeatherClient weatherClient;
+    private InternetConnection connection;
+    private CompositeDisposable compositeDisposable;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
 
+    @AddTrace(name = "onCreateWeatherDrawerFragment")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -60,6 +63,11 @@ public class WeatherDrawerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_weather_drawer, container, false);
         buildRecyclerView(v);
         Objects.requireNonNull(getActivity()).setTitle("Weather");
+
+        weatherClient = new WeatherClient(getActivity());
+        connection = new InternetConnection();
+        compositeDisposable = new CompositeDisposable();
+
         progressBar = v.findViewById(R.id.progress_bar_weather_drawer);
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         getAPI();
@@ -86,6 +94,7 @@ public class WeatherDrawerFragment extends Fragment {
         mRecyclerView.setAdapter(weatherDrawerAdapter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getAPI() {
         if(connection.getInternetConnection()) {
             Observable<WeatherResult> bjelasnica = weatherClient.getWeatherService()
@@ -109,41 +118,25 @@ public class WeatherDrawerFragment extends Fragment {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-            Observable<RetrofitHolder> combined = Observable.zip(bjelasnica, jahorina, ravnaplanina, vlasic, igman, RetrofitHolder::new);
-            combined.subscribe(new Observer<RetrofitHolder>() {
-                @Override
-                public void onSubscribe(Disposable d) {
+            compositeDisposable.add(Observable.zip(bjelasnica, jahorina, ravnaplanina, vlasic, igman, RetrofitHolder::new)
+            .subscribe(retrofitHolder -> {
+                bjelasnicaList = retrofitHolder.bjelasnica.getList();
+                jahorinaList = retrofitHolder.jahorina.getList();
+                ravnaplaninaList = retrofitHolder.ravnaplanina.getList();
+                igmanList = retrofitHolder.igman.getList();
+                vlasicList = retrofitHolder.vlasic.getList();
+                days.addAll(getWeatherList(bjelasnicaList));
+                days.addAll(getWeatherList(jahorinaList));
+                days.addAll(getWeatherList(ravnaplaninaList));
+                days.addAll(getWeatherList(igmanList));
+                days.addAll(getWeatherList(vlasicList));
+                buildRecyclerAdapter();
+                saveUserReportPreferences(days);
+                progressBar.setVisibility(View.INVISIBLE);
+            }, throwable -> {
+                Toast.makeText(getContext(), getResources().getString(R.string.error) + throwable.getMessage(), Toast.LENGTH_SHORT).show();
 
-                }
-
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void onNext(RetrofitHolder retrofitHolder) {
-                    bjelasnicaList = retrofitHolder.bjelasnica.getList();
-                    jahorinaList = retrofitHolder.jahorina.getList();
-                    ravnaplaninaList = retrofitHolder.ravnaplanina.getList();
-                    igmanList = retrofitHolder.igman.getList();
-                    vlasicList = retrofitHolder.vlasic.getList();
-                    days.addAll(getWeatherList(bjelasnicaList));
-                    days.addAll(getWeatherList(jahorinaList));
-                    days.addAll(getWeatherList(ravnaplaninaList));
-                    days.addAll(getWeatherList(igmanList));
-                    days.addAll(getWeatherList(vlasicList));
-                    buildRecyclerAdapter();
-                    saveUserReportPreferences(days);
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    Toast.makeText(getContext(), getResources().getString(R.string.error) + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            });
+            }));
         }
         else{
             loadUserReportPreferences();

@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.perf.metrics.AddTrace;
 
 import java.util.Objects;
 
@@ -53,6 +54,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private ActionBarDrawerToggle toggle;
     private Fragment fragment;
 
+    @AddTrace(name = "onCreateHomeActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

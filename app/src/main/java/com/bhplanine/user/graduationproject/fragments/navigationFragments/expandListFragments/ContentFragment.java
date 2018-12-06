@@ -21,6 +21,7 @@ import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -34,7 +35,8 @@ public class ContentFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private AccommodationAdapter adapter;
     private ArrayList<AccommodationHolder> list = new ArrayList<>();
-    private String mountaint;
+    private String mountain;
+    private FirebaseHolder firebaseHolder;
 
     public static ContentFragment newInstance(String param1) {
         ContentFragment fragment = new ContentFragment();
@@ -44,20 +46,21 @@ public class ContentFragment extends Fragment {
         return fragment;
     }
 
+    @AddTrace(name = "onCreateContentFragment")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_content, container, false);
         buildRecyclerView(v);
 
-        mountaint = Objects.requireNonNull(getArguments()).getString(MOUNTAINT_ACCOMMODATION);
-        Objects.requireNonNull(getActivity()).setTitle(mountaint);
+        mountain = Objects.requireNonNull(getArguments()).getString(MOUNTAINT_ACCOMMODATION);
+        Objects.requireNonNull(getActivity()).setTitle(mountain);
 
-        FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
+        firebaseHolder = new FirebaseHolder(getActivity());
         InternetConnection internetConnection = new InternetConnection();
         if (internetConnection.getInternetConnection()) {
-            if(mountaint != null){
-                switch (mountaint) {
+            if(mountain != null){
+                switch (mountain) {
                     case "Bjelašnica":
                         firebaseHolder.getDatabaseReferenceForAccommodation("Bjelasnica Accommodation").addValueEventListener(valueEventListener());
                         break;
@@ -85,7 +88,7 @@ public class ContentFragment extends Fragment {
 
     private void saveUserReportPreferences(ArrayList<AccommodationHolder> accommodationList) {
         if (getActivity() != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(mountaint + getResources().getString(R.string.sharedPreferencesAccommodation), Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(mountain + getResources().getString(R.string.sharedPreferencesAccommodation), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(accommodationList);
@@ -96,7 +99,7 @@ public class ContentFragment extends Fragment {
 
     private void loadUserReportPreferences() {
         if (getActivity() != null) {
-            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(mountaint + getResources().getString(R.string.sharedPreferencesAccommodation), Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences = getActivity().getSharedPreferences(mountain + getResources().getString(R.string.sharedPreferencesAccommodation), Context.MODE_PRIVATE);
             Gson gson = new Gson();
             String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferencesAccommodation_list), null);
             Type type = new TypeToken<ArrayList<AccommodationHolder>>() {
@@ -108,7 +111,7 @@ public class ContentFragment extends Fragment {
     private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot postDatasnapshot : dataSnapshot.getChildren()){
                     AccommodationHolder holder = postDatasnapshot.getValue(AccommodationHolder.class);
                     list.add(holder);
@@ -119,7 +122,7 @@ public class ContentFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         };
@@ -135,5 +138,13 @@ public class ContentFragment extends Fragment {
     private void buildRecyclerAdapter() {
         adapter = new AccommodationAdapter(list, getContext());
         mRecyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(firebaseHolder.getDatabaseReferenceForAccommodation(mountain) != null){
+            firebaseHolder.getDatabaseReferenceForAccommodation(mountain).removeEventListener(valueEventListener());
+        }
     }
 }

@@ -17,6 +17,7 @@ import com.bhplanine.user.graduationproject.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,7 @@ public class TrailMapFragment extends Fragment {
 
     private ArrayList<String> trailMapList = new ArrayList<>();
     private TrailMapAdapter trailMapAdapter;
+    private FirebaseHolder firebaseHolder;
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
@@ -31,7 +33,7 @@ public class TrailMapFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_trail_map, container, false);
 
         InternetConnection internetConnection = new InternetConnection();
-        FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
+        firebaseHolder = new FirebaseHolder(getActivity());
 
         if (internetConnection.getInternetConnection()) {
             buildRecyclerView(v);
@@ -45,29 +47,29 @@ public class TrailMapFragment extends Fragment {
     private ChildEventListener childEventListener() {
         return new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                 String downloadUrl = dataSnapshot.getValue(String.class);
                 trailMapList.add(downloadUrl);
                 trailMapAdapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
 
             }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
 
             }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
 
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         };
@@ -81,5 +83,13 @@ public class TrailMapFragment extends Fragment {
 
         trailMapAdapter = new TrailMapAdapter(trailMapList, getContext());
         recyclerView.setAdapter(trailMapAdapter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(firebaseHolder.getDatabaseReferenceForTrailMap() != null){
+            firebaseHolder.getDatabaseReferenceForTrailMap().removeEventListener(childEventListener());
+        }
     }
 }

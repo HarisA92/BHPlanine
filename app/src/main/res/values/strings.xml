@@ -155,7 +155,12 @@
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>
     <string name="cancel">Cancel</string>
+    <string name="post_report">Post Report</string>
+    <string name="add_photo">Add Photo</string>
 
+    Add Photo
+
+    Post Report
     <string name="upload_in_progress">Upload in progress..</string>
     <string name="blank_space">-</string>
     <string name="size_5cm">5cm</string>

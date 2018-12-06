@@ -16,13 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.bhplanine.user.graduationproject.adapters.WeatherAdapter;
-import com.bhplanine.user.graduationproject.retrofit.client.WeatherClient;
-import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
-import com.bhplanine.user.graduationproject.models.SkiResortHolder;
-import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.BuildConfig;
 import com.bhplanine.user.graduationproject.R;
+import com.bhplanine.user.graduationproject.adapters.WeatherAdapter;
+import com.bhplanine.user.graduationproject.models.SkiResortHolder;
+import com.bhplanine.user.graduationproject.retrofit.client.WeatherClient;
+import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
+import com.bhplanine.user.graduationproject.utils.InternetConnection;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -43,9 +44,13 @@ public class WeatherFragment extends Fragment {
     private Typeface weatherFont;
     private String getMountain;
     private RecyclerView mRecyclerView;
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+    private CompositeDisposable compositeDisposable;
 
+    private static String getLocation(View v) {
+        return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity());
+    }
 
+    @AddTrace(name = "onCreateWeatherFragment")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,6 +58,7 @@ public class WeatherFragment extends Fragment {
         buildRecyclerView(v);
 
         final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
+        compositeDisposable = new CompositeDisposable();
 
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
@@ -78,7 +84,6 @@ public class WeatherFragment extends Fragment {
         return v;
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void buildRecyclerView(View v) {
         mRecyclerView = v.findViewById(R.id.weather_recycler_view);
@@ -91,10 +96,6 @@ public class WeatherFragment extends Fragment {
     private void buildRecyclerAdapter() {
         WeatherAdapter weatherAdapter = new WeatherAdapter(getWeatherList(days), getContext(), weatherFont);
         mRecyclerView.setAdapter(weatherAdapter);
-    }
-
-    private static String getLocation(View v) {
-        return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

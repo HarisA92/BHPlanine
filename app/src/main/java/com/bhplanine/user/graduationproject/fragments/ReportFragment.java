@@ -22,7 +22,9 @@ import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -32,24 +34,27 @@ import java.util.Objects;
 
 public class ReportFragment extends Fragment {
 
-    private FirebaseHolder firebaseHolder = new FirebaseHolder(getActivity());
+    private FirebaseHolder firebaseHolder;
     private ArrayList<Upload> mUploads = new ArrayList<>();
-    private InternetConnection connection = new InternetConnection();
     private String getMountain;
     private RecyclerView mRecyclerView;
     private ReportAdapter mAdapter;
     private ProgressBar mProgressCircle;
 
     @Override
+    @AddTrace(name = "onCreateReportFragment")
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report3, container, false);
         onReportClick(v);
         buildRecyclerView(v);
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
 
+        firebaseHolder = new FirebaseHolder(getActivity());
+        InternetConnection connection = new InternetConnection();
+
         mProgressCircle = v.findViewById(R.id.progress_circle);
         if (connection.getInternetConnection()) {
-            firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueEventListener());
+           firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueEventListener());
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
@@ -74,10 +79,11 @@ public class ReportFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    @AddTrace(name = "valueEventListenerReportFragment")
     private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUploads.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     final Upload upload = postSnapshot.getValue(Upload.class);
@@ -92,7 +98,7 @@ public class ReportFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         };
@@ -127,6 +133,13 @@ public class ReportFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(firebaseHolder.getDatabaseReferenceForReport() != null){
+            firebaseHolder.getDatabaseReferenceForReport().removeEventListener(valueEventListener());
+        }
+    }
 }
 
 
