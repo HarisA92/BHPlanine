@@ -135,7 +135,6 @@ public class WeatherDrawerFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
             }, throwable -> {
                 Toast.makeText(getContext(), getResources().getString(R.string.error) + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-
             }));
         }
         else{

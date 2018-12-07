@@ -50,6 +50,7 @@ public class MountainsDrawerFragment extends Fragment {
         Objects.requireNonNull(getActivity()).setTitle("Mountains");
         InternetConnection internetConnection = new InternetConnection();
         mProgressCircle = v.findViewById(R.id.progress_bar_mountain_drawer);
+
         if (internetConnection.getInternetConnection()) {
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener());
         } else {
@@ -122,8 +123,8 @@ public class MountainsDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         if(firebaseHolder.getDatabseReferenceForMountainInformation() != null){
             firebaseHolder.getDatabseReferenceForMountainInformation().removeEventListener(valueEventListener());
         }

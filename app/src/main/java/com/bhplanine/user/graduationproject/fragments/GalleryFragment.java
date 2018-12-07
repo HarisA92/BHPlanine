@@ -26,18 +26,19 @@ public class GalleryFragment extends Fragment {
     private FirebaseHolder firebaseHolder;
     private GalleryAdapter galleryAdapter;
     private ArrayList<String> imagesArrayList = new ArrayList<>();
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_gallery, container, false);
-
+        buildRecyclerView(v);
         InternetConnection internetConnection = new InternetConnection();
         firebaseHolder = new FirebaseHolder(getActivity());
 
         if (internetConnection.getInternetConnection()) {
-            buildRecyclerView(v);
             firebaseHolder.getDatabaseReferenceForGallery().addChildEventListener(childEventListener());
+            buildRecyclerAdapter();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
@@ -76,18 +77,26 @@ public class GalleryFragment extends Fragment {
     }
 
     private void buildRecyclerView(View v) {
-        RecyclerView recyclerView = v.findViewById(R.id.recycler_view);
+        recyclerView = v.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
+    }
 
+    private void buildRecyclerAdapter(){
         galleryAdapter = new GalleryAdapter(imagesArrayList, getContext());
         recyclerView.setAdapter(galleryAdapter);
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroyView() {
+        super.onDestroyView();
+        recyclerView.setAdapter(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if (firebaseHolder.getDatabaseReferenceForGallery() != null) {
             firebaseHolder.getDatabaseReferenceForGallery().removeEventListener(childEventListener());
         }

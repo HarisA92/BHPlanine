@@ -35,24 +35,25 @@ public class LiftTicketsFragment extends Fragment {
     private LiftTicketAdapter liftTicketAdapter;
     private String getMountain;
     private FirebaseHolder firebaseHolder;
+    private RecyclerView recyclerView;
 
     @AddTrace(name = "onCreateLiftTicketsFragment")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lift_tickets, container, false);
-
+        buildRecyclerView(v);
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         firebaseHolder = new FirebaseHolder(getActivity());
 
         InternetConnection internetConnection = new InternetConnection();
         if (internetConnection.getInternetConnection()) {
-            buildRecyclerView(v);
             firebaseHolder.getDatabaseReferenceForTicketPrice().addValueEventListener(valueEventListener());
+            buildRecyclerAdapter();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
-            buildRecyclerView(v);
+            buildRecyclerAdapter();
         }
         return v;
     }
@@ -77,13 +78,16 @@ public class LiftTicketsFragment extends Fragment {
     }
 
     private void buildRecyclerView(View v) {
-        liftTicketAdapter = new LiftTicketAdapter(getContext(), arrayList);
-        RecyclerView mRecyclerView = v.findViewById(R.id.recycler_view_lift_tickets);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setNestedScrollingEnabled(false);
+        recyclerView = v.findViewById(R.id.recycler_view_lift_tickets);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(liftTicketAdapter);
+        recyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    private void buildRecyclerAdapter(){
+        liftTicketAdapter = new LiftTicketAdapter(getContext(), arrayList);
+        recyclerView.setAdapter(liftTicketAdapter);
     }
 
     private void saveUserReportPreferences(ArrayList<LiftTicketHolder> liftTicketHolders) {
@@ -106,6 +110,12 @@ public class LiftTicketsFragment extends Fragment {
             }.getType();
             arrayList = gson.fromJson(json, type);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        recyclerView.setAdapter(null);
     }
 
     @Override

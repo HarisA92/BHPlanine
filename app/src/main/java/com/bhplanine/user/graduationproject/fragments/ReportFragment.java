@@ -3,6 +3,8 @@ package com.bhplanine.user.graduationproject.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -39,7 +41,6 @@ public class ReportFragment extends Fragment {
     private String getMountain;
     private RecyclerView mRecyclerView;
     private ReportAdapter mAdapter;
-    private ProgressBar mProgressCircle;
 
     @Override
     @AddTrace(name = "onCreateReportFragment")
@@ -52,14 +53,13 @@ public class ReportFragment extends Fragment {
         firebaseHolder = new FirebaseHolder(getActivity());
         InternetConnection connection = new InternetConnection();
 
-        mProgressCircle = v.findViewById(R.id.progress_circle);
+
         if (connection.getInternetConnection()) {
            firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueEventListener());
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
-            mProgressCircle.setVisibility(View.INVISIBLE);
         }
         return v;
     }
@@ -94,7 +94,6 @@ public class ReportFragment extends Fragment {
                 saveUserReportPreferences(mUploads);
                 buildRecyclerAdapter();
                 mAdapter.notifyDataSetChanged();
-                mProgressCircle.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -134,8 +133,16 @@ public class ReportFragment extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(mAdapter != null){
+            mRecyclerView.setAdapter(null);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if(firebaseHolder.getDatabaseReferenceForReport() != null){
             firebaseHolder.getDatabaseReferenceForReport().removeEventListener(valueEventListener());
         }

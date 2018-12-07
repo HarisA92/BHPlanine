@@ -26,18 +26,19 @@ public class TrailMapFragment extends Fragment {
     private ArrayList<String> trailMapList = new ArrayList<>();
     private TrailMapAdapter trailMapAdapter;
     private FirebaseHolder firebaseHolder;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_trail_map, container, false);
-
+        buildRecyclerView(v);
         InternetConnection internetConnection = new InternetConnection();
         firebaseHolder = new FirebaseHolder(getActivity());
 
         if (internetConnection.getInternetConnection()) {
-            buildRecyclerView(v);
             firebaseHolder.getDatabaseReferenceForTrailMap().addChildEventListener(childEventListener());
+            buildRecycerAdapter();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
@@ -76,7 +77,7 @@ public class TrailMapFragment extends Fragment {
     }
 
     private void buildRecyclerView(View v) {
-        RecyclerView recyclerView = v.findViewById(R.id.recycler_view_trail_map);
+        recyclerView = v.findViewById(R.id.recycler_view_trail_map);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
@@ -85,9 +86,14 @@ public class TrailMapFragment extends Fragment {
         recyclerView.setAdapter(trailMapAdapter);
     }
 
+    private void buildRecycerAdapter(){
+        trailMapAdapter = new TrailMapAdapter(trailMapList, getContext());
+        recyclerView.setAdapter(trailMapAdapter);
+    }
+
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         if(firebaseHolder.getDatabaseReferenceForTrailMap() != null){
             firebaseHolder.getDatabaseReferenceForTrailMap().removeEventListener(childEventListener());
         }

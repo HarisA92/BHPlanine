@@ -30,10 +30,12 @@ import com.bhplanine.user.graduationproject.models.SkiResortHolder;
 import com.bhplanine.user.graduationproject.models.Upload;
 import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -42,7 +44,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
@@ -70,6 +71,23 @@ public class PopUp extends AppCompatActivity {
     private String spinnerSnow, spinnerSurface;
     private String imageFilePath;
     private FirebaseHolder firebaseHolder;
+
+    public static String getPath(Context context, Uri uri) {
+        String result = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
+                result = cursor.getString(column_index);
+            }
+            cursor.close();
+        }
+        if (result == null) {
+            result = "Not found";
+        }
+        return result;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -115,24 +133,6 @@ public class PopUp extends AppCompatActivity {
 
         surfaceSpinner.setOnItemClickListener((adapterView, view, i, l) -> spinnerSurface = adapterView.getItemAtPosition(i).toString());
         capturePhotoPermission();
-    }
-
-
-    public static String getPath(Context context, Uri uri) {
-        String result = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                int column_index = cursor.getColumnIndexOrThrow(proj[0]);
-                result = cursor.getString(column_index);
-            }
-            cursor.close();
-        }
-        if (result == null) {
-            result = "Not found";
-        }
-        return result;
     }
 
     private void capturePhotoPermission() {
