@@ -23,7 +23,6 @@ import com.bhplanine.user.graduationproject.models.SkiResortHolder;
 import com.bhplanine.user.graduationproject.retrofit.client.WeatherClient;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
-import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -51,7 +50,7 @@ public class WeatherFragment extends Fragment {
         return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity());
     }
 
-    @AddTrace(name = "onCreateWeatherFragment")
+    //@AddTrace(name = "onCreateWeatherFragment")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,7 +94,7 @@ public class WeatherFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void buildRecyclerAdapter() {
-        weatherAdapter = new WeatherAdapter(getWeatherList(days), getContext(), weatherFont);
+        weatherAdapter = new WeatherAdapter(getWeatherList(days), weatherFont);
         mRecyclerView.setAdapter(weatherAdapter);
     }
 
@@ -131,13 +130,16 @@ public class WeatherFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             compositeDisposable.dispose();
-        }
-        if(weatherAdapter != null){
-            mRecyclerView.setAdapter(null);
         }
     }
 }

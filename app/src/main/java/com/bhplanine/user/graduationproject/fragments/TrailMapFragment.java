@@ -34,7 +34,7 @@ public class TrailMapFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_trail_map, container, false);
         buildRecyclerView(v);
         InternetConnection internetConnection = new InternetConnection();
-        firebaseHolder = new FirebaseHolder(getActivity());
+        firebaseHolder = new FirebaseHolder();
 
         if (internetConnection.getInternetConnection()) {
             firebaseHolder.getDatabaseReferenceForTrailMap().addChildEventListener(childEventListener());
@@ -82,13 +82,17 @@ public class TrailMapFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        trailMapAdapter = new TrailMapAdapter(trailMapList, getContext());
-        recyclerView.setAdapter(trailMapAdapter);
     }
 
     private void buildRecycerAdapter(){
-        trailMapAdapter = new TrailMapAdapter(trailMapList, getContext());
+        trailMapAdapter = new TrailMapAdapter(trailMapList);
         recyclerView.setAdapter(trailMapAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        recyclerView.setAdapter(null);
     }
 
     @Override

@@ -18,19 +18,17 @@ import java.util.List;
 public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder> {
 
     private List<WeatherDay> weatherDays;
-    private Context context;
     private Typeface weatherFont;
 
-    public WeatherAdapter(List<WeatherDay> WeatherDays, Context mContext, Typeface WeatherFont) {
+    public WeatherAdapter(List<WeatherDay> WeatherDays, Typeface WeatherFont) {
         weatherDays = WeatherDays;
-        context = mContext;
         weatherFont = WeatherFont;
     }
 
     @NonNull
     @Override
     public WeatherViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.weather_day_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.weather_day_list, parent, false);
         return new WeatherViewHolder(v);
     }
 

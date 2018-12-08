@@ -9,11 +9,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class FirebaseHolder {
 
-    private Context context;
-
-    public FirebaseHolder(Context context) {
-        this.context = context;
-    }
 
     public DatabaseReference getDatabaseReferenceForTicketPrice() {
         return FirebaseDatabase.getInstance().getReference(SkiResortHolder.getSkiResort().getTicketPriceList());
@@ -34,7 +29,7 @@ public class FirebaseHolder {
     }
 
     public DatabaseReference getDatabseReferenceForMountainInformation() {
-        return FirebaseDatabase.getInstance().getReference(context.getResources().getString(R.string.mountain_information));
+        return FirebaseDatabase.getInstance().getReference("MountainInformation");
     }
 
     public DatabaseReference getDatabaseReferenceForAccommodation(String title){

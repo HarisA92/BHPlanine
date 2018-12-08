@@ -19,22 +19,21 @@ import java.util.ArrayList;
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
     private final ArrayList<String> list;
-    private final Context context;
 
-    public GalleryAdapter(final ArrayList<String> list, final Context context) {
+    public GalleryAdapter(final ArrayList<String> list) {
         this.list = list;
-        this.context = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.gallery, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.gallery, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+        Context context = holder.itemView.getContext();
         Glide.with(context).load(list.get(position)).into(holder.imageView);
         holder.imageView.setOnClickListener( view -> {
             Intent intent = new Intent(view.getContext(), ZoomImageGallery.class);

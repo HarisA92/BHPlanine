@@ -17,18 +17,16 @@ import com.bhplanine.user.graduationproject.R;
 import java.util.ArrayList;
 public class LiftTicketAdapter extends RecyclerView.Adapter<LiftTicketAdapter.ViewHolder> {
 
-    private Context context;
     private ArrayList<LiftTicketHolder> list;
 
-    public LiftTicketAdapter(Context context, ArrayList<LiftTicketHolder> list) {
-        this.context = context;
+    public LiftTicketAdapter(ArrayList<LiftTicketHolder> list) {
         this.list = list;
     }
 
     @NonNull
     @Override
     public LiftTicketAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.lift_ticket_price, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lift_ticket_price, parent, false);
         return new LiftTicketAdapter.ViewHolder(view);
     }
 

@@ -18,22 +18,21 @@ import java.util.ArrayList;
 public class TrailMapAdapter extends RecyclerView.Adapter<TrailMapAdapter.ViewHolder> {
 
     private final ArrayList<String> list;
-    private final Context context;
 
-    public TrailMapAdapter(final ArrayList<String> list, final Context context) {
+    public TrailMapAdapter(final ArrayList<String> list) {
         this.list = list;
-        this.context = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.trailmap, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.trailmap, parent, false);
         return new TrailMapAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        Context context = holder.itemView.getContext();
         Picasso.with(context).load(list.get(position)).centerCrop().resize(1280, 720).into(holder.imageView);
         holder.imageView.setOnClickListener(view -> {
             Intent intent = new Intent(view.getContext(), ZoomImageTrailMap.class);
@@ -47,10 +46,10 @@ public class TrailMapAdapter extends RecyclerView.Adapter<TrailMapAdapter.ViewHo
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
         }

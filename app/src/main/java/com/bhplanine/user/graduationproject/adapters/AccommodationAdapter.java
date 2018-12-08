@@ -22,22 +22,21 @@ import java.util.ArrayList;
 public class AccommodationAdapter extends RecyclerView.Adapter<AccommodationAdapter.ViewHolder> {
 
     private ArrayList<AccommodationHolder> accommodationList;
-    private Context context;
 
-    public AccommodationAdapter(ArrayList<AccommodationHolder> list, Context context) {
+    public AccommodationAdapter(ArrayList<AccommodationHolder> list) {
         this.accommodationList = list;
-        this.context = context;
     }
 
     @NonNull
     @Override
     public AccommodationAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.accomodation_mountain_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.accomodation_mountain_view, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AccommodationAdapter.ViewHolder holder, int position) {
+        Context context = holder.itemView.getContext();
         final AccommodationHolder accommodationHolder = accommodationList.get(position);
         Glide.with(context).load(accommodationHolder.getImage()).apply(RequestOptions.centerCropTransform()).into(holder.image);
         holder.title.setText(accommodationHolder.getTitle());

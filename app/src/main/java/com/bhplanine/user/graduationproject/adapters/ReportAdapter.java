@@ -23,23 +23,23 @@ import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
 
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ImageViewHolder> {
 
-    private final Context context;
     private final ArrayList<Upload> uploads;
 
-    public ReportAdapter(final Context context, final ArrayList<Upload> uploads) {
-        this.context = context;
+    public ReportAdapter( final ArrayList<Upload> uploads) {
         this.uploads = uploads;
     }
 
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        View v = LayoutInflater.from(context).inflate(R.layout.user_report, parent, false);
+
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_report, parent, false);
         return new ImageViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ImageViewHolder holder, final int position) {
+        Context context = holder.itemView.getContext();
         final Upload uploadCurrent = uploads.get(position);
         holder.textViewName.setText(uploadCurrent.getName());
         holder.textViewUsername.setText(uploadCurrent.getmKey());

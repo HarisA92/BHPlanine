@@ -20,7 +20,6 @@ import com.bhplanine.user.graduationproject.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -37,14 +36,14 @@ public class LiftTicketsFragment extends Fragment {
     private FirebaseHolder firebaseHolder;
     private RecyclerView recyclerView;
 
-    @AddTrace(name = "onCreateLiftTicketsFragment")
+    //@AddTrace(name = "onCreateLiftTicketsFragment")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_lift_tickets, container, false);
         buildRecyclerView(v);
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
-        firebaseHolder = new FirebaseHolder(getActivity());
+        firebaseHolder = new FirebaseHolder();
 
         InternetConnection internetConnection = new InternetConnection();
         if (internetConnection.getInternetConnection()) {
@@ -86,7 +85,7 @@ public class LiftTicketsFragment extends Fragment {
     }
 
     private void buildRecyclerAdapter(){
-        liftTicketAdapter = new LiftTicketAdapter(getContext(), arrayList);
+        liftTicketAdapter = new LiftTicketAdapter(arrayList);
         recyclerView.setAdapter(liftTicketAdapter);
     }
 
@@ -119,8 +118,8 @@ public class LiftTicketsFragment extends Fragment {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         if(firebaseHolder.getDatabaseReferenceForTicketPrice() != null){
             firebaseHolder.getDatabaseReferenceForTicketPrice().removeEventListener(valueEventListener());
         }

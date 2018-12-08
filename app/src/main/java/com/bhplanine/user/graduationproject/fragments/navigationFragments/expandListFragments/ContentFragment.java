@@ -21,7 +21,6 @@ import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -46,7 +45,7 @@ public class ContentFragment extends Fragment {
         return fragment;
     }
 
-    @AddTrace(name = "onCreateContentFragment")
+    //@AddTrace(name = "onCreateContentFragment")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class ContentFragment extends Fragment {
         mountain = Objects.requireNonNull(getArguments()).getString(MOUNTAINT_ACCOMMODATION);
         Objects.requireNonNull(getActivity()).setTitle(mountain);
 
-        firebaseHolder = new FirebaseHolder(getActivity());
+        firebaseHolder = new FirebaseHolder();
         InternetConnection internetConnection = new InternetConnection();
         if (internetConnection.getInternetConnection()) {
             if(mountain != null){
@@ -136,13 +135,19 @@ public class ContentFragment extends Fragment {
     }
 
     private void buildRecyclerAdapter() {
-        adapter = new AccommodationAdapter(list, getContext());
+        adapter = new AccommodationAdapter(list);
         mRecyclerView.setAdapter(adapter);
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         if(firebaseHolder.getDatabaseReferenceForAccommodation(mountain) != null){
             firebaseHolder.getDatabaseReferenceForAccommodation(mountain).removeEventListener(valueEventListener());
         }

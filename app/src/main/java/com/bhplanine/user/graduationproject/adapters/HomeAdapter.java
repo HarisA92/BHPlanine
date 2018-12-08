@@ -9,35 +9,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.activities.Main;
 import com.bhplanine.user.graduationproject.models.AllMountainInformationHolder;
 import com.bhplanine.user.graduationproject.models.Mountain;
 import com.bhplanine.user.graduationproject.models.SkiResort;
 import com.bhplanine.user.graduationproject.models.SkiResortHolder;
-import com.bhplanine.user.graduationproject.R;
 
 import java.util.ArrayList;
 
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
-    private Context context;
     private ArrayList<AllMountainInformationHolder> allMountainInformationHolders;
+    private Context context;
 
-    public HomeAdapter(Context context, ArrayList<AllMountainInformationHolder> allMountainInformationHolders) {
-        this.context = context;
+    public HomeAdapter(ArrayList<AllMountainInformationHolder> allMountainInformationHolders) {
         this.allMountainInformationHolders = allMountainInformationHolders;
     }
 
     @NonNull
     @Override
     public HomeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.home_recycler_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_recycler_view, parent, false);
         return new HomeAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final HomeAdapter.ViewHolder holder, int position) {
+        context = holder.itemView.getContext();
         final AllMountainInformationHolder informationHolder = allMountainInformationHolders.get(position);
         holder.base_cm.setText(informationHolder.getBase_depth());
         holder.snowfall.setText(informationHolder.getRecent_snowfall());

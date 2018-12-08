@@ -101,7 +101,7 @@ public class PopUp extends AppCompatActivity {
         mImageView = findViewById(R.id.imageView);
         mProgressBar = findViewById(R.id.progress_bar);
         mUsername.setText(getUsername());
-        firebaseHolder = new FirebaseHolder(this);
+        firebaseHolder = new FirebaseHolder();
 
         final String mountainName = SkiResortHolder.getSkiResort().getMountain().getValue();
 

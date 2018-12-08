@@ -25,7 +25,6 @@ import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherResult;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.utils.RetrofitHolder;
-import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -55,7 +54,7 @@ public class WeatherDrawerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
 
-    @AddTrace(name = "onCreateWeatherDrawerFragment")
+    //@AddTrace(name = "onCreateWeatherDrawerFragment")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -75,6 +74,12 @@ public class WeatherDrawerFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
@@ -90,7 +95,7 @@ public class WeatherDrawerFragment extends Fragment {
     }
 
     private void buildRecyclerAdapter() {
-        WeatherDrawerAdapter weatherDrawerAdapter = new WeatherDrawerAdapter(days, getContext(), weatherFont);
+        WeatherDrawerAdapter weatherDrawerAdapter = new WeatherDrawerAdapter(days, weatherFont);
         mRecyclerView.setAdapter(weatherDrawerAdapter);
     }
 
@@ -175,4 +180,5 @@ public class WeatherDrawerFragment extends Fragment {
             days = gson.fromJson(json, type);
         }
     }
+
 }

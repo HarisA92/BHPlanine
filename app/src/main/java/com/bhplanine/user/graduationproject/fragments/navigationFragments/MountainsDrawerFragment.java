@@ -50,9 +50,10 @@ public class MountainsDrawerFragment extends Fragment {
         Objects.requireNonNull(getActivity()).setTitle("Mountains");
         InternetConnection internetConnection = new InternetConnection();
         mProgressCircle = v.findViewById(R.id.progress_bar_mountain_drawer);
-
+        firebaseHolder = new FirebaseHolder();
         if (internetConnection.getInternetConnection()) {
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener());
+            buildRecyclerAdapter();
         } else {
             loadUserReportPreferences();
             buildRecyclerAdapter();
@@ -69,7 +70,7 @@ public class MountainsDrawerFragment extends Fragment {
     }
 
     private void buildRecyclerAdapter() {
-        homeAdapter = new HomeAdapter(getActivity(), arrayList);
+        homeAdapter = new HomeAdapter(arrayList);
         mRecyclerView.setAdapter(homeAdapter);
     }
 
@@ -117,9 +118,9 @@ public class MountainsDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        firebaseHolder = new FirebaseHolder(context);
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
     }
 
     @Override

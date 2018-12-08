@@ -28,7 +28,6 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.perf.metrics.AddTrace;
 
 import java.util.Arrays;
 
@@ -41,7 +40,7 @@ public class WelcomeScreen extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private AnimationDrawable animationDrawable;
 
-    @AddTrace(name = "onCreateWelcomeScreenActivity")
+    //@AddTrace(name = "onCreateWelcomeScreenActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
