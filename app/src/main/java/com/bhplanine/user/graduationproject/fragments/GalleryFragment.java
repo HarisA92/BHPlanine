@@ -27,6 +27,7 @@ public class GalleryFragment extends Fragment {
     private GalleryAdapter galleryAdapter;
     private ArrayList<String> imagesArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
+    private ChildEventListener childEventListener;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -35,9 +36,9 @@ public class GalleryFragment extends Fragment {
         buildRecyclerView(v);
         InternetConnection internetConnection = new InternetConnection();
         firebaseHolder = new FirebaseHolder();
-
         if (internetConnection.getInternetConnection()) {
-            firebaseHolder.getDatabaseReferenceForGallery().addChildEventListener(childEventListener());
+            childEventListener = childEventListener();
+            firebaseHolder.getDatabaseReferenceForGallery().addChildEventListener(childEventListener);
             buildRecyclerAdapter();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
@@ -98,7 +99,7 @@ public class GalleryFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if (firebaseHolder.getDatabaseReferenceForGallery() != null) {
-            firebaseHolder.getDatabaseReferenceForGallery().removeEventListener(childEventListener());
+            firebaseHolder.getDatabaseReferenceForGallery().removeEventListener(childEventListener);
         }
     }
 }

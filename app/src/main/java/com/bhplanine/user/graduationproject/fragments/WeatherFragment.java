@@ -44,7 +44,6 @@ public class WeatherFragment extends Fragment {
     private String getMountain;
     private RecyclerView mRecyclerView;
     private CompositeDisposable compositeDisposable;
-    private WeatherAdapter weatherAdapter;
 
     private static String getLocation(View v) {
         return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity());
@@ -94,7 +93,7 @@ public class WeatherFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void buildRecyclerAdapter() {
-        weatherAdapter = new WeatherAdapter(getWeatherList(days), weatherFont);
+        WeatherAdapter weatherAdapter = new WeatherAdapter(getWeatherList(days), weatherFont);
         mRecyclerView.setAdapter(weatherAdapter);
     }
 

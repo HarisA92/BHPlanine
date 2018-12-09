@@ -183,6 +183,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
     private void setDataToNavigationLayout() {
         View view = navigationView.getHeaderView(0);
         username = view.findViewById(R.id.user_google_facebook);

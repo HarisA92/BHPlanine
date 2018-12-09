@@ -36,6 +36,7 @@ public class MountainsDrawerFragment extends Fragment {
     private ProgressBar mProgressCircle;
     private RecyclerView mRecyclerView;
     private FirebaseHolder firebaseHolder;
+    private ValueEventListener valueEventListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,8 @@ public class MountainsDrawerFragment extends Fragment {
         mProgressCircle = v.findViewById(R.id.progress_bar_mountain_drawer);
         firebaseHolder = new FirebaseHolder();
         if (internetConnection.getInternetConnection()) {
-            firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener());
+            valueEventListener = valueEventListener();
+            firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener);
             buildRecyclerAdapter();
         } else {
             loadUserReportPreferences();
@@ -84,7 +86,6 @@ public class MountainsDrawerFragment extends Fragment {
                     arrayList.add(getValues);
                 }
                 saveUserReportPreferences(arrayList);
-                buildRecyclerAdapter();
                 homeAdapter.notifyDataSetChanged();
                 mProgressCircle.setVisibility(View.INVISIBLE);
             }
@@ -127,7 +128,7 @@ public class MountainsDrawerFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if(firebaseHolder.getDatabseReferenceForMountainInformation() != null){
-            firebaseHolder.getDatabseReferenceForMountainInformation().removeEventListener(valueEventListener());
+            firebaseHolder.getDatabseReferenceForMountainInformation().removeEventListener(valueEventListener);
         }
     }
 }

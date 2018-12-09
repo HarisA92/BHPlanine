@@ -2,10 +2,10 @@ package com.bhplanine.user.graduationproject.models;
 
 public enum Mountain {
 
-    BJELASNICA("Bjelasnica"),
+    BJELASNICA("Bjelašnica"),
     JAHORINA("Jahorina"),
     RAVNAPLANINA("Ravna Planina"),
-    VLASIC("Vlasic"),
+    VLASIC("Vlašić"),
     IGMAN("Igman");
 
     private String value;

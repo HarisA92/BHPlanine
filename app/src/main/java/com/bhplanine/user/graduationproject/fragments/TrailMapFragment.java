@@ -27,6 +27,7 @@ public class TrailMapFragment extends Fragment {
     private TrailMapAdapter trailMapAdapter;
     private FirebaseHolder firebaseHolder;
     private RecyclerView recyclerView;
+    private ChildEventListener childEventListener;
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
@@ -37,8 +38,9 @@ public class TrailMapFragment extends Fragment {
         firebaseHolder = new FirebaseHolder();
 
         if (internetConnection.getInternetConnection()) {
-            firebaseHolder.getDatabaseReferenceForTrailMap().addChildEventListener(childEventListener());
-            buildRecycerAdapter();
+            childEventListener = childEventListener();
+            firebaseHolder.getDatabaseReferenceForTrailMap().addChildEventListener(childEventListener);
+            buildRecyclerAdapter();
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
@@ -84,7 +86,7 @@ public class TrailMapFragment extends Fragment {
 
     }
 
-    private void buildRecycerAdapter(){
+    private void buildRecyclerAdapter(){
         trailMapAdapter = new TrailMapAdapter(trailMapList);
         recyclerView.setAdapter(trailMapAdapter);
     }
@@ -99,7 +101,7 @@ public class TrailMapFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if(firebaseHolder.getDatabaseReferenceForTrailMap() != null){
-            firebaseHolder.getDatabaseReferenceForTrailMap().removeEventListener(childEventListener());
+            firebaseHolder.getDatabaseReferenceForTrailMap().removeEventListener(childEventListener);
         }
     }
 }

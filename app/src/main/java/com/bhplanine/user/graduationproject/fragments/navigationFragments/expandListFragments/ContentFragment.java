@@ -36,6 +36,7 @@ public class ContentFragment extends Fragment {
     private ArrayList<AccommodationHolder> list = new ArrayList<>();
     private String mountain;
     private FirebaseHolder firebaseHolder;
+    private ValueEventListener valueEventListener;
 
     public static ContentFragment newInstance(String param1) {
         ContentFragment fragment = new ContentFragment();
@@ -58,22 +59,23 @@ public class ContentFragment extends Fragment {
         firebaseHolder = new FirebaseHolder();
         InternetConnection internetConnection = new InternetConnection();
         if (internetConnection.getInternetConnection()) {
+            valueEventListener = valueEventListener();
             if(mountain != null){
                 switch (mountain) {
                     case "Bjelašnica":
-                        firebaseHolder.getDatabaseReferenceForAccommodation("Bjelasnica Accommodation").addValueEventListener(valueEventListener());
+                        firebaseHolder.getDatabaseReferenceForAccommodation("Bjelasnica Accommodation").addValueEventListener(valueEventListener);
                         break;
                     case "Jahorina":
-                        firebaseHolder.getDatabaseReferenceForAccommodation("Jahorina Accommodation").addValueEventListener(valueEventListener());
+                        firebaseHolder.getDatabaseReferenceForAccommodation("Jahorina Accommodation").addValueEventListener(valueEventListener);
                         break;
                     case "Ravna Planina":
-                        firebaseHolder.getDatabaseReferenceForAccommodation("Ravna Planina Accommodation").addValueEventListener(valueEventListener());
+                        firebaseHolder.getDatabaseReferenceForAccommodation("Ravna Planina Accommodation").addValueEventListener(valueEventListener);
                         break;
                     case "Vlašić":
-                        firebaseHolder.getDatabaseReferenceForAccommodation("Vlasic Accommodation").addValueEventListener(valueEventListener());
+                        firebaseHolder.getDatabaseReferenceForAccommodation("Vlasic Accommodation").addValueEventListener(valueEventListener);
                         break;
                     case "Igman":
-                        firebaseHolder.getDatabaseReferenceForAccommodation("Igman Accommodation").addValueEventListener(valueEventListener());
+                        firebaseHolder.getDatabaseReferenceForAccommodation("Igman Accommodation").addValueEventListener(valueEventListener);
                         break;
                 }
             }
@@ -149,7 +151,7 @@ public class ContentFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         if(firebaseHolder.getDatabaseReferenceForAccommodation(mountain) != null){
-            firebaseHolder.getDatabaseReferenceForAccommodation(mountain).removeEventListener(valueEventListener());
+            firebaseHolder.getDatabaseReferenceForAccommodation(mountain).removeEventListener(valueEventListener);
         }
     }
 }
