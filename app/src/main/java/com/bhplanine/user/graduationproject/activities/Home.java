@@ -41,7 +41,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
-    private InternetConnection internetConnection = new InternetConnection();
     private TextView username, email;
     private ImageView imageView;
     private NavigationManager navigationManager;
@@ -180,11 +179,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             getMountainFragment();
             super.onBackPressed();
         } catch (Exception ignored) {}
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
 
     }
 
@@ -229,14 +223,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     private void getMountainFragment() {
-        MountainsDrawerFragment fragment = (MountainsDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment.isVisible()) {
+        MountainsDrawerFragment mountainsDrawerFragment = (MountainsDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (mountainsDrawerFragment.getUserVisibleHint()) {
             finishAffinity();
         }
     }
 
 
     private void sendEmail() {
+        InternetConnection internetConnection = new InternetConnection();
         if (internetConnection.getInternetConnection()) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "bhplaninesupp@gmail.com"));
             startActivity(intent);
