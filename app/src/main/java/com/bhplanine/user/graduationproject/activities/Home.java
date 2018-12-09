@@ -177,10 +177,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     new MountainsDrawerFragment()).commit();
         }
         try {
-            if (getMountainFragment())
-                super.onBackPressed();
-        } catch (Exception ignored) {
-        }
+            getMountainFragment();
+            super.onBackPressed();
+        } catch (Exception ignored) {}
     }
 
     @Override
@@ -229,12 +228,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         menu.findItem(R.id.igman).setVisible(false);
     }
 
-    private boolean getMountainFragment() {
+    private void getMountainFragment() {
         MountainsDrawerFragment fragment = (MountainsDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment.isVisible()) {
             finishAffinity();
         }
-        return true;
     }
 
 

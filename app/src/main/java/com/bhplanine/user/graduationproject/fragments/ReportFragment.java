@@ -146,6 +146,8 @@ public class ReportFragment extends Fragment {
             firebaseHolder.getDatabaseReferenceForReport().removeEventListener(valueListener);
         }
     }
+
+
 }
 
 
