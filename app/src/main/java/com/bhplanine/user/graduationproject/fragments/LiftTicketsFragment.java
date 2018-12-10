@@ -50,9 +50,7 @@ public class LiftTicketsFragment extends Fragment {
         if (internetConnection.getInternetConnection()) {
             valueEventListener = valueEventListener();
             firebaseHolder.getDatabaseReferenceForTicketPrice().addValueEventListener(valueEventListener);
-            buildRecyclerAdapter();
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
         }
@@ -69,6 +67,7 @@ public class LiftTicketsFragment extends Fragment {
                     arrayList.add(value);
                 }
                 saveUserReportPreferences(arrayList);
+                buildRecyclerAdapter();
                 liftTicketAdapter.notifyDataSetChanged();
             }
 
@@ -87,8 +86,10 @@ public class LiftTicketsFragment extends Fragment {
     }
 
     private void buildRecyclerAdapter(){
-        liftTicketAdapter = new LiftTicketAdapter(arrayList);
-        recyclerView.setAdapter(liftTicketAdapter);
+        if(arrayList != null){
+            liftTicketAdapter = new LiftTicketAdapter(arrayList);
+            recyclerView.setAdapter(liftTicketAdapter);
+        }
     }
 
     private void saveUserReportPreferences(ArrayList<LiftTicketHolder> liftTicketHolders) {
@@ -117,12 +118,14 @@ public class LiftTicketsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(null);
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(firebaseHolder.getDatabaseReferenceForTicketPrice() != null){
+        if(valueEventListener != null){
             firebaseHolder.getDatabaseReferenceForTicketPrice().removeEventListener(valueEventListener);
         }
     }

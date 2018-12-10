@@ -10,14 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.adapters.TrailMapAdapter;
 import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
-import com.bhplanine.user.graduationproject.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -41,8 +40,6 @@ public class TrailMapFragment extends Fragment {
             childEventListener = childEventListener();
             firebaseHolder.getDatabaseReferenceForTrailMap().addChildEventListener(childEventListener);
             buildRecyclerAdapter();
-        } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
         return v;
     }
@@ -86,21 +83,24 @@ public class TrailMapFragment extends Fragment {
 
     }
 
-    private void buildRecyclerAdapter(){
-        trailMapAdapter = new TrailMapAdapter(trailMapList);
-        recyclerView.setAdapter(trailMapAdapter);
+    private void buildRecyclerAdapter() {
+        if (trailMapList != null) {
+            trailMapAdapter = new TrailMapAdapter(trailMapList);
+            recyclerView.setAdapter(trailMapAdapter);
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(null);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(firebaseHolder.getDatabaseReferenceForTrailMap() != null){
+        if (childEventListener != null) {
             firebaseHolder.getDatabaseReferenceForTrailMap().removeEventListener(childEventListener);
         }
     }

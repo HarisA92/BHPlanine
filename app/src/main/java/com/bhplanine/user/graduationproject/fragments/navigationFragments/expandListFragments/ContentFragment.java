@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.R;
-import com.bhplanine.user.graduationproject.activities.Home;
 import com.bhplanine.user.graduationproject.adapters.AccommodationAdapter;
 import com.bhplanine.user.graduationproject.models.AccommodationHolder;
 import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
@@ -60,7 +60,7 @@ public class ContentFragment extends Fragment {
         InternetConnection internetConnection = new InternetConnection();
         if (internetConnection.getInternetConnection()) {
             valueEventListener = valueEventListener();
-            if(mountain != null){
+            if (mountain != null) {
                 switch (mountain) {
                     case "Bjelašnica":
                         firebaseHolder.getDatabaseReferenceForAccommodation("Bjelasnica Accommodation").addValueEventListener(valueEventListener);
@@ -80,9 +80,9 @@ public class ContentFragment extends Fragment {
                 }
             }
         } else {
+            Toast.makeText(getActivity(), "contentFragment", Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
-            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
         return v;
     }
@@ -113,7 +113,7 @@ public class ContentFragment extends Fragment {
         return new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot postDatasnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot postDatasnapshot : dataSnapshot.getChildren()) {
                     AccommodationHolder holder = postDatasnapshot.getValue(AccommodationHolder.class);
                     list.add(holder);
                 }
@@ -137,20 +137,23 @@ public class ContentFragment extends Fragment {
     }
 
     private void buildRecyclerAdapter() {
-        adapter = new AccommodationAdapter(list);
-        mRecyclerView.setAdapter(adapter);
+        if (list != null) {
+            adapter = new AccommodationAdapter(list);
+            mRecyclerView.setAdapter(adapter);
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(firebaseHolder.getDatabaseReferenceForAccommodation(mountain) != null){
+        if (valueEventListener != null) {
             firebaseHolder.getDatabaseReferenceForAccommodation(mountain).removeEventListener(valueEventListener);
         }
     }

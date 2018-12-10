@@ -49,7 +49,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private String[] TAG = {"mountain", "weather", "webcams", "news"};
 
 
-
     //@AddTrace(name = "onCreateHomeActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,15 +174,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             hideItem();
-        }
-        Fragment fragment1 = getFragmentManager().findFragmentByTag("mountain");
-        if (!(fragment instanceof OnBackPressed) || ((OnBackPressed) fragment).doBack()) {
+        } else if (!(fragment instanceof OnBackPressed) || ((OnBackPressed) fragment).doBack()) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MountainsDrawerFragment()).commit();
-        }else if(fragment1 != null){
-            finish();
-            System.exit(0);
-            super.onBackPressed();
+        } else {
+            try {
+                getMountainFragment();
+                super.onBackPressed();
+            } catch (Exception ignored) {
+            }
         }
 
     }

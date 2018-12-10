@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,12 +39,8 @@ public class ReportFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ReportAdapter mAdapter;
     private ValueEventListener valueListener;
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
+    private InternetConnection connection;
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     //@AddTrace(name = "onCreateReportFragment")
@@ -53,7 +50,7 @@ public class ReportFragment extends Fragment {
         onReportClick(v);
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         firebaseHolder = new FirebaseHolder();
-        InternetConnection connection = new InternetConnection();
+        connection = new InternetConnection();
         if (connection.getInternetConnection()) {
             valueListener = valueEventListener();
             firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueListener);
@@ -70,17 +67,19 @@ public class ReportFragment extends Fragment {
         mRecyclerView = v.findViewById(R.id.recycler_view_report);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     private void buildRecyclerAdapter() {
-        mAdapter = new ReportAdapter(mUploads);
-        mRecyclerView.setAdapter(mAdapter);
-    }
+        if (mUploads != null) {
+            mAdapter = new ReportAdapter(mUploads);
+            mRecyclerView.setLayoutManager(null);
+        }
 
+    }
 
     private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
@@ -136,13 +135,15 @@ public class ReportFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mLayoutManager = null;
         mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (firebaseHolder.getDatabaseReferenceForReport() != null) {
+        if (valueListener != null) {
             firebaseHolder.getDatabaseReferenceForReport().removeEventListener(valueListener);
         }
     }

@@ -11,13 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.adapters.HomeAdapter;
 import com.bhplanine.user.graduationproject.models.AllMountainInformationHolder;
 import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
-import com.bhplanine.user.graduationproject.R;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -33,33 +33,27 @@ public class MountainsDrawerFragment extends Fragment {
 
     private ArrayList<AllMountainInformationHolder> arrayList = new ArrayList<>();
     private HomeAdapter homeAdapter;
-    private ProgressBar mProgressCircle;
     private RecyclerView mRecyclerView;
     private FirebaseHolder firebaseHolder;
     private ValueEventListener valueEventListener;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    private LinearLayoutManager mLayoutManager;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mountains, container, false);
-        buildRecyclerView(v);
         Objects.requireNonNull(getActivity()).setTitle("Mountains");
+        buildRecyclerView(v);
         InternetConnection internetConnection = new InternetConnection();
-        mProgressCircle = v.findViewById(R.id.progress_bar_mountain_drawer);
         firebaseHolder = new FirebaseHolder();
         if (internetConnection.getInternetConnection()) {
             valueEventListener = valueEventListener();
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener);
             buildRecyclerAdapter();
         } else {
+            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
-            mProgressCircle.setVisibility(View.INVISIBLE);
         }
         return v;
     }
@@ -67,13 +61,15 @@ public class MountainsDrawerFragment extends Fragment {
     private void buildRecyclerView(View v) {
         mRecyclerView = v.findViewById(R.id.recycler_view_mountain);
         mRecyclerView.setNestedScrollingEnabled(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     private void buildRecyclerAdapter() {
-        homeAdapter = new HomeAdapter(arrayList);
-        mRecyclerView.setAdapter(homeAdapter);
+        if (arrayList != null) {
+            homeAdapter = new HomeAdapter(arrayList);
+            mRecyclerView.setAdapter(homeAdapter);
+        }
     }
 
 
@@ -87,7 +83,6 @@ public class MountainsDrawerFragment extends Fragment {
                 }
                 saveUserReportPreferences(arrayList);
                 homeAdapter.notifyDataSetChanged();
-                mProgressCircle.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -97,7 +92,7 @@ public class MountainsDrawerFragment extends Fragment {
     }
 
     private void saveUserReportPreferences(ArrayList<AllMountainInformationHolder> allMountainInformationHolders) {
-        if(getActivity() != null){
+        if (getActivity() != null) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferencesHome), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
@@ -108,7 +103,7 @@ public class MountainsDrawerFragment extends Fragment {
     }
 
     private void loadUserReportPreferences() {
-        if(getActivity() != null){
+        if (getActivity() != null) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getResources().getString(R.string.sharedPreferencesHome), Context.MODE_PRIVATE);
             Gson gson = new Gson();
             String json = sharedPreferences.getString(getResources().getString(R.string.sharedPreferencesHome_list), null);
@@ -121,13 +116,15 @@ public class MountainsDrawerFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mLayoutManager = null;
         mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(firebaseHolder.getDatabseReferenceForMountainInformation() != null){
+        if (valueEventListener != null) {
             firebaseHolder.getDatabseReferenceForMountainInformation().removeEventListener(valueEventListener);
         }
     }

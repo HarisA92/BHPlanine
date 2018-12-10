@@ -56,12 +56,9 @@ public class WeatherDrawerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_weather_drawer, container, false);
         buildRecyclerView(v);
         Objects.requireNonNull(getActivity()).setTitle("Weather");
-
         weatherClient = new WeatherClient(getActivity());
         connection = new InternetConnection();
         compositeDisposable = new CompositeDisposable();
-
-        progressBar = v.findViewById(R.id.progress_bar_weather_drawer);
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         getAPI();
         return v;
@@ -71,6 +68,7 @@ public class WeatherDrawerFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
     }
 
     @Override
@@ -89,8 +87,10 @@ public class WeatherDrawerFragment extends Fragment {
     }
 
     private void buildRecyclerAdapter() {
-        WeatherDrawerAdapter weatherDrawerAdapter = new WeatherDrawerAdapter(days, weatherFont);
-        mRecyclerView.setAdapter(weatherDrawerAdapter);
+        if (days != null) {
+            WeatherDrawerAdapter weatherDrawerAdapter = new WeatherDrawerAdapter(days, weatherFont);
+            mRecyclerView.setAdapter(weatherDrawerAdapter);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -131,18 +131,16 @@ public class WeatherDrawerFragment extends Fragment {
                         days.add(vlasicList.get(0));
                         buildRecyclerAdapter();
                         saveUserReportPreferences(days);
-                        progressBar.setVisibility(View.INVISIBLE);
                     }, throwable -> {
                         Toast.makeText(getContext(), getResources().getString(R.string.error) + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }));
         } else {
             loadUserReportPreferences();
             buildRecyclerAdapter();
-            progressBar.setVisibility(View.INVISIBLE);
-            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"weatherDrawerFragment", Toast.LENGTH_SHORT).show();
         }
     }
-    
+
 
     private void saveUserReportPreferences(List<WeatherDay> days) {
         if (getActivity() != null) {

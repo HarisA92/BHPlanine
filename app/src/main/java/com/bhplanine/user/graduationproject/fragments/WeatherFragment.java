@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,8 +31,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -55,10 +54,8 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_weather3, container, false);
         buildRecyclerView(v);
-
         final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
         compositeDisposable = new CompositeDisposable();
-
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         WeatherClient weatherClient = new WeatherClient(getActivity());
@@ -75,7 +72,6 @@ public class WeatherFragment extends Fragment {
                         mProgressCircle.setVisibility(View.INVISIBLE);
                     }, throwable -> Toast.makeText(getContext(), getResources().getString(R.string.error) + throwable.getMessage(), Toast.LENGTH_SHORT).show()));
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
             mProgressCircle.setVisibility(View.INVISIBLE);
@@ -93,17 +89,18 @@ public class WeatherFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void buildRecyclerAdapter() {
-        WeatherAdapter weatherAdapter = new WeatherAdapter(getWeatherList(days), weatherFont);
-        mRecyclerView.setAdapter(weatherAdapter);
+        if (days != null) {
+            WeatherAdapter weatherAdapter = new WeatherAdapter(getWeatherList(days), weatherFont);
+            mRecyclerView.setAdapter(weatherAdapter);
+        }
     }
 
     private List<WeatherDay> getWeatherList(List<WeatherDay> weatherDays) {
         List<WeatherDay> day = new ArrayList<>();
-        for(int i = 0; i<weatherDays.size(); i+=8){
+        for (int i = 0; i < weatherDays.size(); i += 8) {
             WeatherDay weatherDay = weatherDays.get(i);
             day.add(weatherDay);
         }
-        int a = 0;
         return day;
     }
 
@@ -133,6 +130,7 @@ public class WeatherFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
     }
 
     @Override

@@ -40,8 +40,6 @@ public class GalleryFragment extends Fragment {
             childEventListener = childEventListener();
             firebaseHolder.getDatabaseReferenceForGallery().addChildEventListener(childEventListener);
             buildRecyclerAdapter();
-        } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
         return v;
     }
@@ -84,21 +82,24 @@ public class GalleryFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
     }
 
-    private void buildRecyclerAdapter(){
-        galleryAdapter = new GalleryAdapter(imagesArrayList);
-        recyclerView.setAdapter(galleryAdapter);
+    private void buildRecyclerAdapter() {
+        if (imagesArrayList != null) {
+            galleryAdapter = new GalleryAdapter(imagesArrayList);
+            recyclerView.setAdapter(galleryAdapter);
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         recyclerView.setAdapter(null);
+        recyclerView.setLayoutManager(null);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (firebaseHolder.getDatabaseReferenceForGallery() != null) {
+        if (childEventListener != null) {
             firebaseHolder.getDatabaseReferenceForGallery().removeEventListener(childEventListener);
         }
     }
