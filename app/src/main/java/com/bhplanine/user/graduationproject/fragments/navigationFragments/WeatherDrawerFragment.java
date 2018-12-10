@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.BuildConfig;
 import com.bhplanine.user.graduationproject.R;
-import com.bhplanine.user.graduationproject.activities.Home;
 import com.bhplanine.user.graduationproject.adapters.WeatherDrawerAdapter;
 import com.bhplanine.user.graduationproject.retrofit.client.WeatherClient;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
@@ -32,15 +31,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 public class WeatherDrawerFragment extends Fragment {
@@ -101,63 +95,54 @@ public class WeatherDrawerFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void getAPI() {
-        if(connection.getInternetConnection()) {
+        if (connection.getInternetConnection()) {
             Observable<WeatherResult> bjelasnica = weatherClient.getWeatherService()
                     .getWeather("Pervizi", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
-            Observable<WeatherResult> jahorina = weatherClient.getWeatherService()
+            Observable<WeatherResult> igman = weatherClient.getWeatherService()
                     .getWeather("Pervizi", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
-            Observable<WeatherResult> ravnaplanina = weatherClient.getWeatherService()
+            Observable<WeatherResult> jahorina = weatherClient.getWeatherService()
                     .getWeather("Jahorina", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
-            Observable<WeatherResult> vlasic = weatherClient.getWeatherService()
+            Observable<WeatherResult> ravnaplanina = weatherClient.getWeatherService()
                     .getWeather("Pale", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
-            Observable<WeatherResult> igman = weatherClient.getWeatherService()
+            Observable<WeatherResult> vlasic = weatherClient.getWeatherService()
                     .getWeather("Travnik", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
 
-            compositeDisposable.add(Observable.zip(bjelasnica, jahorina, ravnaplanina, vlasic, igman, RetrofitHolder::new)
-            .subscribe(retrofitHolder -> {
-                bjelasnicaList = retrofitHolder.bjelasnica.getList();
-                jahorinaList = retrofitHolder.jahorina.getList();
-                ravnaplaninaList = retrofitHolder.ravnaplanina.getList();
-                igmanList = retrofitHolder.igman.getList();
-                vlasicList = retrofitHolder.vlasic.getList();
-                days.addAll(getWeatherList(bjelasnicaList));
-                days.addAll(getWeatherList(jahorinaList));
-                days.addAll(getWeatherList(ravnaplaninaList));
-                days.addAll(getWeatherList(igmanList));
-                days.addAll(getWeatherList(vlasicList));
-                buildRecyclerAdapter();
-                saveUserReportPreferences(days);
-                progressBar.setVisibility(View.INVISIBLE);
-            }, throwable -> {
-                Toast.makeText(getContext(), getResources().getString(R.string.error) + throwable.getMessage(), Toast.LENGTH_SHORT).show();
-            }));
-        }
-        else{
+            compositeDisposable.add(Observable.zip(bjelasnica, igman, jahorina, ravnaplanina, vlasic, RetrofitHolder::new)
+                    .subscribe(retrofitHolder -> {
+                        bjelasnicaList = retrofitHolder.bjelasnica.getList();
+                        igmanList = retrofitHolder.igman.getList();
+                        jahorinaList = retrofitHolder.jahorina.getList();
+                        ravnaplaninaList = retrofitHolder.ravnaplanina.getList();
+                        vlasicList = retrofitHolder.vlasic.getList();
+                        days.add(bjelasnicaList.get(0));
+                        days.add(igmanList.get(0));
+                        days.add(jahorinaList.get(0));
+                        days.add(ravnaplaninaList.get(0));
+                        days.add(vlasicList.get(0));
+                        buildRecyclerAdapter();
+                        saveUserReportPreferences(days);
+                        progressBar.setVisibility(View.INVISIBLE);
+                    }, throwable -> {
+                        Toast.makeText(getContext(), getResources().getString(R.string.error) + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    }));
+        } else {
             loadUserReportPreferences();
             buildRecyclerAdapter();
             progressBar.setVisibility(View.INVISIBLE);
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
         }
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private List<WeatherDay> getWeatherList(List<WeatherDay> weatherDays) {
-        return IntStream.range(0, weatherDays.size())
-                .filter(n -> n % 8 == 0)
-                .limit(1)
-                .mapToObj(weatherDays::get)
-                .collect(Collectors.toList());
-    }
+    
 
     private void saveUserReportPreferences(List<WeatherDay> days) {
         if (getActivity() != null) {

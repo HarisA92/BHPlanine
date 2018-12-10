@@ -97,13 +97,14 @@ public class WeatherFragment extends Fragment {
         mRecyclerView.setAdapter(weatherAdapter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private List<WeatherDay> getWeatherList(List<WeatherDay> weatherDays) {
-        return IntStream.range(0, weatherDays.size())
-                .filter(n -> n % 8 == 0)
-                .limit(5)
-                .mapToObj(weatherDays::get)
-                .collect(Collectors.toList());
+        List<WeatherDay> day = new ArrayList<>();
+        for(int i = 0; i<weatherDays.size(); i+=8){
+            WeatherDay weatherDay = weatherDays.get(i);
+            day.add(weatherDay);
+        }
+        int a = 0;
+        return day;
     }
 
     private void saveUserReportPreferences(List<WeatherDay> days) {
