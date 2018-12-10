@@ -4,13 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.R;
@@ -37,6 +38,7 @@ public class ContentFragment extends Fragment {
     private String mountain;
     private FirebaseHolder firebaseHolder;
     private ValueEventListener valueEventListener;
+    private ProgressBar progressBar;
 
     public static ContentFragment newInstance(String param1) {
         ContentFragment fragment = new ContentFragment();
@@ -52,7 +54,7 @@ public class ContentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_content, container, false);
         buildRecyclerView(v);
-
+        progressBar = v.findViewById(R.id.progress_bar_content);
         mountain = Objects.requireNonNull(getArguments()).getString(MOUNTAINT_ACCOMMODATION);
         Objects.requireNonNull(getActivity()).setTitle(mountain);
 
@@ -80,11 +82,16 @@ public class ContentFragment extends Fragment {
                 }
             }
         } else {
-            Toast.makeText(getActivity(), "contentFragment", Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
+            progressBar.setVisibility(View.INVISIBLE);
         }
         return v;
+    }
+
+    private void delete(){
+        mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
     }
 
     private void saveUserReportPreferences(ArrayList<AccommodationHolder> accommodationList) {
@@ -120,6 +127,7 @@ public class ContentFragment extends Fragment {
                 buildRecyclerAdapter();
                 saveUserReportPreferences(list);
                 adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override

@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.R;
@@ -39,8 +40,8 @@ public class ReportFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ReportAdapter mAdapter;
     private ValueEventListener valueListener;
-    private InternetConnection connection;
     private LinearLayoutManager mLayoutManager;
+    private ProgressBar progressBar;
 
     @Override
     //@AddTrace(name = "onCreateReportFragment")
@@ -48,17 +49,18 @@ public class ReportFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_report3, container, false);
         buildRecyclerView(v);
         onReportClick(v);
+        progressBar = v.findViewById(R.id.progress_bar_report);
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         firebaseHolder = new FirebaseHolder();
-        connection = new InternetConnection();
+        InternetConnection connection = new InternetConnection();
         if (connection.getInternetConnection()) {
             valueListener = valueEventListener();
             firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueListener);
             buildRecyclerAdapter();
         } else {
-            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
+            progressBar.setVisibility(View.INVISIBLE);
         }
         return v;
     }
@@ -94,6 +96,7 @@ public class ReportFragment extends Fragment {
                 }
                 saveUserReportPreferences(mUploads);
                 mAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -135,7 +138,6 @@ public class ReportFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mLayoutManager = null;
         mRecyclerView.setAdapter(null);
         mRecyclerView.setLayoutManager(null);
     }

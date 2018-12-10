@@ -26,7 +26,6 @@ public class FirebaseCloudMessaging extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         showNotification(Objects.requireNonNull(remoteMessage.getNotification()).getTitle(), remoteMessage.getNotification().getBody());
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

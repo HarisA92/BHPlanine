@@ -56,6 +56,7 @@ public class WeatherDrawerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_weather_drawer, container, false);
         buildRecyclerView(v);
         Objects.requireNonNull(getActivity()).setTitle("Weather");
+        progressBar = v.findViewById(R.id.progress_bar_weather_drawer);
         weatherClient = new WeatherClient(getActivity());
         connection = new InternetConnection();
         compositeDisposable = new CompositeDisposable();
@@ -131,13 +132,15 @@ public class WeatherDrawerFragment extends Fragment {
                         days.add(vlasicList.get(0));
                         buildRecyclerAdapter();
                         saveUserReportPreferences(days);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }, throwable -> {
                         Toast.makeText(getContext(), getResources().getString(R.string.error) + throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     }));
         } else {
+            Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
-            Toast.makeText(getActivity(),"weatherDrawerFragment", Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 

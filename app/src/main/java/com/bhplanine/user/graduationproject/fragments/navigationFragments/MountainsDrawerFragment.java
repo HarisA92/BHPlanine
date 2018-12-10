@@ -37,6 +37,7 @@ public class MountainsDrawerFragment extends Fragment {
     private FirebaseHolder firebaseHolder;
     private ValueEventListener valueEventListener;
     private LinearLayoutManager mLayoutManager;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -44,6 +45,7 @@ public class MountainsDrawerFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_mountains, container, false);
         Objects.requireNonNull(getActivity()).setTitle("Mountains");
         buildRecyclerView(v);
+        progressBar = v.findViewById(R.id.progress_bar_mountains);
         InternetConnection internetConnection = new InternetConnection();
         firebaseHolder = new FirebaseHolder();
         if (internetConnection.getInternetConnection()) {
@@ -54,6 +56,7 @@ public class MountainsDrawerFragment extends Fragment {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapter();
+            progressBar.setVisibility(View.GONE);
         }
         return v;
     }
@@ -83,6 +86,7 @@ public class MountainsDrawerFragment extends Fragment {
                 }
                 saveUserReportPreferences(arrayList);
                 homeAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -116,7 +120,6 @@ public class MountainsDrawerFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mLayoutManager = null;
         mRecyclerView.setAdapter(null);
         mRecyclerView.setLayoutManager(null);
     }

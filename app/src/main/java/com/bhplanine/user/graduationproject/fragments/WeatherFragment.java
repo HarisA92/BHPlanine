@@ -43,6 +43,7 @@ public class WeatherFragment extends Fragment {
     private String getMountain;
     private RecyclerView mRecyclerView;
     private CompositeDisposable compositeDisposable;
+    private ProgressBar progressBar;
 
     private static String getLocation(View v) {
         return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity());
@@ -54,7 +55,7 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.fragment_weather3, container, false);
         buildRecyclerView(v);
-        final ProgressBar mProgressCircle = v.findViewById(R.id.progress_circle);
+        progressBar = v.findViewById(R.id.progress_bar_weather);
         compositeDisposable = new CompositeDisposable();
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
@@ -69,12 +70,12 @@ public class WeatherFragment extends Fragment {
                         days = weatherResult.getList();
                         buildRecyclerAdapter();
                         saveUserReportPreferences(days);
-                        mProgressCircle.setVisibility(View.INVISIBLE);
+                        progressBar.setVisibility(View.INVISIBLE);
                     }, throwable -> Toast.makeText(getContext(), getResources().getString(R.string.error) + throwable.getMessage(), Toast.LENGTH_SHORT).show()));
         } else {
             loadUserReportPreferences();
             buildRecyclerAdapter();
-            mProgressCircle.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
         }
         return v;
     }
