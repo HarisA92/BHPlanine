@@ -54,7 +54,7 @@ public class MountainsDrawerFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
-            buildRecyclerAdapter();
+            buildRecyclerAdapterOfflineMode();
             progressBar.setVisibility(View.GONE);
         }
         return v;
@@ -68,6 +68,13 @@ public class MountainsDrawerFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
+    private void buildRecyclerAdapterOfflineMode() {
+        if (arrayList != null) {
+            homeAdapter = new HomeAdapter(arrayList);
+            mRecyclerView.setAdapter(homeAdapter);
+        }
+    }
+
     private void buildRecyclerAdapter() {
         arrayList.clear();
         if (arrayList != null) {
@@ -75,7 +82,7 @@ public class MountainsDrawerFragment extends Fragment {
             mRecyclerView.setAdapter(homeAdapter);
         }
     }
-    
+
     private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
             @Override
