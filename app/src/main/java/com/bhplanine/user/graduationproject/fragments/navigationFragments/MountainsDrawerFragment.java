@@ -63,18 +63,19 @@ public class MountainsDrawerFragment extends Fragment {
     private void buildRecyclerView(View v) {
         mRecyclerView = v.findViewById(R.id.recycler_view_mountain);
         mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
     private void buildRecyclerAdapter() {
+        arrayList.clear();
         if (arrayList != null) {
             homeAdapter = new HomeAdapter(arrayList);
             mRecyclerView.setAdapter(homeAdapter);
         }
     }
-
-
+    
     private ValueEventListener valueEventListener() {
         return new ValueEventListener() {
             @Override
