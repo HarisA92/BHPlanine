@@ -36,7 +36,6 @@ public class MountainsDrawerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private FirebaseHolder firebaseHolder;
     private ValueEventListener valueEventListener;
-    private LinearLayoutManager mLayoutManager;
     private ProgressBar progressBar;
 
     @Override
@@ -64,7 +63,7 @@ public class MountainsDrawerFragment extends Fragment {
     private void buildRecyclerView(View v) {
         mRecyclerView = v.findViewById(R.id.recycler_view_mountain);
         mRecyclerView.setNestedScrollingEnabled(false);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 

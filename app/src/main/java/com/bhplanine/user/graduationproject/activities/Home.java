@@ -1,12 +1,12 @@
 package com.bhplanine.user.graduationproject.activities;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,7 +28,6 @@ import com.bhplanine.user.graduationproject.fragments.navigationFragments.Webcam
 import com.bhplanine.user.graduationproject.utils.FragmentNavigationManager;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.utils.NavigationManager;
-import com.bhplanine.user.graduationproject.utils.OnBackPressed;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
@@ -48,7 +47,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private NavigationManager navigationManager;
     private ActionBarDrawerToggle toggle;
     private Fragment fragment;
-    private String[] TAG = {"mountain", "weather", "webcams", "news"};
+    private String[] TAG = {"Mountains", "Weather", "Webcams", "News"};
 
 
     //@AddTrace(name = "onCreateHomeActivity")
@@ -58,9 +57,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         setContentView(R.layout.activity_home);
 
         navigationManager = FragmentNavigationManager.obtain(this);
-        for (String aTAG : TAG) {
-            fragment = getFragmentManager().findFragmentByTag(aTAG);
-        }
+        fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -73,8 +71,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new MountainsDrawerFragment()).commit();
+           getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MountainsDrawerFragment(), TAG[0]).commit();
             navigationView.setCheckedItem(R.id.nav_mountains);
         }
         setDataToNavigationLayout();
@@ -92,11 +90,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.nav_mountains:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MountainsDrawerFragment(), TAG[0]).commit();
+                navigationView.setCheckedItem(R.id.nav_hotel);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_weather:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new WeatherDrawerFragment(), TAG[1]).commit();
+                        new WeatherDrawerFragment(), TAG[1]).addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.nav_hotel);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_hotel:
@@ -104,12 +104,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.nav_stream:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new WebcamsDrawerFragment(), TAG[2]).commit();
+                        new WebcamsDrawerFragment(), TAG[2]).addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.nav_hotel);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_news:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new NewsDrawerFragment(), TAG[3]).commit();
+                        new NewsDrawerFragment(), TAG[3]).addToBackStack(null).commit();
+                navigationView.setCheckedItem(R.id.nav_hotel);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_send:
@@ -178,22 +180,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
             hideItem();
-        } else if (!(fragment instanceof OnBackPressed) || ((OnBackPressed) fragment).doBack()) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new MountainsDrawerFragment()).commit();
-        } else {
-            try {
-                getMountainFragment();
-                super.onBackPressed();
-            } catch (Exception ignored) {
-            }
         }
-
+        getMountainFragment();
+        super.onBackPressed();
     }
 
     private void getMountainFragment() {
-        MountainsDrawerFragment mountainsDrawerFragment = (MountainsDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (mountainsDrawerFragment != null) {
+        MountainsDrawerFragment mountainsDrawerFragment = (MountainsDrawerFragment)
+                getSupportFragmentManager().findFragmentByTag("Mountains");
+        if (mountainsDrawerFragment.isVisible()) {
             finishAffinity();
         }
     }

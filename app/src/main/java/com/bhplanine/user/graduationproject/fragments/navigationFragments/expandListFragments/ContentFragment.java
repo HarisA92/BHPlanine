@@ -89,11 +89,6 @@ public class ContentFragment extends Fragment {
         return v;
     }
 
-    private void delete(){
-        mRecyclerView.setAdapter(null);
-        mRecyclerView.setLayoutManager(null);
-    }
-
     private void saveUserReportPreferences(ArrayList<AccommodationHolder> accommodationList) {
         if (getActivity() != null) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(mountain + getResources().getString(R.string.sharedPreferencesAccommodation), Context.MODE_PRIVATE);
