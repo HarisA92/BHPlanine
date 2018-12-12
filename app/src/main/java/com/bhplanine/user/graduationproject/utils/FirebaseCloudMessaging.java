@@ -12,7 +12,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 
 import com.bhplanine.user.graduationproject.R;
-import com.bhplanine.user.graduationproject.activities.Home;
+import com.bhplanine.user.graduationproject.activities.HomeActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -41,7 +41,7 @@ public class FirebaseCloudMessaging extends FirebaseMessagingService {
             notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
         }
 
-        Intent intent = new Intent(this, Home.class);
+        Intent intent = new Intent(this, HomeActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 100, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 

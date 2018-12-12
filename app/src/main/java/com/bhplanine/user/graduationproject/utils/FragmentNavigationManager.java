@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.bhplanine.user.graduationproject.BuildConfig;
 import com.bhplanine.user.graduationproject.R;
-import com.bhplanine.user.graduationproject.activities.Home;
+import com.bhplanine.user.graduationproject.activities.HomeActivity;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.expandListFragments.ContentFragment;
 
 public class FragmentNavigationManager implements NavigationManager {
@@ -15,9 +15,9 @@ public class FragmentNavigationManager implements NavigationManager {
     private static FragmentNavigationManager sInstance;
 
     private FragmentManager mFragmentManager;
-    private Home mActivity;
+    private HomeActivity mActivity;
 
-    public static FragmentNavigationManager obtain(Home activity) {
+    public static FragmentNavigationManager obtain(HomeActivity activity) {
         if (sInstance == null) {
             sInstance = new FragmentNavigationManager();
         }
@@ -25,7 +25,7 @@ public class FragmentNavigationManager implements NavigationManager {
         return sInstance;
     }
 
-    private void configure(Home activity) {
+    private void configure(HomeActivity activity) {
         mActivity = activity;
         mFragmentManager = mActivity.getSupportFragmentManager();
     }

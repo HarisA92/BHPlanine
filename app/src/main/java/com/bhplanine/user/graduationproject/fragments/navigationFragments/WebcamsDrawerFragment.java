@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bhplanine.user.graduationproject.R;
+import com.bhplanine.user.graduationproject.utils.SelectedFragment;
 
 import java.util.Objects;
 
@@ -23,6 +24,8 @@ public class WebcamsDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_webcams_drawer, container, false);
         Objects.requireNonNull(getActivity()).setTitle("Webcams");
+        ((SelectedFragment) getActivity()).selectDrawerFragment(R.id.nav_stream);
+
         return v;
     }
 

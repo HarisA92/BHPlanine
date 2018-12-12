@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,6 +23,7 @@ import com.bhplanine.user.graduationproject.models.SkiResortHolder;
 import com.bhplanine.user.graduationproject.retrofit.client.WeatherClient;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -49,7 +49,7 @@ public class WeatherFragment extends Fragment {
         return String.format(v.getResources().getString(R.string.LOCATION_AND_COUNTRY_CODE), SkiResortHolder.getSkiResort().getCity());
     }
 
-    //@AddTrace(name = "onCreateWeatherFragment")
+    @AddTrace(name = "onCreateWeatherFragment")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,7 +61,6 @@ public class WeatherFragment extends Fragment {
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         WeatherClient weatherClient = new WeatherClient(getActivity());
         InternetConnection connection = new InternetConnection();
-
         if (connection.getInternetConnection()) {
             compositeDisposable.add(weatherClient.getWeatherService().getWeather(getLocation(v), BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
@@ -80,7 +79,21 @@ public class WeatherFragment extends Fragment {
         return v;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
+        }
+    }
+
     private void buildRecyclerView(View v) {
         mRecyclerView = v.findViewById(R.id.weather_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -88,7 +101,6 @@ public class WeatherFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void buildRecyclerAdapter() {
         if (days != null) {
             WeatherAdapter weatherAdapter = new WeatherAdapter(getWeatherList(days), weatherFont);
@@ -124,21 +136,6 @@ public class WeatherFragment extends Fragment {
             Type type = new TypeToken<ArrayList<WeatherDay>>() {
             }.getType();
             days = gson.fromJson(json, type);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mRecyclerView.setAdapter(null);
-        mRecyclerView.setLayoutManager(null);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
-            compositeDisposable.dispose();
         }
     }
 }

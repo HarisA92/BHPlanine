@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bhplanine.user.graduationproject.activities.ZoomImageGallery;
+import com.bhplanine.user.graduationproject.activities.ZoomImageGalleryActivity;
 import com.bhplanine.user.graduationproject.R;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         Context context = holder.itemView.getContext();
         Glide.with(context).load(list.get(position)).into(holder.imageView);
         holder.imageView.setOnClickListener( view -> {
-            Intent intent = new Intent(view.getContext(), ZoomImageGallery.class);
+            Intent intent = new Intent(view.getContext(), ZoomImageGalleryActivity.class);
             intent.putExtra(context.getResources().getString(R.string.POSITION), list.get(position));
             view.getContext().startActivity(intent);
                 });

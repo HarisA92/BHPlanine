@@ -3,10 +3,8 @@ package com.bhplanine.user.graduationproject.fragments.navigationFragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +22,8 @@ import com.bhplanine.user.graduationproject.retrofit.model.WeatherDay;
 import com.bhplanine.user.graduationproject.retrofit.model.WeatherResult;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.utils.RetrofitHolder;
+import com.bhplanine.user.graduationproject.utils.SelectedFragment;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -48,14 +48,14 @@ public class WeatherDrawerFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
 
-    //@AddTrace(name = "onCreateWeatherDrawerFragment")
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @AddTrace(name = "onCreateWeatherDrawerFragment")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_weather_drawer, container, false);
-        buildRecyclerView(v);
         Objects.requireNonNull(getActivity()).setTitle("Weather");
+        ((SelectedFragment) getActivity()).selectDrawerFragment(R.id.nav_weather);
+        buildRecyclerView(v);
         progressBar = v.findViewById(R.id.progress_bar_weather_drawer);
         weatherClient = new WeatherClient(getActivity());
         connection = new InternetConnection();
@@ -94,7 +94,6 @@ public class WeatherDrawerFragment extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getAPI() {
         if (connection.getInternetConnection()) {
             Observable<WeatherResult> bjelasnica = weatherClient.getWeatherService()
@@ -143,7 +142,6 @@ public class WeatherDrawerFragment extends Fragment {
             progressBar.setVisibility(View.INVISIBLE);
         }
     }
-
 
     private void saveUserReportPreferences(List<WeatherDay> days) {
         if (getActivity() != null) {

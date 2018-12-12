@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.adapters.AccommodationAdapter;
@@ -22,6 +20,7 @@ import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -48,7 +47,7 @@ public class ContentFragment extends Fragment {
         return fragment;
     }
 
-    //@AddTrace(name = "onCreateContentFragment")
+    @AddTrace(name = "onCreateContentFragment")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,6 +86,21 @@ public class ContentFragment extends Fragment {
             progressBar.setVisibility(View.INVISIBLE);
         }
         return v;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (valueEventListener != null) {
+            firebaseHolder.getDatabaseReferenceForAccommodation(mountain).removeEventListener(valueEventListener);
+        }
     }
 
     private void saveUserReportPreferences(ArrayList<AccommodationHolder> accommodationList) {
@@ -143,21 +157,6 @@ public class ContentFragment extends Fragment {
         if (list != null) {
             adapter = new AccommodationAdapter(list);
             mRecyclerView.setAdapter(adapter);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mRecyclerView.setAdapter(null);
-        mRecyclerView.setLayoutManager(null);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (valueEventListener != null) {
-            firebaseHolder.getDatabaseReferenceForAccommodation(mountain).removeEventListener(valueEventListener);
         }
     }
 }

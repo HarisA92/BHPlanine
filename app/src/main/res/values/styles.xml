@@ -59,7 +59,7 @@
         <item name="android:textColor">@color/pink</item>
     </style>
 
-    <!--For PopUp windows, newsurface, newsnow-->
+    <!--For PopUpReportActivity windows, newsurface, newsnow-->
     <style name="AppTheme.PopUp">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>

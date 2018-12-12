@@ -18,16 +18,17 @@ import com.bhplanine.user.graduationproject.adapters.HomeAdapter;
 import com.bhplanine.user.graduationproject.models.AllMountainInformationHolder;
 import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
+import com.bhplanine.user.graduationproject.utils.SelectedFragment;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Objects;
-
 
 public class MountainsDrawerFragment extends Fragment {
 
@@ -38,11 +39,13 @@ public class MountainsDrawerFragment extends Fragment {
     private ValueEventListener valueEventListener;
     private ProgressBar progressBar;
 
+    @AddTrace(name = "onCreateMountainDrawerFragment")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mountains, container, false);
         Objects.requireNonNull(getActivity()).setTitle("Mountains");
+        ((SelectedFragment) getActivity()).selectDrawerFragment(R.id.nav_mountains);
         buildRecyclerView(v);
         progressBar = v.findViewById(R.id.progress_bar_mountains);
         InternetConnection internetConnection = new InternetConnection();
@@ -58,6 +61,21 @@ public class MountainsDrawerFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
         }
         return v;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (valueEventListener != null) {
+            firebaseHolder.getDatabseReferenceForMountainInformation().removeEventListener(valueEventListener);
+        }
     }
 
     private void buildRecyclerView(View v) {
@@ -124,18 +142,4 @@ public class MountainsDrawerFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mRecyclerView.setAdapter(null);
-        mRecyclerView.setLayoutManager(null);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (valueEventListener != null) {
-            firebaseHolder.getDatabseReferenceForMountainInformation().removeEventListener(valueEventListener);
-        }
-    }
 }

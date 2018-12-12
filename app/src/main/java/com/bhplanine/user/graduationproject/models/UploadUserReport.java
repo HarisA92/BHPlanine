@@ -1,6 +1,6 @@
 package com.bhplanine.user.graduationproject.models;
 
-public class Upload {
+public class UploadUserReport {
 
     private String mName;
     private String imageUrl;
@@ -10,10 +10,10 @@ public class Upload {
     private String date;
     private String email;
 
-    public Upload() {
+    public UploadUserReport() {
     }
 
-    public Upload(String name, String mImageUrl, String key, String snow, String trail, String Date, String userEmail) {
+    public UploadUserReport(String name, String mImageUrl, String key, String snow, String trail, String Date, String userEmail) {
         mName = name;
         imageUrl = mImageUrl;
         mKey = key;

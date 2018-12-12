@@ -28,11 +28,12 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.perf.metrics.AddTrace;
 
 import java.util.Arrays;
+import java.util.Objects;
 
-
-public class WelcomeScreen extends AppCompatActivity {
+public class WelcomeScreenActivity extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
@@ -40,7 +41,7 @@ public class WelcomeScreen extends AppCompatActivity {
     private CallbackManager mCallbackManager;
     private AnimationDrawable animationDrawable;
 
-    //@AddTrace(name = "onCreateWelcomeScreenActivity")
+    @AddTrace(name = "onCreateWelcomeScreenActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +67,7 @@ public class WelcomeScreen extends AppCompatActivity {
 
         Button facebook = findViewById(R.id.facebook_sign_in);
         facebook.setOnClickListener(view -> {
-            LoginManager.getInstance().logInWithReadPermissions(WelcomeScreen.this, Arrays.asList("email", "public_profile"));
+            LoginManager.getInstance().logInWithReadPermissions(WelcomeScreenActivity.this, Arrays.asList("email", "public_profile"));
             LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
@@ -79,7 +80,7 @@ public class WelcomeScreen extends AppCompatActivity {
 
                 @Override
                 public void onError(FacebookException error) {
-                    Toast.makeText(WelcomeScreen.this, getResources().getString(R.string.error) + error, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WelcomeScreenActivity.this, getResources().getString(R.string.error) + error, Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -105,11 +106,6 @@ public class WelcomeScreen extends AppCompatActivity {
             animationDrawable.stop();
     }
 
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -117,15 +113,9 @@ public class WelcomeScreen extends AppCompatActivity {
         if (currentUser == null) {
             signOutFromGoogle();
         } else {
-            Intent intent = new Intent(WelcomeScreen.this, Home.class);
+            Intent intent = new Intent(WelcomeScreenActivity.this, HomeActivity.class);
             startActivity(intent);
         }
-    }
-
-    private void signOutFromGoogle() {
-        mGoogleSignInClient.signOut()
-                .addOnCompleteListener(this, task -> {
-                });
     }
 
     @Override
@@ -136,11 +126,22 @@ public class WelcomeScreen extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
+                firebaseAuthWithGoogle(Objects.requireNonNull(account));
             } catch (ApiException ignored) {
 
             }
         }
+    }
+
+    private void signOutFromGoogle() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, task -> {
+                });
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
@@ -149,11 +150,11 @@ public class WelcomeScreen extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(WelcomeScreen.this, getResources().getString(R.string.log_in), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(WelcomeScreen.this, Home.class);
+                        Toast.makeText(WelcomeScreenActivity.this, getResources().getString(R.string.log_in), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(WelcomeScreenActivity.this, HomeActivity.class);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(WelcomeScreen.this, getResources().getString(R.string.log_in_failed) + task.getException(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WelcomeScreenActivity.this, getResources().getString(R.string.log_in_failed) + task.getException(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -164,8 +165,8 @@ public class WelcomeScreen extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(WelcomeScreen.this, getResources().getString(R.string.log_in), Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(WelcomeScreen.this, Home.class);
+                        Toast.makeText(WelcomeScreenActivity.this, getResources().getString(R.string.log_in), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(WelcomeScreenActivity.this, HomeActivity.class);
                         startActivity(intent);
                     }
                 });

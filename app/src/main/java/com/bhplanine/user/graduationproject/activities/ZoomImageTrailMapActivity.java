@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide;
 import com.bhplanine.user.graduationproject.R;
 import com.github.chrisbanes.photoview.PhotoView;
 
-public class ZoomImageTrailMap extends AppCompatActivity {
+public class ZoomImageTrailMapActivity extends AppCompatActivity {
 
     private PhotoView photoView;
 

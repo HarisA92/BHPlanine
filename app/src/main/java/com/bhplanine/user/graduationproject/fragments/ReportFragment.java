@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,14 +15,15 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.R;
-import com.bhplanine.user.graduationproject.activities.PopUp;
+import com.bhplanine.user.graduationproject.activities.PopUpReportActivity;
 import com.bhplanine.user.graduationproject.adapters.ReportAdapter;
-import com.bhplanine.user.graduationproject.models.Upload;
+import com.bhplanine.user.graduationproject.models.UploadUserReport;
 import com.bhplanine.user.graduationproject.utils.FirebaseHolder;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.perf.metrics.AddTrace;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -35,16 +34,15 @@ import java.util.Objects;
 public class ReportFragment extends Fragment {
 
     private FirebaseHolder firebaseHolder;
-    private ArrayList<Upload> mUploads = new ArrayList<>();
+    private ArrayList<UploadUserReport> mUploads = new ArrayList<>();
     private String getMountain;
     private RecyclerView mRecyclerView;
     private ReportAdapter mAdapter;
     private ValueEventListener valueListener;
-    private LinearLayoutManager mLayoutManager;
     private ProgressBar progressBar;
 
     @Override
-    //@AddTrace(name = "onCreateReportFragment")
+    @AddTrace(name = "onCreateReportFragment")
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_report3, container, false);
         buildRecyclerView(v);
@@ -65,11 +63,26 @@ public class ReportFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mRecyclerView.setAdapter(null);
+        mRecyclerView.setLayoutManager(null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (valueListener != null) {
+            firebaseHolder.getDatabaseReferenceForReport().removeEventListener(valueListener);
+        }
+    }
+
     private void buildRecyclerView(View v) {
         mRecyclerView = v.findViewById(R.id.recycler_view_report);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setNestedScrollingEnabled(false);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -89,7 +102,7 @@ public class ReportFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUploads.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    final Upload upload = postSnapshot.getValue(Upload.class);
+                    final UploadUserReport upload = postSnapshot.getValue(UploadUserReport.class);
                     if (postSnapshot.exists()) {
                         mUploads.add(upload);
                     }
@@ -106,7 +119,7 @@ public class ReportFragment extends Fragment {
         };
     }
 
-    private void saveUserReportPreferences(ArrayList<Upload> uploads) {
+    private void saveUserReportPreferences(ArrayList<UploadUserReport> uploads) {
         if (getActivity() != null) {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesReport), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -122,7 +135,7 @@ public class ReportFragment extends Fragment {
             SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getMountain + getResources().getString(R.string.sharedPreferencesReport), Context.MODE_PRIVATE);
             Gson gson = new Gson();
             String json = sharedPreferences.getString(getMountain + getResources().getString(R.string.sharedPreferencesReport_list), null);
-            Type type = new TypeToken<ArrayList<Upload>>() {
+            Type type = new TypeToken<ArrayList<UploadUserReport>>() {
             }.getType();
             mUploads = gson.fromJson(json, type);
         }
@@ -130,27 +143,10 @@ public class ReportFragment extends Fragment {
 
     private void onReportClick(View v) {
         v.findViewById(R.id.fab).setOnClickListener(v1 -> {
-            final Intent intent = new Intent(getActivity(), PopUp.class);
+            final Intent intent = new Intent(getActivity(), PopUpReportActivity.class);
             startActivity(intent);
         });
     }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mRecyclerView.setAdapter(null);
-        mRecyclerView.setLayoutManager(null);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (valueListener != null) {
-            firebaseHolder.getDatabaseReferenceForReport().removeEventListener(valueListener);
-        }
-    }
-
-
 }
 
 

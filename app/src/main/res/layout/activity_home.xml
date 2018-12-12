@@ -8,7 +8,7 @@
     android:background="#E0E0E0"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    tools:context=".activities.Home">
+    tools:context=".activities.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

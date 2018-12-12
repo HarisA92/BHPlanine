@@ -4,17 +4,16 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.adapters.TabLayoutAdapter;
 import com.bhplanine.user.graduationproject.models.SkiResortHolder;
 import com.bhplanine.user.graduationproject.utils.ZoomOutPageTransformer;
-import com.bhplanine.user.graduationproject.R;
 
 import java.util.Objects;
 
-public class Main extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private final int[] ICONS = new int[]{
             R.drawable.report,
@@ -51,7 +50,7 @@ public class Main extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        Main.this.setTitle(SkiResortHolder.getSkiResort().getMountain().getValue());
+        MainActivity.this.setTitle(SkiResortHolder.getSkiResort().getMountain().getValue());
 
         adapter = new TabLayoutAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);

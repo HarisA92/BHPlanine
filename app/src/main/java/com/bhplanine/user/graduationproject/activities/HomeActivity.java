@@ -6,13 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,22 +20,22 @@ import android.widget.Toast;
 
 import com.bhplanine.user.graduationproject.R;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.MountainsDrawerFragment;
-import com.bhplanine.user.graduationproject.fragments.navigationFragments.NewsDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.WeatherDrawerFragment;
 import com.bhplanine.user.graduationproject.fragments.navigationFragments.WebcamsDrawerFragment;
 import com.bhplanine.user.graduationproject.utils.FragmentNavigationManager;
 import com.bhplanine.user.graduationproject.utils.InternetConnection;
 import com.bhplanine.user.graduationproject.utils.NavigationManager;
+import com.bhplanine.user.graduationproject.utils.SelectedFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.perf.metrics.AddTrace;
 
 import java.util.Objects;
 
-public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SelectedFragment {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -46,23 +44,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private ImageView imageView;
     private NavigationManager navigationManager;
     private ActionBarDrawerToggle toggle;
-    private Fragment fragment;
-    private String[] TAG = {"Mountains", "Weather", "Webcams", "News"};
+    private String[] TAG = {"Mountains", "Weather", "Webcams"};
 
-
-    //@AddTrace(name = "onCreateHomeActivity")
+    @AddTrace(name = "onCreateHomeActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         navigationManager = FragmentNavigationManager.obtain(this);
-        fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         drawer = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -71,32 +62,33 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
 
         if (savedInstanceState == null) {
-           getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MountainsDrawerFragment(), TAG[0]).commit();
-            navigationView.setCheckedItem(R.id.nav_mountains);
         }
         setDataToNavigationLayout();
         getUsernameAndEmail();
         setupFirebaseListener();
         hideItem();
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        Log.d("TOKENID", "Refreshed token: " + refreshedToken);
+    }
+
+    @Override
+    public void selectDrawerFragment(int fragmentId) {
+        navigationView.setCheckedItem(fragmentId);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         String[] mountain = {"Bjelašnica", "Jahorina", "Ravna Planina", "Vlašić", "Igman"};
+
         switch (item.getItemId()) {
             case R.id.nav_mountains:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MountainsDrawerFragment(), TAG[0]).commit();
-                navigationView.setCheckedItem(R.id.nav_hotel);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_weather:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new WeatherDrawerFragment(), TAG[1]).addToBackStack(null).commit();
-                navigationView.setCheckedItem(R.id.nav_hotel);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_hotel:
@@ -105,13 +97,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.nav_stream:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new WebcamsDrawerFragment(), TAG[2]).addToBackStack(null).commit();
-                navigationView.setCheckedItem(R.id.nav_hotel);
-                drawer.closeDrawer(GravityCompat.START);
-                break;
-            case R.id.nav_news:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new NewsDrawerFragment(), TAG[3]).addToBackStack(null).commit();
-                navigationView.setCheckedItem(R.id.nav_hotel);
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.nav_send:
@@ -247,10 +232,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         mAuthStateListener = firebaseAuth -> {
             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
             if (firebaseUser == null) {
-                Toast.makeText(Home.this, getResources().getString(R.string.Sign_out), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Home.this, WelcomeScreen.class);
+                Toast.makeText(HomeActivity.this, getResources().getString(R.string.Sign_out), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeActivity.this, WelcomeScreenActivity.class);
                 startActivity(intent);
             }
         };
     }
+
 }

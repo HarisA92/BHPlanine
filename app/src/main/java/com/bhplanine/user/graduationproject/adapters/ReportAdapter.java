@@ -10,22 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bhplanine.user.graduationproject.models.Upload;
-import com.bhplanine.user.graduationproject.activities.ZoomImageReport;
+import com.bhplanine.user.graduationproject.models.UploadUserReport;
+import com.bhplanine.user.graduationproject.activities.ZoomImageReportActivity;
 import com.bhplanine.user.graduationproject.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-import static com.bumptech.glide.request.RequestOptions.centerCropTransform;
-
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ImageViewHolder> {
 
-    private final ArrayList<Upload> uploads;
+    private final ArrayList<UploadUserReport> uploads;
 
-    public ReportAdapter( final ArrayList<Upload> uploads) {
+    public ReportAdapter( final ArrayList<UploadUserReport> uploads) {
         this.uploads = uploads;
     }
 
@@ -40,7 +37,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ImageViewH
     @Override
     public void onBindViewHolder(@NonNull final ImageViewHolder holder, final int position) {
         Context context = holder.itemView.getContext();
-        final Upload uploadCurrent = uploads.get(position);
+        final UploadUserReport uploadCurrent = uploads.get(position);
         holder.textViewName.setText(uploadCurrent.getName());
         holder.textViewUsername.setText(uploadCurrent.getmKey());
         holder.textTrailSituation.setText(uploadCurrent.getmTrail());
@@ -48,7 +45,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ImageViewH
         holder.date.setText(uploadCurrent.getDate());
 
         holder.imageView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, ZoomImageReport.class);
+            Intent intent = new Intent(context, ZoomImageReportActivity.class);
             intent.putExtra(context.getResources().getString(R.string.POSITION), uploadCurrent.getImageUrl());
             context.startActivity(intent);
         });

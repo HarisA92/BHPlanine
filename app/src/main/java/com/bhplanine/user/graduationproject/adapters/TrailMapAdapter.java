@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bhplanine.user.graduationproject.activities.ZoomImageTrailMap;
+import com.bhplanine.user.graduationproject.activities.ZoomImageTrailMapActivity;
 import com.bhplanine.user.graduationproject.R;
 import com.squareup.picasso.Picasso;
 
@@ -35,7 +35,7 @@ public class TrailMapAdapter extends RecyclerView.Adapter<TrailMapAdapter.ViewHo
         Context context = holder.itemView.getContext();
         Picasso.with(context).load(list.get(position)).centerCrop().resize(1280, 720).into(holder.imageView);
         holder.imageView.setOnClickListener(view -> {
-            Intent intent = new Intent(view.getContext(), ZoomImageTrailMap.class);
+            Intent intent = new Intent(view.getContext(), ZoomImageTrailMapActivity.class);
             intent.putExtra(context.getResources().getString(R.string.POSITION), list.get(position));
             context.startActivity(intent);
         });

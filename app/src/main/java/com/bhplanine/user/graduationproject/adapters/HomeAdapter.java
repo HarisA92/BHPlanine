@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bhplanine.user.graduationproject.R;
-import com.bhplanine.user.graduationproject.activities.Main;
+import com.bhplanine.user.graduationproject.activities.MainActivity;
 import com.bhplanine.user.graduationproject.models.AllMountainInformationHolder;
 import com.bhplanine.user.graduationproject.models.Mountain;
 import com.bhplanine.user.graduationproject.models.SkiResort;
@@ -78,31 +78,31 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         public void onClick(View view) {
             switch (getLayoutPosition()) {
                 case 0: {
-                    Intent intent = new Intent(context, Main.class);
+                    Intent intent = new Intent(context, MainActivity.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.BJELASNICA, context.getResources().getString(R.string.BJELASNICA_WEATHER), context.getResources().getString(R.string.BJELASNICA_WEBCAMS), context.getResources().getString(R.string.BJELASNICA_PRICETICKETS), context.getResources().getString(R.string.BJELASNICA_GALLERY), context.getResources().getString(R.string.BJELASNICA_TRAIL_MAP)));
                     context.startActivity(intent);
                     break;
                 }
                 case 1: {
-                    Intent intent = new Intent(context, Main.class);
+                    Intent intent = new Intent(context, MainActivity.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.IGMAN, context.getResources().getString(R.string.IGMAN_WEATHER), context.getResources().getString(R.string.IGMAN_WEBCAMS), context.getResources().getString(R.string.IGMAN_PRICETICKETS), context.getResources().getString(R.string.IGMAN_GALLERY), context.getResources().getString(R.string.IGMAN_TRAIL_MAP)));
                     context.startActivity(intent);
                     break;
                 }
                 case 2: {
-                    Intent intent = new Intent(context, Main.class);
+                    Intent intent = new Intent(context, MainActivity.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.JAHORINA, context.getResources().getString(R.string.JAHORINA_WEATHER), context.getResources().getString(R.string.JAHORINA_WEBCAMS), context.getResources().getString(R.string.JAHORINA_PRICETICKETS), context.getResources().getString(R.string.JAHORINA_GALLERY), context.getResources().getString(R.string.JAHORINA_TRAIL_MAP)));
                     context.startActivity(intent);
                     break;
                 }
                 case 3: {
-                    Intent intent = new Intent(context, Main.class);
+                    Intent intent = new Intent(context, MainActivity.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.RAVNAPLANINA, context.getResources().getString(R.string.RAVNAPLANINA_WEATHER), context.getResources().getString(R.string.RAVNAPLANINA_WEBCAMS), context.getResources().getString(R.string.RAVNAPLANINA_PRICETICKETS), context.getResources().getString(R.string.RAVNAPLANINA_GALLERY), context.getResources().getString(R.string.RAVNAPLANINA_TRAIL_MAP)));
                     context.startActivity(intent);
                     break;
                 }
                 case 4: {
-                    Intent intent = new Intent(context, Main.class);
+                    Intent intent = new Intent(context, MainActivity.class);
                     SkiResortHolder.setSkiResort(new SkiResort(Mountain.VLASIC, context.getResources().getString(R.string.VLASIC_WEATHER), context.getResources().getString(R.string.VLASIC_WEBCAMS), context.getResources().getString(R.string.VLASIC_PRICETICKETS), context.getResources().getString(R.string.VLASIC_GALLERY), context.getResources().getString(R.string.VLASIC_TRAIL_MAP)));
                     context.startActivity(intent);
                     break;
