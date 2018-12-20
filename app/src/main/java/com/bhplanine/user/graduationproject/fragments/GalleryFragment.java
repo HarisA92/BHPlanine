@@ -33,9 +33,9 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_gallery, container, false);
         buildRecyclerView(v);
-        InternetConnection internetConnection = new InternetConnection();
+        InternetConnection internetConnection = new InternetConnection(getActivity());
         firebaseHolder = new FirebaseHolder();
-        if (internetConnection.getInternetConnection()) {
+        if (internetConnection.checkConnectivity()) {
             childEventListener = childEventListener();
             firebaseHolder.getDatabaseReferenceForGallery().addChildEventListener(childEventListener);
             buildRecyclerAdapter();
@@ -102,7 +102,6 @@ public class GalleryFragment extends Fragment {
             recyclerView.setAdapter(galleryAdapter);
         }
     }
-
 }
 
 

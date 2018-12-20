@@ -60,8 +60,8 @@ public class WeatherFragment extends Fragment {
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         WeatherClient weatherClient = new WeatherClient(getActivity());
-        InternetConnection connection = new InternetConnection();
-        if (connection.getInternetConnection()) {
+        InternetConnection connection = new InternetConnection(getActivity());
+        if (connection.checkConnectivity()) {
             compositeDisposable.add(weatherClient.getWeatherService().getWeather(getLocation(v), BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

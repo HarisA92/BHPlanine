@@ -38,6 +38,7 @@ public class MountainsDrawerFragment extends Fragment {
     private FirebaseHolder firebaseHolder;
     private ValueEventListener valueEventListener;
     private ProgressBar progressBar;
+    private Context context;
 
     @AddTrace(name = "onCreateMountainDrawerFragment")
     @Override
@@ -45,22 +46,29 @@ public class MountainsDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_mountains, container, false);
         Objects.requireNonNull(getActivity()).setTitle("Mountains");
+        context = getActivity();
         ((SelectedFragment) getActivity()).selectDrawerFragment(R.id.nav_mountains);
         buildRecyclerView(v);
         progressBar = v.findViewById(R.id.progress_bar_mountains);
-        InternetConnection internetConnection = new InternetConnection();
+        InternetConnection internetConnection = new InternetConnection(context);
         firebaseHolder = new FirebaseHolder();
-        if (internetConnection.getInternetConnection()) {
+        if (internetConnection.checkConnectivity()) {
             valueEventListener = valueEventListener();
             firebaseHolder.getDatabseReferenceForMountainInformation().orderByKey().addValueEventListener(valueEventListener);
             buildRecyclerAdapter();
-        } else {
+        } else if(!internetConnection.checkConnectivity()) {
             Toast.makeText(getActivity(), getResources().getString(R.string.connect_internet), Toast.LENGTH_SHORT).show();
             loadUserReportPreferences();
             buildRecyclerAdapterOfflineMode();
             progressBar.setVisibility(View.GONE);
         }
         return v;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        context = null;
     }
 
     @Override
@@ -76,6 +84,7 @@ public class MountainsDrawerFragment extends Fragment {
         if (valueEventListener != null) {
             firebaseHolder.getDatabseReferenceForMountainInformation().removeEventListener(valueEventListener);
         }
+
     }
 
     private void buildRecyclerView(View v) {

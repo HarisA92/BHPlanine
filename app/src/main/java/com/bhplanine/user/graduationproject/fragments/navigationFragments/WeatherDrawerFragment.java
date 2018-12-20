@@ -47,6 +47,7 @@ public class WeatherDrawerFragment extends Fragment {
     private CompositeDisposable compositeDisposable;
     private RecyclerView mRecyclerView;
     private ProgressBar progressBar;
+    private Context context;
 
     @AddTrace(name = "onCreateWeatherDrawerFragment")
     @Override
@@ -54,11 +55,12 @@ public class WeatherDrawerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_weather_drawer, container, false);
         Objects.requireNonNull(getActivity()).setTitle("Weather");
+        context = getActivity();
         ((SelectedFragment) getActivity()).selectDrawerFragment(R.id.nav_weather);
         buildRecyclerView(v);
         progressBar = v.findViewById(R.id.progress_bar_weather_drawer);
         weatherClient = new WeatherClient(getActivity());
-        connection = new InternetConnection();
+        connection = new InternetConnection(context);
         compositeDisposable = new CompositeDisposable();
         weatherFont = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), getResources().getString(R.string.PATH_TO_WEATHER_FONT));
         getAPI();
@@ -73,11 +75,18 @@ public class WeatherDrawerFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        context = null;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
             compositeDisposable.dispose();
         }
+
     }
 
     private void buildRecyclerView(View v) {
@@ -95,7 +104,7 @@ public class WeatherDrawerFragment extends Fragment {
     }
 
     private void getAPI() {
-        if (connection.getInternetConnection()) {
+        if (connection.checkConnectivity()) {
             Observable<WeatherResult> bjelasnica = weatherClient.getWeatherService()
                     .getWeather("Pervizi", BuildConfig.ApiKey_Weather, getResources().getString(R.string.METRIC_UNITS))
                     .subscribeOn(Schedulers.io())

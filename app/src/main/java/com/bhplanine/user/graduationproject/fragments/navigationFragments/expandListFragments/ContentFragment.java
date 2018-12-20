@@ -58,8 +58,8 @@ public class ContentFragment extends Fragment {
         Objects.requireNonNull(getActivity()).setTitle(mountain);
 
         firebaseHolder = new FirebaseHolder();
-        InternetConnection internetConnection = new InternetConnection();
-        if (internetConnection.getInternetConnection()) {
+        InternetConnection internetConnection = new InternetConnection(getActivity());
+        if (internetConnection.checkConnectivity()) {
             valueEventListener = valueEventListener();
             if (mountain != null) {
                 switch (mountain) {

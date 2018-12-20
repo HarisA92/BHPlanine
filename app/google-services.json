@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "504840954745-9pgogssld513s8g3ud9ck3jnas0udtd6.apps.googleusercontent.com",
+          "client_id": "504840954745-iup8tgmirklu9o0tf38v684oteov2dp3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bhplanine.user.graduationproject",
+            "certificate_hash": "a2e6eb7466e68a2fffb60b6f20ed3b0febbaa142"
+          }
+        },
+        {
+          "client_id": "504840954745-i8tb08oeb37l4sqi9ohd5beff4fr7buc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.bhplanine.user.graduationproject",

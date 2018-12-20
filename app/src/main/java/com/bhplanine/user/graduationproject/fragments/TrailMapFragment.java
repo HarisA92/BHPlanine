@@ -32,10 +32,10 @@ public class TrailMapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_trail_map, container, false);
         buildRecyclerView(v);
-        InternetConnection internetConnection = new InternetConnection();
+        InternetConnection internetConnection = new InternetConnection(getActivity());
         firebaseHolder = new FirebaseHolder();
 
-        if (internetConnection.getInternetConnection()) {
+        if (internetConnection.checkConnectivity()) {
             childEventListener = childEventListener();
             firebaseHolder.getDatabaseReferenceForTrailMap().addChildEventListener(childEventListener);
             buildRecyclerAdapter();

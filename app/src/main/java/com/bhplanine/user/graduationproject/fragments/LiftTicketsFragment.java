@@ -46,8 +46,8 @@ public class LiftTicketsFragment extends Fragment {
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         firebaseHolder = new FirebaseHolder();
 
-        InternetConnection internetConnection = new InternetConnection();
-        if (internetConnection.getInternetConnection()) {
+        InternetConnection internetConnection = new InternetConnection(getActivity());
+        if (internetConnection.checkConnectivity()) {
             valueEventListener = valueEventListener();
             firebaseHolder.getDatabaseReferenceForTicketPrice().addValueEventListener(valueEventListener);
         } else {

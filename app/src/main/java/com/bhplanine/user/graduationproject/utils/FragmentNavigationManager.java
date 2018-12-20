@@ -15,7 +15,6 @@ public class FragmentNavigationManager implements NavigationManager {
     private static FragmentNavigationManager sInstance;
 
     private FragmentManager mFragmentManager;
-    private HomeActivity mActivity;
 
     public static FragmentNavigationManager obtain(HomeActivity activity) {
         if (sInstance == null) {
@@ -26,8 +25,7 @@ public class FragmentNavigationManager implements NavigationManager {
     }
 
     private void configure(HomeActivity activity) {
-        mActivity = activity;
-        mFragmentManager = mActivity.getSupportFragmentManager();
+        mFragmentManager = activity.getSupportFragmentManager();
     }
 
     private void showFragment(Fragment fragment) {

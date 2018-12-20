@@ -50,8 +50,8 @@ public class ReportFragment extends Fragment {
         progressBar = v.findViewById(R.id.progress_bar_report);
         getMountain = String.valueOf(Objects.requireNonNull(getActivity()).getTitle());
         firebaseHolder = new FirebaseHolder();
-        InternetConnection connection = new InternetConnection();
-        if (connection.getInternetConnection()) {
+        InternetConnection connection = new InternetConnection(getActivity());
+        if (connection.checkConnectivity()) {
             valueListener = valueEventListener();
             firebaseHolder.getDatabaseReferenceForReport().addValueEventListener(valueListener);
             buildRecyclerAdapter();

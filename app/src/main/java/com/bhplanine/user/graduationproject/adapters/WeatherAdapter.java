@@ -36,9 +36,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, int position) {
         WeatherDay weather = weatherDays.get(position);
         holder.weather_icon.setTypeface(weatherFont);
-
-        int a = 0;
-        switch (weather.getWeather().get(a).getIcon()) {
+        
+        switch (weather.getWeather().get(0).getIcon()) {
             case "01d":
                 holder.weather_icon.setText(R.string.wi_day_sunny);
                 break;
@@ -90,16 +89,14 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         String Date = parts[1];
         String dateInMonth = parts[2];
         holder.time.setText(day + " " + Date + " " + dateInMonth);
-        String setDescription = weather.getWeather().get(a).getDescription();
+        String setDescription = weather.getWeather().get(0).getDescription();
         String getDescription = setDescription.substring(0, 1).toUpperCase() + setDescription.substring(1);
         holder.description.setText(getDescription);
         double temp = weather.getMain().getTemp();
         int temperature = (int) temp;
         String weather_temp = String.valueOf(temperature);
         holder.temp.setText(weather_temp + "°C");
-        a++;
-
-    }
+            }
 
     @Override
     public int getItemCount() {

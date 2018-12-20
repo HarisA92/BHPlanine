@@ -219,8 +219,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void sendEmail() {
-        InternetConnection internetConnection = new InternetConnection();
-        if (internetConnection.getInternetConnection()) {
+        InternetConnection internetConnection = new InternetConnection(this);
+        if (internetConnection.checkConnectivity()) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "bhplaninesupp@gmail.com"));
             startActivity(intent);
         } else {
