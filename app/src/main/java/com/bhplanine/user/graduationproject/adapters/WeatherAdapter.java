@@ -36,7 +36,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
     public void onBindViewHolder(@NonNull WeatherViewHolder holder, int position) {
         WeatherDay weather = weatherDays.get(position);
         holder.weather_icon.setTypeface(weatherFont);
-        
+
         switch (weather.getWeather().get(0).getIcon()) {
             case "01d":
                 holder.weather_icon.setText(R.string.wi_day_sunny);
@@ -96,7 +96,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.WeatherV
         int temperature = (int) temp;
         String weather_temp = String.valueOf(temperature);
         holder.temp.setText(weather_temp + "°C");
-            }
+    }
 
     @Override
     public int getItemCount() {
